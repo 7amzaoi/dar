@@ -35,14 +35,4 @@ export function FadeIn({ delay = 0, children, ...props }: HTMLMotionProps<"div">
   );
 }
 
-export const staggerParent = {
-  hidden: {},
-  show: { transition: { staggerChildren: 0.06 } },
-};
-
-export const staggerChild = {
-  hidden: { opacity: 0, y: 14 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: EASE } },
-};
-
 export { motion };

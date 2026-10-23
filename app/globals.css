@@ -364,3 +364,8 @@ body::after {
   from { transform: translateX(-100%); }
   to { transform: translateX(300%); }
 }
+
+/* VengeanceUI border-beam: the beam travels along the element's rounded border */
+@keyframes border-beam {
+  100% { offset-distance: 100%; }
+}

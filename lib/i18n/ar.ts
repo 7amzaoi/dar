@@ -59,6 +59,8 @@ const ar: Dictionary = {
     decrease: "إنقاص الكمية",
     increase: "زيادة الكمية",
     undo: "تراجع",
+    next: "التالي",
+    previous: "السابق",
     unsaved: "لديك تغييرات غير محفوظة.",
     saved: "تم الحفظ",
     deleted: "تم الحذف",

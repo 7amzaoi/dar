@@ -57,6 +57,8 @@ const en = {
     decrease: "Decrease quantity",
     increase: "Increase quantity",
     undo: "Undo",
+    next: "Next",
+    previous: "Previous",
     unsaved: "You have unsaved changes.",
     saved: "Saved",
     deleted: "Deleted",

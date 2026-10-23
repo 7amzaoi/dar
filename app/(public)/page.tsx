@@ -2,12 +2,14 @@
 
 import Link from "next/link";
 import { BadgeCheck, Layers, MessagesSquare, Sparkles } from "lucide-react";
+import { AnimatedNumberInView } from "@/components/ui/animated-number";
+import { BorderBeam } from "@/components/ui/border-beam";
+import { ImageRevealList } from "@/components/ui/image-reveal-list";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Hero } from "@/components/landing/hero";
 import { FurnitureImage } from "@/components/shared/furniture-image";
 import { ArrowForward } from "@/components/shared/icons";
-import { CompanyMark } from "@/components/shared/logo";
-import { motion, Reveal, staggerChild, staggerParent } from "@/components/shared/motion";
+import { Reveal } from "@/components/shared/motion";
 import { PillLink } from "@/components/shared/pill-link";
 import { ProductCard } from "@/components/shared/product-card";
 import { ErrorState, SkeletonGrid } from "@/components/shared/states";
@@ -57,11 +59,11 @@ export default function LandingPage() {
   const companyById = new Map(d?.companies.map((c) => [c.id, c]));
   const avgLead = d ? Math.round(d.products.reduce((s, p) => s + (p.leadTimeDays ?? 0), 0) / Math.max(1, d.products.length)) : 0;
 
-  const stats = [
+  const stats: { label: string; value: string | null; unit?: string }[] = [
     { label: t("landing.statMakers"), value: d ? formatNumber(d.companies.length) : null },
     { label: t("landing.statPieces"), value: d ? formatNumber(d.products.length) : null },
     { label: t("landing.statCountries"), value: d ? formatNumber(new Set(d.companies.map((c) => c.country)).size) : null },
-    { label: t("landing.statLead"), value: d ? t("landing.statLeadValue", { days: avgLead }) : null },
+    { label: t("landing.statLead"), value: d ? formatNumber(avgLead) : null, unit: t("common.days") },
   ];
   const featured = d?.collections.slice(0, 3) ?? [];
 
@@ -76,7 +78,10 @@ export default function LandingPage() {
             {stats.map((s, i) => (
               <div key={s.label} className={cn("px-6 py-7 lg:px-9 lg:py-8", i % 2 === 1 && "border-s border-hairline", i >= 2 && "border-t border-hairline lg:border-t-0", i === 2 && "lg:border-s")}>
                 <dt className="text-sm text-muted-foreground">{s.label}</dt>
-                <dd className="mt-3 font-display text-4xl tracking-tight tabular-nums lg:text-5xl">{s.value ?? <Skeleton className="h-10 w-20" />}</dd>
+                <dd className="mt-3 flex items-baseline gap-2 font-display text-4xl tracking-tight lg:text-5xl">
+                  {s.value ? <AnimatedNumberInView value={s.value} /> : <Skeleton className="h-10 w-20" />}
+                  {s.value && s.unit && <span className="text-lg text-muted-foreground">{s.unit}</span>}
+                </dd>
               </div>
             ))}
           </dl>
@@ -131,16 +136,12 @@ export default function LandingPage() {
         <div className="container-page">
           <SectionTitle title={t("landing.categoriesTitle")} />
         </div>
-        <motion.div
-          className="container-page flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2 [scrollbar-width:none] lg:grid lg:grid-cols-5 lg:overflow-visible"
-          variants={staggerParent}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, margin: "-80px" }}
-        >
+        {/* The row reveals as one unit. It is mounted from the first render (skeletons, then tiles),
+            so the trigger can't fire before the tiles exist, and off-screen rail tiles aren't gated. */}
+        <Reveal className="container-page flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2 [scrollbar-width:none] lg:grid lg:grid-cols-5 lg:overflow-visible">
           {(d ? topLevelCategories(d.categories) : Array.from({ length: 5 }, () => null)).map((c, i) =>
             c ? (
-              <motion.div key={c.id} variants={staggerChild} className="w-[68vw] shrink-0 snap-start sm:w-[42vw] lg:w-auto">
+              <div key={c.id} className="w-[68vw] shrink-0 snap-start sm:w-[42vw] lg:w-auto">
                 <Link href={`/catalog?category=${c.id}`} className="group relative block overflow-hidden rounded-[1.75rem]">
                   <div className="relative aspect-[3/4] bg-secondary">
                     <FurnitureImage src={categoryCovers[c.id]} alt="" className="transition-transform duration-[1.2s] ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:scale-[1.05]" sizes="(min-width: 1024px) 20vw, 70vw" />
@@ -152,12 +153,12 @@ export default function LandingPage() {
                     </span>
                   </span>
                 </Link>
-              </motion.div>
+              </div>
             ) : (
               <Skeleton key={i} className="aspect-[3/4] w-[68vw] shrink-0 rounded-[1.75rem] sm:w-[42vw] lg:w-auto" />
             ),
           )}
-        </motion.div>
+        </Reveal>
       </section>
 
       {/* Why Dār: asymmetric bento, one image cell + two text cells */}
@@ -230,40 +231,26 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Makers: horizontal scroll-snap rail */}
-      <section className="mt-28 md:mt-36">
-        <div className="container-page">
-          <SectionTitle title={t("landing.makersTitle")} action={<TextLink href="/makers">{t("common.viewAll")}</TextLink>} />
-        </div>
-        <div className="container-page flex snap-x snap-mandatory gap-4 overflow-x-auto pb-4 [scrollbar-width:none]">
-          {(d?.companies ?? []).map((c) => {
-            const pieces = d?.products.filter((p) => p.manufacturerId === c.id) ?? [];
-            return (
-              <Link key={c.id} href={`/company/${c.id}`} className="group bezel w-[300px] shrink-0 snap-start sm:w-[340px]">
-                <div className="bezel-core overflow-hidden">
-                  <div className="grid grid-cols-3 gap-1 p-1">
-                    {pieces.slice(0, 3).map((p) => (
-                      <div key={p.id} className="relative aspect-[4/5] overflow-hidden rounded-[1.1rem] bg-secondary">
-                        <FurnitureImage src={p.images[0]} alt="" sizes="110px" className="transition-transform duration-700 group-hover:scale-[1.05]" />
-                      </div>
-                    ))}
-                  </div>
-                  <div className="flex items-center gap-3 px-5 pt-3 pb-5">
-                    <CompanyMark name={c.name} className="size-10 text-sm" />
-                    <div className="min-w-0 flex-1">
-                      <div className="truncate font-display text-xl tracking-tight" translate="no">{c.name}</div>
-                      <div className="truncate text-xs text-muted-foreground">
-                        {city(c.city)}, {country(c.country)}
-                      </div>
-                    </div>
-                    <ArrowForward className="size-4 text-muted-foreground transition-transform group-hover:translate-x-1 rtl:group-hover:-translate-x-1" />
-                  </div>
-                </div>
-              </Link>
-            );
-          })}
-          {!d && Array.from({ length: 4 }, (_, i) => <Skeleton key={i} className="h-[230px] w-[300px] shrink-0 rounded-[2rem]" />)}
-        </div>
+      {/* Makers: VengeanceUI image-reveal list; hovering a maker peeks one of its pieces */}
+      <section className="container-page mt-28 grid gap-10 md:mt-36 lg:grid-cols-[1fr_1.1fr] lg:items-center lg:gap-20">
+        <SectionTitle title={t("landing.makersTitle")} body={t("company.makersSubtitle")} action={<TextLink href="/makers">{t("common.viewAll")}</TextLink>} className="mb-0 flex-col items-start md:mb-0 md:flex-col md:items-start" />
+        <Reveal delay={0.1}>
+          {d ? (
+            <ImageRevealList
+              className="lg:me-0"
+              items={d.companies.map((c, i) => ({
+                id: c.id,
+                number: String(i + 1).padStart(2, "0"),
+                title: c.name,
+                subtitle: `${city(c.city)}, ${country(c.country)}`,
+                image: d.products.find((p) => p.manufacturerId === c.id)?.images[0] ?? "/images/scenes/hero-living.svg",
+                href: `/company/${c.id}`,
+              }))}
+            />
+          ) : (
+            <Skeleton className="mx-auto h-[420px] w-full max-w-[560px] rounded-[1.75rem]" />
+          )}
+        </Reveal>
       </section>
 
       {/* Closing CTA: glass card floating on a scene, same material as the hero */}
@@ -273,7 +260,8 @@ export default function LandingPage() {
             <FurnitureImage src="/images/scenes/collection-andalus.svg" alt="" sizes="100vw" />
           </div>
           <div className="absolute inset-0 flex items-end p-4 sm:items-center sm:p-10 lg:p-16">
-            <div className="glass w-full max-w-xl rounded-[2rem] p-8 sm:p-10">
+            <div className="glass relative w-full max-w-xl rounded-[2rem] bg-white/80 p-8 sm:p-10 dark:bg-card/85">
+              <BorderBeam size={180} duration={14} />
               <div className="mb-5 inline-flex items-center gap-2 rounded-full bg-white/60 px-3.5 py-1.5 text-xs text-hero-ink/90 dark:bg-white/10 dark:text-foreground">
                 <Sparkles className="size-3.5" />
                 {t("landing.ctaEyebrow")}

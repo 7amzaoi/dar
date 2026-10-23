@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { PerspectiveCarousel } from "@/components/ui/perspective-carousel";
 import { FurnitureImage } from "@/components/shared/furniture-image";
 import { FadeIn, Reveal } from "@/components/shared/motion";
 import { EmptyState, QueryView, SkeletonGrid } from "@/components/shared/states";
@@ -28,6 +29,18 @@ export default function CollectionsPage() {
       </FadeIn>
       <QueryView query={q} loading={<SkeletonGrid count={4} className="md:grid-cols-2" />} empty={<EmptyState title={t("common.noResults")} />}>
         {(items) => (
+          <>
+          <Reveal className="mb-16 h-[440px] overflow-hidden rounded-[2rem] bg-secondary/60 sm:h-[500px]">
+            <PerspectiveCarousel
+              items={items.map(({ collection }) => ({ src: collection.coverUrl ?? "/images/scenes/hero-living.svg", title: tx(collection.nameAr, collection.nameEn) }))}
+              defaultActiveIndex={Math.min(2, items.length - 1)}
+              loop
+              slideWidth={260}
+              rotationStep={42}
+              labelClassName="font-display text-xl tracking-tight"
+              labels={{ region: t("nav.collections"), previous: t("common.previous"), next: t("common.next"), show: (title) => title }}
+            />
+          </Reveal>
           <div className="grid gap-6 md:grid-cols-2">
             {items.map(({ collection, maker, count }, i) => (
               <Reveal key={collection.id} delay={(i % 2) * 0.08} className={cn(i % 3 === 0 && "md:col-span-2")}>
@@ -47,6 +60,7 @@ export default function CollectionsPage() {
               </Reveal>
             ))}
           </div>
+          </>
         )}
       </QueryView>
     </div>

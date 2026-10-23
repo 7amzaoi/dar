@@ -2,6 +2,7 @@
 
 import type { ReactNode } from "react";
 import type { LucideIcon } from "lucide-react";
+import { AnimatedNumberInView } from "@/components/ui/animated-number";
 import { Skeleton } from "@/components/ui/skeleton";
 import { FadeIn } from "@/components/shared/motion";
 import { cn } from "@/lib/utils";
@@ -52,7 +53,7 @@ export function KpiCard({
         <span className="text-sm text-muted-foreground">{label}</span>
         {Icon && <Icon className="size-4 text-brand-strong" strokeWidth={1.5} />}
       </div>
-      <div className="mt-4 font-display text-[2.4rem] leading-none tabular-nums">{loading ? <Skeleton className="h-10 w-24" /> : value}</div>
+      <div className="mt-4 font-display text-[2.4rem] leading-none tabular-nums">{loading ? <Skeleton className="h-10 w-24" /> : typeof value === "string" ? <AnimatedNumberInView value={value} /> : value}</div>
       {sub && <div className="mt-3 text-xs text-muted-foreground">{loading ? <Skeleton className="h-3 w-20" /> : sub}</div>}
     </div>
   );

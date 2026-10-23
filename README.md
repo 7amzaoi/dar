@@ -30,6 +30,20 @@ The whole site follows the landing hero (a RIVR-style glass hero, adapted):
 - **Surfaces:** frosted glass (`.glass`), nested "double-bezel" trays (`.bezel` / `.bezel-core`), pill buttons and large squircle radii.
 - **Hero video:** `public/videos/hero.mp4`, a self-hosted copy of the loop from `pulkitxm/claude-directory` (rivr-defi-hero). The CDN link in the original prompt answers 403.
 
+### Animation components (VengeanceUI, MIT)
+
+Copied from the [VengeanceUI](https://github.com/Ashutoshx7/VengeanceUI) registry into `components/ui/`. Each file's header lists what changed:
+
+| Component | Used for | Adapted |
+|---|---|---|
+| `animated-number` | stats tray, dashboard KPI cards (digits roll in on view) | `motion/react`, spring digit columns, formatted strings, LTR digits |
+| `image-reveal-list` | makers list on the home page (hover peeks a piece) | Next `Link`, RTL-safe positions, theme tokens |
+| `border-beam` | closing call-to-action card | keyframes in `globals.css`, navy/white beam |
+| `perspective-carousel` | collections page showcase | translatable labels, LTR track, glass controls |
+| `smooth-scroll` (Lenis) | public pages | off for reduced motion, skips overlays, anchor offset |
+
+Letter-by-letter text effects (e.g. `flip-fade-text`) were not used, because splitting words into letters breaks Arabic joining.
+
 ## Stack
 
 Next.js 16 (App Router) · TypeScript strict · Tailwind CSS v4 · shadcn/ui on Radix · lucide-react · react-hook-form + zod · recharts · motion (`motion/react`) · sonner.
