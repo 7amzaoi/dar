@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1500" preserveAspectRatio="xMidYMid slice"><defs>
+  <radialGradient id="light-desk-ink-a" cx="0.22" cy="0.18" r="0.9">
+    <stop offset="0" stop-color="#777b7e"/>
+    <stop offset="0.55" stop-color="#2E3438"/>
+    <stop offset="1" stop-color="#282e31"/>
+  </radialGradient>
+  <linearGradient id="floor-desk-ink-a" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#1e2225"/>
+    <stop offset="1" stop-color="#2e3235"/>
+  </linearGradient>
+  <linearGradient id="sheen-desk-ink-a" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#ffffff" stop-opacity="0.22"/>
+    <stop offset="0.6" stop-color="#ffffff" stop-opacity="0"/>
+    <stop offset="1" stop-color="#000000" stop-opacity="0.14"/>
+  </linearGradient>
+  <linearGradient id="beam-desk-ink-a" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#ffffff" stop-opacity="0.28"/>
+    <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+  </linearGradient>
+  <radialGradient id="glow-desk-ink-a" cx="0.5" cy="0.5" r="0.5">
+    <stop offset="0" stop-color="#FFE9C2" stop-opacity="0.75"/>
+    <stop offset="1" stop-color="#FFE9C2" stop-opacity="0"/>
+  </radialGradient>
+  <filter id="blur-desk-ink-a" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="18"/></filter>
+  <filter id="soft-desk-ink-a" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="4"/></filter>
+  <linearGradient id="mirror-desk-ink-a" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#62676a"/>
+    <stop offset="0.5" stop-color="#292f32"/>
+    <stop offset="1" stop-color="#171a1c"/>
+  </linearGradient>
+</defs><rect width="1200" height="1500" fill="url(#light-desk-ink-a)"/><path d="M60 0 L384 0 L936 1080 L504 1080 Z" fill="url(#beam-desk-ink-a)" opacity="0.55"/><rect y="1066" width="1200" height="14" fill="#292f32"/><rect y="1080" width="1200" height="420" fill="url(#floor-desk-ink-a)"/><ellipse cx="600" cy="1086" rx="420" ry="34" fill="#000" opacity="0.32" filter="url(#blur-desk-ink-a)"/><rect x="210" y="760" width="780" height="34" rx="8" fill="#4A3527" /><rect x="210" y="760" width="780" height="34" rx="8" fill="url(#sheen-desk-ink-a)" /><path d="M250 794 L270 1078 L300 1078 L290 794 Z M910 794 L900 1078 L930 1078 L950 794 Z" fill="#3f2d21"/><rect x="680" y="794" width="240" height="150" rx="6" fill="#554134" /><rect x="700" y="860" width="200" height="4" rx="0" fill="#38281d" /><circle cx="800" cy="830" r="7" fill="#C2A06B"/><path d="M330 760 L360 560 M360 560 L470 520" stroke="#C2A06B" stroke-width="10" stroke-linecap="round" fill="none"/><path d="M440 500 L520 500 L540 560 L420 560 Z" fill="#C2A06B"/><circle cx="480" cy="600" r="120" fill="url(#glow-desk-ink-a)"/><rect x="600" y="730" width="150" height="30" rx="3" fill="#5D707A" /><rect x="612" y="704" width="130" height="26" rx="3" fill="#DCD6CB" /><rect x="605" y="682" width="140" height="22" rx="3" fill="#4a5a62" /></svg>

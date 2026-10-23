@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice"><defs>
+  <radialGradient id="light-scene-cta-workshop" cx="0.22" cy="0.18" r="0.9">
+    <stop offset="0" stop-color="#807873"/>
+    <stop offset="0.55" stop-color="#3B2F28"/>
+    <stop offset="1" stop-color="#342923"/>
+  </radialGradient>
+  <linearGradient id="floor-scene-cta-workshop" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#281f1b"/>
+    <stop offset="1" stop-color="#382f2b"/>
+  </linearGradient>
+  <linearGradient id="sheen-scene-cta-workshop" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#ffffff" stop-opacity="0.22"/>
+    <stop offset="0.6" stop-color="#ffffff" stop-opacity="0"/>
+    <stop offset="1" stop-color="#000000" stop-opacity="0.14"/>
+  </linearGradient>
+  <linearGradient id="beam-scene-cta-workshop" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#ffffff" stop-opacity="0.28"/>
+    <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+  </linearGradient>
+  <radialGradient id="glow-scene-cta-workshop" cx="0.5" cy="0.5" r="0.5">
+    <stop offset="0" stop-color="#FFE9C2" stop-opacity="0.75"/>
+    <stop offset="1" stop-color="#FFE9C2" stop-opacity="0"/>
+  </radialGradient>
+  <filter id="blur-scene-cta-workshop" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="18"/></filter>
+  <filter id="soft-scene-cta-workshop" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="4"/></filter>
+  <linearGradient id="mirror-scene-cta-workshop" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#6c635e"/>
+    <stop offset="0.5" stop-color="#352a24"/>
+    <stop offset="1" stop-color="#1e1814"/>
+  </linearGradient>
+</defs><rect width="1600" height="1000" fill="url(#light-scene-cta-workshop)"/><path d="M400 780 V540.4 A400 400 0 0 1 1200 540.4 V780 Z" fill="#372c25"/><path d="M80 0 L512 0 L1248 780 L672 780 Z" fill="url(#beam-scene-cta-workshop)" opacity="0.55"/><rect y="766" width="1600" height="14" fill="#352a24"/><rect y="780" width="1600" height="220" fill="url(#floor-scene-cta-workshop)"/><g transform="translate(33.333333333333314 155.9999999999999) scale(0.5777777777777778)"><ellipse cx="600" cy="1086" rx="320" ry="34" fill="#000" opacity="0.32" filter="url(#blur-scene-cta-workshop)"/><rect x="310" y="280" width="580" height="790" rx="6" fill="#1d130c" /><rect x="330" y="300" width="540" height="750" rx="2" fill="#17100a" /><rect x="330" y="440" width="540" height="16" rx="0" fill="#362a22" /><rect x="330" y="600" width="540" height="16" rx="0" fill="#362a22" /><rect x="330" y="760" width="540" height="16" rx="0" fill="#362a22" /><rect x="330" y="920" width="540" height="16" rx="0" fill="#362a22" /><rect x="350" y="350" width="22" height="90" rx="2" fill="#C9A46A" /><rect x="375" y="337" width="29" height="103" rx="2" fill="#9A7357" /><rect x="407" y="324" width="36" height="116" rx="2" fill="#745641" /><rect x="486" y="338" width="32" height="102" rx="2" fill="#a18355" /><rect x="521" y="325" width="39" height="115" rx="2" fill="#C9A46A" /><rect x="563" y="312" width="28" height="128" rx="2" fill="#9A7357" /><rect x="372" y="507" width="27" height="93" rx="2" fill="#9A7357" /><rect x="402" y="494" width="34" height="106" rx="2" fill="#745641" /><rect x="479" y="508" width="30" height="92" rx="2" fill="#a18355" /><rect x="512" y="495" width="37" height="105" rx="2" fill="#C9A46A" /><rect x="552" y="482" width="26" height="118" rx="2" fill="#9A7357" /><rect x="394" y="664" width="32" height="96" rx="2" fill="#745641" /><rect x="469" y="638" width="28" height="122" rx="2" fill="#a18355" /><rect x="500" y="665" width="35" height="95" rx="2" fill="#C9A46A" /><rect x="538" y="652" width="24" height="108" rx="2" fill="#9A7357" /><rect x="605" y="666" width="38" height="94" rx="2" fill="#E6DCCD" /><rect x="456" y="808" width="26" height="112" rx="2" fill="#a18355" /><rect x="485" y="795" width="33" height="125" rx="2" fill="#C9A46A" /><rect x="521" y="822" width="22" height="98" rx="2" fill="#9A7357" /><rect x="586" y="796" width="36" height="124" rx="2" fill="#E6DCCD" /><rect x="625" y="823" width="25" height="97" rx="2" fill="#a18355" /><rect x="310" y="280" width="580" height="790" rx="6" fill="url(#sheen-scene-cta-workshop)" /></g><g transform="translate(566.6666666666667 0) scale(0.7222222222222222)"><ellipse cx="600" cy="1085" rx="250" ry="34" fill="#000" opacity="0.32" filter="url(#blur-scene-cta-workshop)"/><path d="M440 1080 L455 1010 M760 1080 L745 1010" stroke="#24180F" stroke-width="16" stroke-linecap="round"/><path d="M395 860 C395 640 470 560 600 560 C730 560 805 640 805 860 Z" fill="#816149"/><rect x="380" y="840" width="440" height="180" rx="40" fill="#9A7357" /><path d="M380 800 C330 820 330 1000 380 1020 L440 1020 L440 820 Z" fill="#8f6b51"/><path d="M820 800 C870 820 870 1000 820 1020 L760 1020 L760 820 Z" fill="#8f6b51"/><rect x="440" y="860" width="320" height="80" rx="26" fill="#a17d63" /><path d="M395 860 C395 640 470 560 600 560 C730 560 805 640 805 860 Z" fill="url(#sheen-scene-cta-workshop)"/><rect x="330" y="800" width="540" height="220" rx="40" fill="url(#sheen-scene-cta-workshop)" /></g></svg>

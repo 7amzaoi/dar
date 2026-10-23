@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1500" preserveAspectRatio="xMidYMid slice"><defs>
+  <radialGradient id="light-sectional-ink-a" cx="0.22" cy="0.18" r="0.9">
+    <stop offset="0" stop-color="#777b7e"/>
+    <stop offset="0.55" stop-color="#2E3438"/>
+    <stop offset="1" stop-color="#282e31"/>
+  </radialGradient>
+  <linearGradient id="floor-sectional-ink-a" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#1e2225"/>
+    <stop offset="1" stop-color="#2e3235"/>
+  </linearGradient>
+  <linearGradient id="sheen-sectional-ink-a" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#ffffff" stop-opacity="0.22"/>
+    <stop offset="0.6" stop-color="#ffffff" stop-opacity="0"/>
+    <stop offset="1" stop-color="#000000" stop-opacity="0.14"/>
+  </linearGradient>
+  <linearGradient id="beam-sectional-ink-a" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#ffffff" stop-opacity="0.28"/>
+    <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+  </linearGradient>
+  <radialGradient id="glow-sectional-ink-a" cx="0.5" cy="0.5" r="0.5">
+    <stop offset="0" stop-color="#FFE9C2" stop-opacity="0.75"/>
+    <stop offset="1" stop-color="#FFE9C2" stop-opacity="0"/>
+  </radialGradient>
+  <filter id="blur-sectional-ink-a" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="18"/></filter>
+  <filter id="soft-sectional-ink-a" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="4"/></filter>
+  <linearGradient id="mirror-sectional-ink-a" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#62676a"/>
+    <stop offset="0.5" stop-color="#292f32"/>
+    <stop offset="1" stop-color="#171a1c"/>
+  </linearGradient>
+</defs><rect width="1200" height="1500" fill="url(#light-sectional-ink-a)"/><path d="M60 0 L384 0 L936 1080 L504 1080 Z" fill="url(#beam-sectional-ink-a)" opacity="0.55"/><rect y="1066" width="1200" height="14" fill="#292f32"/><rect y="1080" width="1200" height="420" fill="url(#floor-sectional-ink-a)"/><ellipse cx="600" cy="1090" rx="520" ry="34" fill="#000" opacity="0.32" filter="url(#blur-sectional-ink-a)"/><rect x="130" y="690" width="940" height="240" rx="44" fill="#4c5c64" /><rect x="110" y="870" width="980" height="180" rx="30" fill="#5D707A" /><rect x="80" y="790" width="120" height="262" rx="46" fill="#566770" /><rect x="200" y="720" width="280" height="160" rx="34" fill="#6d7e87" /><rect x="490" y="720" width="280" height="160" rx="34" fill="#6d7e87" /><rect x="780" y="720" width="270" height="160" rx="34" fill="#6d7e87" /><rect x="760" y="930" width="360" height="140" rx="30" fill="#63767f" /><rect x="196" y="850" width="560" height="90" rx="26" fill="#657781" /><rect x="860" y="752" width="120" height="112" rx="22" fill="#C2A06B" transform="rotate(7 920 808)"/><rect x="80" y="690" width="1040" height="380" rx="40" fill="url(#sheen-sectional-ink-a)" /></svg>

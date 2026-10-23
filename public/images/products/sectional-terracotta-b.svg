@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1500" preserveAspectRatio="xMidYMid slice"><defs>
+  <radialGradient id="light-sectional-terracotta-b" cx="0.22" cy="0.18" r="0.9">
+    <stop offset="0" stop-color="#f2e8dd"/>
+    <stop offset="0.55" stop-color="#EBDCCB"/>
+    <stop offset="1" stop-color="#cfc2b3"/>
+  </radialGradient>
+  <linearGradient id="floor-sectional-terracotta-b" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#c1a78b"/>
+    <stop offset="1" stop-color="#d5b99d"/>
+  </linearGradient>
+  <linearGradient id="sheen-sectional-terracotta-b" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#ffffff" stop-opacity="0.22"/>
+    <stop offset="0.6" stop-color="#ffffff" stop-opacity="0"/>
+    <stop offset="1" stop-color="#000000" stop-opacity="0.14"/>
+  </linearGradient>
+  <linearGradient id="beam-sectional-terracotta-b" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#ffffff" stop-opacity="0.28"/>
+    <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+  </linearGradient>
+  <radialGradient id="glow-sectional-terracotta-b" cx="0.5" cy="0.5" r="0.5">
+    <stop offset="0" stop-color="#FFE9C2" stop-opacity="0.75"/>
+    <stop offset="1" stop-color="#FFE9C2" stop-opacity="0"/>
+  </radialGradient>
+  <filter id="blur-sectional-terracotta-b" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="18"/></filter>
+  <filter id="soft-sectional-terracotta-b" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="4"/></filter>
+  <linearGradient id="mirror-sectional-terracotta-b" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#f0e5d8"/>
+    <stop offset="0.5" stop-color="#d4c6b7"/>
+    <stop offset="1" stop-color="#766e66"/>
+  </linearGradient>
+</defs><rect width="1200" height="1500" fill="url(#light-sectional-terracotta-b)"/><path d="M300 1080 V494.4 A300 300 0 0 1 900 494.4 V1080 Z" fill="#dbcdbd"/><path d="M60 0 L384 0 L936 1080 L504 1080 Z" fill="url(#beam-sectional-terracotta-b)" opacity="0.55"/><rect y="1066" width="1200" height="14" fill="#d4c6b7"/><rect y="1080" width="1200" height="420" fill="url(#floor-sectional-terracotta-b)"/><g transform="translate(1200 0) scale(-1 1)"><ellipse cx="600" cy="1090" rx="520" ry="34" fill="#000" opacity="0.32" filter="url(#blur-sectional-terracotta-b)"/><rect x="130" y="690" width="940" height="240" rx="44" fill="#97543d" /><rect x="110" y="870" width="980" height="180" rx="30" fill="#B8674A" /><rect x="80" y="790" width="120" height="262" rx="46" fill="#a95f44" /><rect x="200" y="720" width="280" height="160" rx="34" fill="#bf765c" /><rect x="490" y="720" width="280" height="160" rx="34" fill="#bf765c" /><rect x="780" y="720" width="270" height="160" rx="34" fill="#bf765c" /><rect x="760" y="930" width="360" height="140" rx="30" fill="#bb6d51" /><rect x="196" y="850" width="560" height="90" rx="26" fill="#bc6f53" /><rect x="860" y="752" width="120" height="112" rx="22" fill="#C9A46A" transform="rotate(7 920 808)"/><rect x="80" y="690" width="1040" height="380" rx="40" fill="url(#sheen-sectional-terracotta-b)" /></g></svg>

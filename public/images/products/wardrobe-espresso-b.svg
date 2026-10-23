@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1500" preserveAspectRatio="xMidYMid slice"><defs>
+  <radialGradient id="light-wardrobe-espresso-b" cx="0.22" cy="0.18" r="0.9">
+    <stop offset="0" stop-color="#807873"/>
+    <stop offset="0.55" stop-color="#3B2F28"/>
+    <stop offset="1" stop-color="#342923"/>
+  </radialGradient>
+  <linearGradient id="floor-wardrobe-espresso-b" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#281f1b"/>
+    <stop offset="1" stop-color="#382f2b"/>
+  </linearGradient>
+  <linearGradient id="sheen-wardrobe-espresso-b" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#ffffff" stop-opacity="0.22"/>
+    <stop offset="0.6" stop-color="#ffffff" stop-opacity="0"/>
+    <stop offset="1" stop-color="#000000" stop-opacity="0.14"/>
+  </linearGradient>
+  <linearGradient id="beam-wardrobe-espresso-b" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#ffffff" stop-opacity="0.28"/>
+    <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+  </linearGradient>
+  <radialGradient id="glow-wardrobe-espresso-b" cx="0.5" cy="0.5" r="0.5">
+    <stop offset="0" stop-color="#FFE9C2" stop-opacity="0.75"/>
+    <stop offset="1" stop-color="#FFE9C2" stop-opacity="0"/>
+  </radialGradient>
+  <filter id="blur-wardrobe-espresso-b" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="18"/></filter>
+  <filter id="soft-wardrobe-espresso-b" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="4"/></filter>
+  <linearGradient id="mirror-wardrobe-espresso-b" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#6c635e"/>
+    <stop offset="0.5" stop-color="#352a24"/>
+    <stop offset="1" stop-color="#1e1814"/>
+  </linearGradient>
+</defs><rect width="1200" height="1500" fill="url(#light-wardrobe-espresso-b)"/><path d="M300 1080 V494.4 A300 300 0 0 1 900 494.4 V1080 Z" fill="#372c25"/><path d="M60 0 L384 0 L936 1080 L504 1080 Z" fill="url(#beam-wardrobe-espresso-b)" opacity="0.55"/><rect y="1066" width="1200" height="14" fill="#352a24"/><rect y="1080" width="1200" height="420" fill="url(#floor-wardrobe-espresso-b)"/><g transform="translate(1200 0) scale(-1 1)"><ellipse cx="600" cy="1086" rx="330" ry="34" fill="#000" opacity="0.32" filter="url(#blur-wardrobe-espresso-b)"/><rect x="330" y="330" width="540" height="730" rx="6" fill="#24180F" /><line x1="360" y1="370" x2="360" y2="1030" stroke="#1d130c" stroke-width="3"/><line x1="396" y1="370" x2="396" y2="1030" stroke="#1d130c" stroke-width="3"/><line x1="432" y1="370" x2="432" y2="1030" stroke="#1d130c" stroke-width="3"/><line x1="468" y1="370" x2="468" y2="1030" stroke="#1d130c" stroke-width="3"/><line x1="504" y1="370" x2="504" y2="1030" stroke="#1d130c" stroke-width="3"/><line x1="540" y1="370" x2="540" y2="1030" stroke="#1d130c" stroke-width="3"/><line x1="576" y1="370" x2="576" y2="1030" stroke="#1d130c" stroke-width="3"/><line x1="612" y1="370" x2="612" y2="1030" stroke="#1d130c" stroke-width="3"/><line x1="648" y1="370" x2="648" y2="1030" stroke="#1d130c" stroke-width="3"/><line x1="684" y1="370" x2="684" y2="1030" stroke="#1d130c" stroke-width="3"/><line x1="720" y1="370" x2="720" y2="1030" stroke="#1d130c" stroke-width="3"/><line x1="756" y1="370" x2="756" y2="1030" stroke="#1d130c" stroke-width="3"/><line x1="792" y1="370" x2="792" y2="1030" stroke="#1d130c" stroke-width="3"/><line x1="828" y1="370" x2="828" y2="1030" stroke="#1d130c" stroke-width="3"/><line x1="600" y1="340" x2="600" y2="1050" stroke="#17100a" stroke-width="5"/><rect x="578" y="640" width="8" height="120" rx="4" fill="#C9A46A" /><rect x="614" y="640" width="8" height="120" rx="4" fill="#C9A46A" /><rect x="330" y="330" width="540" height="730" rx="6" fill="url(#sheen-wardrobe-espresso-b)" /><rect x="350" y="1060" width="20" height="20" rx="0" fill="#24180F" /><rect x="830" y="1060" width="20" height="20" rx="0" fill="#24180F" /></g></svg>

@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="260 560 680 850" preserveAspectRatio="xMidYMid slice"><defs>
+  <radialGradient id="light-lamp-ink-c" cx="0.22" cy="0.18" r="0.9">
+    <stop offset="0" stop-color="#777b7e"/>
+    <stop offset="0.55" stop-color="#2E3438"/>
+    <stop offset="1" stop-color="#282e31"/>
+  </radialGradient>
+  <linearGradient id="floor-lamp-ink-c" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#1e2225"/>
+    <stop offset="1" stop-color="#2e3235"/>
+  </linearGradient>
+  <linearGradient id="sheen-lamp-ink-c" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#ffffff" stop-opacity="0.22"/>
+    <stop offset="0.6" stop-color="#ffffff" stop-opacity="0"/>
+    <stop offset="1" stop-color="#000000" stop-opacity="0.14"/>
+  </linearGradient>
+  <linearGradient id="beam-lamp-ink-c" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#ffffff" stop-opacity="0.28"/>
+    <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+  </linearGradient>
+  <radialGradient id="glow-lamp-ink-c" cx="0.5" cy="0.5" r="0.5">
+    <stop offset="0" stop-color="#FFE9C2" stop-opacity="0.75"/>
+    <stop offset="1" stop-color="#FFE9C2" stop-opacity="0"/>
+  </radialGradient>
+  <filter id="blur-lamp-ink-c" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="18"/></filter>
+  <filter id="soft-lamp-ink-c" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="4"/></filter>
+  <linearGradient id="mirror-lamp-ink-c" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#62676a"/>
+    <stop offset="0.5" stop-color="#292f32"/>
+    <stop offset="1" stop-color="#171a1c"/>
+  </linearGradient>
+</defs><rect width="1200" height="1500" fill="url(#light-lamp-ink-c)"/><path d="M60 0 L384 0 L936 1080 L504 1080 Z" fill="url(#beam-lamp-ink-c)" opacity="0.55"/><rect y="1066" width="1200" height="14" fill="#292f32"/><rect y="1080" width="1200" height="420" fill="url(#floor-lamp-ink-c)"/><ellipse cx="600" cy="1084" rx="140" ry="22" fill="#000" opacity="0.32" filter="url(#blur-lamp-ink-c)"/><ellipse cx="600" cy="1070" rx="90" ry="16" fill="#433023"/><path d="M600 1070 L600 520" stroke="#C2A06B" stroke-width="10"/><circle cx="600" cy="460" r="300" fill="url(#glow-lamp-ink-c)"/><path d="M470 560 L520 340 L680 340 L730 560 Z" fill="#DCD6CB"/><line x1="520" y1="340" x2="470" y2="560" stroke="#c2bcb3" stroke-width="2"/><line x1="540" y1="340" x2="502.5" y2="560" stroke="#c2bcb3" stroke-width="2"/><line x1="560" y1="340" x2="535" y2="560" stroke="#c2bcb3" stroke-width="2"/><line x1="580" y1="340" x2="567.5" y2="560" stroke="#c2bcb3" stroke-width="2"/><line x1="600" y1="340" x2="600" y2="560" stroke="#c2bcb3" stroke-width="2"/><line x1="620" y1="340" x2="632.5" y2="560" stroke="#c2bcb3" stroke-width="2"/><line x1="640" y1="340" x2="665" y2="560" stroke="#c2bcb3" stroke-width="2"/><line x1="660" y1="340" x2="697.5" y2="560" stroke="#c2bcb3" stroke-width="2"/><line x1="680" y1="340" x2="730" y2="560" stroke="#c2bcb3" stroke-width="2"/><path d="M470 560 L520 340 L680 340 L730 560 Z" fill="url(#sheen-lamp-ink-c)"/><rect x="430" y="920" width="120" height="150" rx="60" fill="#586a74" /></svg>

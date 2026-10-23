@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="260 560 680 850" preserveAspectRatio="xMidYMid slice"><defs>
+  <radialGradient id="light-vase-terracotta-c" cx="0.22" cy="0.18" r="0.9">
+    <stop offset="0" stop-color="#f2e8dd"/>
+    <stop offset="0.55" stop-color="#EBDCCB"/>
+    <stop offset="1" stop-color="#cfc2b3"/>
+  </radialGradient>
+  <linearGradient id="floor-vase-terracotta-c" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#c1a78b"/>
+    <stop offset="1" stop-color="#d5b99d"/>
+  </linearGradient>
+  <linearGradient id="sheen-vase-terracotta-c" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#ffffff" stop-opacity="0.22"/>
+    <stop offset="0.6" stop-color="#ffffff" stop-opacity="0"/>
+    <stop offset="1" stop-color="#000000" stop-opacity="0.14"/>
+  </linearGradient>
+  <linearGradient id="beam-vase-terracotta-c" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#ffffff" stop-opacity="0.28"/>
+    <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+  </linearGradient>
+  <radialGradient id="glow-vase-terracotta-c" cx="0.5" cy="0.5" r="0.5">
+    <stop offset="0" stop-color="#FFE9C2" stop-opacity="0.75"/>
+    <stop offset="1" stop-color="#FFE9C2" stop-opacity="0"/>
+  </radialGradient>
+  <filter id="blur-vase-terracotta-c" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="18"/></filter>
+  <filter id="soft-vase-terracotta-c" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="4"/></filter>
+  <linearGradient id="mirror-vase-terracotta-c" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#f0e5d8"/>
+    <stop offset="0.5" stop-color="#d4c6b7"/>
+    <stop offset="1" stop-color="#766e66"/>
+  </linearGradient>
+</defs><rect width="1200" height="1500" fill="url(#light-vase-terracotta-c)"/><path d="M60 0 L384 0 L936 1080 L504 1080 Z" fill="url(#beam-vase-terracotta-c)" opacity="0.55"/><rect y="1066" width="1200" height="14" fill="#d4c6b7"/><rect y="1080" width="1200" height="420" fill="url(#floor-vase-terracotta-c)"/><ellipse cx="600" cy="1084" rx="330" ry="26" fill="#000" opacity="0.32" filter="url(#blur-vase-terracotta-c)"/><rect x="240" y="920" width="720" height="160" rx="6" fill="#644533" /><rect x="240" y="920" width="720" height="160" rx="6" fill="url(#sheen-vase-terracotta-c)" /><path d="M330 920 C280 840 290 700 360 640 L380 600 L420 600 L440 640 C510 700 520 840 470 920 Z" fill="#B8674A"/><path d="M330 920 C280 840 290 700 360 640 L380 600 L420 600 L440 640 C510 700 520 840 470 920 Z" fill="url(#sheen-vase-terracotta-c)"/><path d="M400 600 C390 480 340 380 280 300 M400 600 C430 470 500 400 560 330 M400 600 C400 500 420 420 410 330" stroke="#452c1e" stroke-width="5" fill="none" stroke-linecap="round"/><ellipse cx="640" cy="860" rx="80" ry="62" fill="#F4ECE2"/><path d="M560 920 C560 870 720 870 720 920 Z" fill="#F4ECE2"/><path d="M760 920 C740 860 750 790 790 760 L800 720 L840 720 L850 760 C890 790 900 860 880 920 Z" fill="#C9A46A"/><path d="M760 920 C740 860 750 790 790 760 L800 720 L840 720 L850 760 C890 790 900 860 880 920 Z" fill="url(#sheen-vase-terracotta-c)"/></svg>

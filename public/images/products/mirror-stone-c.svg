@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="260 560 680 850" preserveAspectRatio="xMidYMid slice"><defs>
+  <radialGradient id="light-mirror-stone-c" cx="0.22" cy="0.18" r="0.9">
+    <stop offset="0" stop-color="#eeece7"/>
+    <stop offset="0.55" stop-color="#E5E1DA"/>
+    <stop offset="1" stop-color="#cac6c0"/>
+  </radialGradient>
+  <linearGradient id="floor-mirror-stone-c" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#bcb5aa"/>
+    <stop offset="1" stop-color="#cfc8bd"/>
+  </linearGradient>
+  <linearGradient id="sheen-mirror-stone-c" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#ffffff" stop-opacity="0.22"/>
+    <stop offset="0.6" stop-color="#ffffff" stop-opacity="0"/>
+    <stop offset="1" stop-color="#000000" stop-opacity="0.14"/>
+  </linearGradient>
+  <linearGradient id="beam-mirror-stone-c" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#ffffff" stop-opacity="0.28"/>
+    <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+  </linearGradient>
+  <radialGradient id="glow-mirror-stone-c" cx="0.5" cy="0.5" r="0.5">
+    <stop offset="0" stop-color="#FFE9C2" stop-opacity="0.75"/>
+    <stop offset="1" stop-color="#FFE9C2" stop-opacity="0"/>
+  </radialGradient>
+  <filter id="blur-mirror-stone-c" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="18"/></filter>
+  <filter id="soft-mirror-stone-c" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="4"/></filter>
+  <linearGradient id="mirror-mirror-stone-c" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#ece9e3"/>
+    <stop offset="0.5" stop-color="#cecbc4"/>
+    <stop offset="1" stop-color="#73716d"/>
+  </linearGradient>
+</defs><rect width="1200" height="1500" fill="url(#light-mirror-stone-c)"/><path d="M60 0 L384 0 L936 1080 L504 1080 Z" fill="url(#beam-mirror-stone-c)" opacity="0.55"/><rect y="1066" width="1200" height="14" fill="#cecbc4"/><rect y="1080" width="1200" height="420" fill="url(#floor-mirror-stone-c)"/><ellipse cx="600" cy="1084" rx="240" ry="24" fill="#000" opacity="0.32" filter="url(#blur-mirror-stone-c)"/><path d="M380 1070 V520 A220 220 0 0 1 820 520 V1070 Z" fill="#A88B5E"/><path d="M400 1056 V522 A200 200 0 0 1 800 522 V1056 Z" fill="url(#mirror-mirror-stone-c)"/><path d="M460 1000 L720 420" stroke="#fff" stroke-opacity="0.25" stroke-width="40"/><path d="M540 1030 L760 560" stroke="#fff" stroke-opacity="0.15" stroke-width="16"/><path d="M180 1078 C170 980 190 900 230 860 L270 860 C310 900 330 980 320 1078 Z" fill="#9C958A"/><path d="M250 860 C240 760 200 700 150 660 M250 860 C270 740 330 690 360 650 M250 860 C250 760 260 700 250 620" stroke="#624e40" stroke-width="4" fill="none"/></svg>

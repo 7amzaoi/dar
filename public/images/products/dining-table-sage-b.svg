@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1500" preserveAspectRatio="xMidYMid slice"><defs>
+  <radialGradient id="light-dining-table-sage-b" cx="0.22" cy="0.18" r="0.9">
+    <stop offset="0" stop-color="#eaebe2"/>
+    <stop offset="0.55" stop-color="#DFE0D2"/>
+    <stop offset="1" stop-color="#c4c5b9"/>
+  </radialGradient>
+  <linearGradient id="floor-dining-table-sage-b" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#bbb4a1"/>
+    <stop offset="1" stop-color="#cec8b4"/>
+  </linearGradient>
+  <linearGradient id="sheen-dining-table-sage-b" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#ffffff" stop-opacity="0.22"/>
+    <stop offset="0.6" stop-color="#ffffff" stop-opacity="0"/>
+    <stop offset="1" stop-color="#000000" stop-opacity="0.14"/>
+  </linearGradient>
+  <linearGradient id="beam-dining-table-sage-b" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#ffffff" stop-opacity="0.28"/>
+    <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+  </linearGradient>
+  <radialGradient id="glow-dining-table-sage-b" cx="0.5" cy="0.5" r="0.5">
+    <stop offset="0" stop-color="#FFE9C2" stop-opacity="0.75"/>
+    <stop offset="1" stop-color="#FFE9C2" stop-opacity="0"/>
+  </radialGradient>
+  <filter id="blur-dining-table-sage-b" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="18"/></filter>
+  <filter id="soft-dining-table-sage-b" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="4"/></filter>
+  <linearGradient id="mirror-dining-table-sage-b" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#e7e8dd"/>
+    <stop offset="0.5" stop-color="#c9cabd"/>
+    <stop offset="1" stop-color="#707069"/>
+  </linearGradient>
+</defs><rect width="1200" height="1500" fill="url(#light-dining-table-sage-b)"/><path d="M300 1080 V494.4 A300 300 0 0 1 900 494.4 V1080 Z" fill="#cfd0c3"/><path d="M60 0 L384 0 L936 1080 L504 1080 Z" fill="url(#beam-dining-table-sage-b)" opacity="0.55"/><rect y="1066" width="1200" height="14" fill="#c9cabd"/><rect y="1080" width="1200" height="420" fill="url(#floor-dining-table-sage-b)"/><g transform="translate(1200 0) scale(-1 1)"><ellipse cx="600" cy="1088" rx="470" ry="34" fill="#000" opacity="0.32" filter="url(#blur-dining-table-sage-b)"/><path d="M260 760 L260 600 C260 560 410 560 410 600 L410 760 Z" fill="#879278"/><path d="M260 760 L260 600 C260 560 410 560 410 600 L410 760 Z" fill="url(#sheen-dining-table-sage-b)"/><path d="M525 760 L525 600 C525 560 675 560 675 600 L675 760 Z" fill="#879278"/><path d="M525 760 L525 600 C525 560 675 560 675 600 L675 760 Z" fill="url(#sheen-dining-table-sage-b)"/><path d="M790 760 L790 600 C790 560 940 560 940 600 L940 760 Z" fill="#879278"/><path d="M790 760 L790 600 C790 560 940 560 940 600 L940 760 Z" fill="url(#sheen-dining-table-sage-b)"/><rect x="160" y="760" width="880" height="40" rx="10" fill="#6B4A33" /><rect x="160" y="760" width="880" height="40" rx="10" fill="url(#sheen-dining-table-sage-b)" /><path d="M300 800 L340 800 L320 1078 L300 1078 Z M860 800 L900 800 L900 1078 L880 1078 Z" fill="#5e412d"/><path d="M520 760 Q560 700 600 700 Q640 700 680 760 Z" fill="#F1EEE4"/><path d="M585 700 L560 600 M605 700 L640 590 M595 700 L600 580" stroke="#555c4c" stroke-width="5" stroke-linecap="round"/></g></svg>
