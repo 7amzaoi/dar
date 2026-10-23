@@ -1,12 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1500" preserveAspectRatio="xMidYMid slice"><defs>
   <radialGradient id="light-lamp-espresso-b" cx="0.22" cy="0.18" r="0.9">
-    <stop offset="0" stop-color="#807873"/>
-    <stop offset="0.55" stop-color="#3B2F28"/>
-    <stop offset="1" stop-color="#342923"/>
+    <stop offset="0" stop-color="#757a84"/>
+    <stop offset="0.55" stop-color="#2B3242"/>
+    <stop offset="1" stop-color="#262c3a"/>
   </radialGradient>
   <linearGradient id="floor-lamp-espresso-b" x1="0" y1="0" x2="0" y2="1">
-    <stop offset="0" stop-color="#281f1b"/>
-    <stop offset="1" stop-color="#382f2b"/>
+    <stop offset="0" stop-color="#1d222e"/>
+    <stop offset="1" stop-color="#2c323e"/>
   </linearGradient>
   <linearGradient id="sheen-lamp-espresso-b" x1="0" y1="0" x2="0" y2="1">
     <stop offset="0" stop-color="#ffffff" stop-opacity="0.22"/>
@@ -24,8 +24,8 @@
   <filter id="blur-lamp-espresso-b" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="18"/></filter>
   <filter id="soft-lamp-espresso-b" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="4"/></filter>
   <linearGradient id="mirror-lamp-espresso-b" x1="0" y1="0" x2="1" y2="1">
-    <stop offset="0" stop-color="#6c635e"/>
-    <stop offset="0.5" stop-color="#352a24"/>
-    <stop offset="1" stop-color="#1e1814"/>
+    <stop offset="0" stop-color="#606571"/>
+    <stop offset="0.5" stop-color="#272d3b"/>
+    <stop offset="1" stop-color="#161921"/>
   </linearGradient>
-</defs><rect width="1200" height="1500" fill="url(#light-lamp-espresso-b)"/><path d="M300 1080 V494.4 A300 300 0 0 1 900 494.4 V1080 Z" fill="#372c25"/><path d="M60 0 L384 0 L936 1080 L504 1080 Z" fill="url(#beam-lamp-espresso-b)" opacity="0.55"/><rect y="1066" width="1200" height="14" fill="#352a24"/><rect y="1080" width="1200" height="420" fill="url(#floor-lamp-espresso-b)"/><g transform="translate(1200 0) scale(-1 1)"><ellipse cx="600" cy="1084" rx="140" ry="22" fill="#000" opacity="0.32" filter="url(#blur-lamp-espresso-b)"/><ellipse cx="600" cy="1070" rx="90" ry="16" fill="#20160e"/><path d="M600 1070 L600 520" stroke="#C9A46A" stroke-width="10"/><circle cx="600" cy="460" r="300" fill="url(#glow-lamp-espresso-b)"/><path d="M470 560 L520 340 L680 340 L730 560 Z" fill="#E6DCCD"/><line x1="520" y1="340" x2="470" y2="560" stroke="#cac2b4" stroke-width="2"/><line x1="540" y1="340" x2="502.5" y2="560" stroke="#cac2b4" stroke-width="2"/><line x1="560" y1="340" x2="535" y2="560" stroke="#cac2b4" stroke-width="2"/><line x1="580" y1="340" x2="567.5" y2="560" stroke="#cac2b4" stroke-width="2"/><line x1="600" y1="340" x2="600" y2="560" stroke="#cac2b4" stroke-width="2"/><line x1="620" y1="340" x2="632.5" y2="560" stroke="#cac2b4" stroke-width="2"/><line x1="640" y1="340" x2="665" y2="560" stroke="#cac2b4" stroke-width="2"/><line x1="660" y1="340" x2="697.5" y2="560" stroke="#cac2b4" stroke-width="2"/><line x1="680" y1="340" x2="730" y2="560" stroke="#cac2b4" stroke-width="2"/><path d="M470 560 L520 340 L680 340 L730 560 Z" fill="url(#sheen-lamp-espresso-b)"/><rect x="430" y="920" width="120" height="150" rx="60" fill="#926d53" /></g></svg>
+</defs><rect width="1200" height="1500" fill="url(#light-lamp-espresso-b)"/><path d="M300 1080 V494.4 A300 300 0 0 1 900 494.4 V1080 Z" fill="#282f3d"/><path d="M60 0 L384 0 L936 1080 L504 1080 Z" fill="url(#beam-lamp-espresso-b)" opacity="0.55"/><rect y="1066" width="1200" height="14" fill="#272d3b"/><rect y="1080" width="1200" height="420" fill="url(#floor-lamp-espresso-b)"/><g transform="translate(1200 0) scale(-1 1)"><ellipse cx="600" cy="1084" rx="140" ry="22" fill="#000" opacity="0.32" filter="url(#blur-lamp-espresso-b)"/><ellipse cx="600" cy="1070" rx="90" ry="16" fill="#261d17"/><path d="M600 1070 L600 520" stroke="#C7A55E" stroke-width="10"/><circle cx="600" cy="460" r="300" fill="url(#glow-lamp-espresso-b)"/><path d="M470 560 L520 340 L680 340 L730 560 Z" fill="#E4E7ED"/><line x1="520" y1="340" x2="470" y2="560" stroke="#c9cbd1" stroke-width="2"/><line x1="540" y1="340" x2="502.5" y2="560" stroke="#c9cbd1" stroke-width="2"/><line x1="560" y1="340" x2="535" y2="560" stroke="#c9cbd1" stroke-width="2"/><line x1="580" y1="340" x2="567.5" y2="560" stroke="#c9cbd1" stroke-width="2"/><line x1="600" y1="340" x2="600" y2="560" stroke="#c9cbd1" stroke-width="2"/><line x1="620" y1="340" x2="632.5" y2="560" stroke="#c9cbd1" stroke-width="2"/><line x1="640" y1="340" x2="665" y2="560" stroke="#c9cbd1" stroke-width="2"/><line x1="660" y1="340" x2="697.5" y2="560" stroke="#c9cbd1" stroke-width="2"/><line x1="680" y1="340" x2="730" y2="560" stroke="#c9cbd1" stroke-width="2"/><path d="M470 560 L520 340 L680 340 L730 560 Z" fill="url(#sheen-lamp-espresso-b)"/><rect x="430" y="920" width="120" height="150" rx="60" fill="#92755e" /></g></svg>

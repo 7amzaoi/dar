@@ -2,6 +2,7 @@
 
 import type { ReactNode } from "react";
 import { ThemeProvider } from "next-themes";
+import { MotionConfig } from "motion/react";
 import { Direction } from "radix-ui";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -23,22 +24,24 @@ function RadixDirection({ children }: { children: ReactNode }) {
 
 export function Providers({ locale, children }: { locale: Locale; children: ReactNode }) {
   return (
-    <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false} disableTransitionOnChange>
-      <I18nProvider initialLocale={locale}>
-        <RadixDirection>
-          <AuthProvider>
-            <FavoritesProvider>
-              <RfqProvider>
-                <TooltipProvider delayDuration={250}>
-                  {children}
-                  <LocalizedToaster />
-                  {process.env.NODE_ENV === "development" && <DevRoleSwitcher />}
-                </TooltipProvider>
-              </RfqProvider>
-            </FavoritesProvider>
-          </AuthProvider>
-        </RadixDirection>
-      </I18nProvider>
-    </ThemeProvider>
+    <MotionConfig reducedMotion="user">
+      <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+        <I18nProvider initialLocale={locale}>
+          <RadixDirection>
+            <AuthProvider>
+              <FavoritesProvider>
+                <RfqProvider>
+                  <TooltipProvider delayDuration={250}>
+                    {children}
+                    <LocalizedToaster />
+                    {process.env.NODE_ENV === "development" && <DevRoleSwitcher />}
+                  </TooltipProvider>
+                </RfqProvider>
+              </FavoritesProvider>
+            </AuthProvider>
+          </RadixDirection>
+        </I18nProvider>
+      </ThemeProvider>
+    </MotionConfig>
   );
 }

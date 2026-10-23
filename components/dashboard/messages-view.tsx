@@ -172,7 +172,7 @@ function MessagesInner() {
       {q.error ? (
         <ErrorState onRetry={q.reload} />
       ) : (
-        <div className="grid h-[calc(100dvh-16rem)] min-h-[520px] overflow-hidden rounded-lg border border-border bg-card shadow-soft md:grid-cols-[320px_1fr]">
+        <div className="grid h-[calc(100dvh-16rem)] min-h-[520px] overflow-hidden rounded-[1.5rem] border border-border bg-card shadow-soft md:grid-cols-[320px_1fr]">
           <aside className={cn("flex min-h-0 flex-col border-e border-hairline", active && "hidden md:flex")}>
             <div className="border-b border-hairline p-3">
               <div className="relative">
@@ -206,7 +206,7 @@ function MessagesInner() {
                             <span className="block truncate text-xs text-muted-foreground">{q.data?.companies.get(other?.companyId ?? "")?.name}</span>
                             <span className="mt-1 flex items-center gap-2">
                               <span className="line-clamp-1 flex-1 text-xs text-muted-foreground" dir="auto">{c.lastMessage?.body}</span>
-                              {c.unread > 0 && <span className="rounded-full bg-brass px-1.5 text-[0.62rem] text-brass-foreground">{c.unread}</span>}
+                              {c.unread > 0 && <span className="rounded-full bg-brand px-1.5 text-[0.62rem] text-brand-foreground">{c.unread}</span>}
                             </span>
                           </span>
                         </button>

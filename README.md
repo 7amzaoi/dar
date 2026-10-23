@@ -22,9 +22,17 @@ npm run lint
 - **Languages.** Arabic (RTL) is the default; switch with the language toggle. The choice is kept in the `dar-locale` cookie.
 - **Placeholder images.** All images are generated SVG placeholders in `public/images`. To regenerate them, run `node scripts/generate-placeholders.mjs`.
 
+## Design language
+
+The whole site follows the landing hero (a RIVR-style glass hero, adapted):
+- **Colours:** cool light grey `#f0f0f0` background, one navy accent and slate text. Every colour is a token in `app/globals.css` (light + dark). Dark mode follows the system setting.
+- **Type:** Helvetica Regular (`@font-face`) everywhere. Instrument Sans fills in the Latin weights it lacks, and IBM Plex Sans Arabic covers Arabic.
+- **Surfaces:** frosted glass (`.glass`), nested "double-bezel" trays (`.bezel` / `.bezel-core`), pill buttons and large squircle radii.
+- **Hero video:** `public/videos/hero.mp4`, a self-hosted copy of the loop from `pulkitxm/claude-directory` (rivr-defi-hero). The CDN link in the original prompt answers 403.
+
 ## Stack
 
-Next.js 16 (App Router) · TypeScript strict · Tailwind CSS v4 · shadcn/ui on Radix · lucide-react · react-hook-form + zod · recharts · framer-motion · sonner.
+Next.js 16 (App Router) · TypeScript strict · Tailwind CSS v4 · shadcn/ui on Radix · lucide-react · react-hook-form + zod · recharts · motion (`motion/react`) · sonner.
 
 ## Structure
 

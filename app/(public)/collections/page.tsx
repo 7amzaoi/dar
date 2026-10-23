@@ -31,17 +31,17 @@ export default function CollectionsPage() {
           <div className="grid gap-6 md:grid-cols-2">
             {items.map(({ collection, maker, count }, i) => (
               <Reveal key={collection.id} delay={(i % 2) * 0.08} className={cn(i % 3 === 0 && "md:col-span-2")}>
-                <Link href={`/catalog?collection=${collection.id}`} className="group relative block overflow-hidden rounded-md">
+                <Link href={`/catalog?collection=${collection.id}`} className="group relative block overflow-hidden rounded-[1.5rem]">
                   <div className={cn("relative", i % 3 === 0 ? "aspect-[4/3] md:aspect-[21/9]" : "aspect-[4/3]")}>
                     <FurnitureImage src={collection.coverUrl} alt={tx(collection.nameAr, collection.nameEn)} sizes="(min-width: 768px) 60vw, 100vw" className="transition-transform duration-[1.4s] ease-out group-hover:scale-[1.04]" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-espresso/75 via-transparent to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-ink/75 via-transparent to-transparent" />
                   </div>
-                  <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-7 text-ivory sm:p-9">
+                  <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-7 text-paper sm:p-9">
                     <div>
-                      <div className="mb-2 text-[0.7rem] uppercase tracking-[0.22em] text-ivory/75 rtl:tracking-normal">{maker}</div>
+                      <div className="mb-2 text-xs text-paper/80">{maker}</div>
                       <div className="font-display text-4xl sm:text-5xl">{tx(collection.nameAr, collection.nameEn)}</div>
                     </div>
-                    <span className="text-sm text-ivory/80">{t("common.pieces", { count })}</span>
+                    <span className="text-sm text-paper/80">{t("common.pieces", { count })}</span>
                   </div>
                 </Link>
               </Reveal>

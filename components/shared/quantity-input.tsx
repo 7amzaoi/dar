@@ -22,13 +22,13 @@ export function QuantityInput({
   const { t } = useT();
   const h = size === "sm" ? "h-8" : "h-11";
   return (
-    <div className={cn("inline-flex items-center rounded-lg border border-input bg-surface", h, className)}>
+    <div className={cn("inline-flex items-center rounded-full border border-input bg-card", h, className)}>
       <button
         type="button"
         onClick={() => onChange(Math.max(min, value - step))}
         className="inline-flex h-full w-9 items-center justify-center text-muted-foreground hover:text-foreground disabled:opacity-40"
         disabled={value <= min}
-        aria-label="−"
+        aria-label={t("common.decrease")}
       >
         <Minus className="size-3.5" />
       </button>
@@ -49,7 +49,7 @@ export function QuantityInput({
         type="button"
         onClick={() => onChange(value + step)}
         className="inline-flex h-full w-9 items-center justify-center text-muted-foreground hover:text-foreground"
-        aria-label="+"
+        aria-label={t("common.increase")}
       >
         <Plus className="size-3.5" />
       </button>

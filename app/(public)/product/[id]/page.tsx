@@ -37,7 +37,7 @@ function RfqBox({ product, makerName }: { product: Product; makerName: string })
   return (
     <div className="space-y-5">
       <PriceTierTable tiers={product.priceTiers} activeQty={qty} />
-      <div className="rounded-md border border-border bg-surface p-5">
+      <div className="rounded-[1.25rem] border border-border bg-card p-5">
         <div className="flex flex-wrap items-center gap-3">
           <QuantityInput value={qty} onChange={setQty} min={1} />
           <Button
@@ -178,7 +178,7 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
             {isOwner ? (
               <div className="space-y-4">
                 <PriceTierTable tiers={product.priceTiers} />
-                <div className="flex items-center justify-between rounded-md border border-brass/40 bg-brass/8 px-4 py-3 text-sm">
+                <div className="flex items-center justify-between rounded-2xl border border-brand/40 bg-brand/8 px-4 py-3 text-sm">
                   <span>{t("product.sellerView")}</span>
                   <Button size="sm" variant="outline" asChild>
                     <Link href={`/manufacturer/products/${product.id}/edit`}>
@@ -217,13 +217,13 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
         {maker && (
           <Reveal delay={0.1}>
             <h2 className="eyebrow mb-6 font-sans">{t("product.manufacturerTitle")}</h2>
-            <div className="rounded-md border border-border bg-surface p-7">
+            <div className="rounded-[1.25rem] border border-border bg-card p-7">
               <div className="flex items-center gap-4">
                 <CompanyMark name={maker.name} />
                 <div>
                   <div className="flex items-center gap-1.5 font-display text-2xl">
                     {maker.name}
-                    {maker.verified && <BadgeCheck className="size-4 text-brass-deep" strokeWidth={1.6} aria-label={t("company.verified")} />}
+                    {maker.verified && <BadgeCheck className="size-4 text-brand-strong" strokeWidth={1.6} aria-label={t("company.verified")} />}
                   </div>
                   <div className="text-sm text-muted-foreground">{city(maker.city)}, {country(maker.country)}</div>
                 </div>
@@ -259,13 +259,13 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
 
       {collection?.coverUrl && (
         <Reveal className="mt-28">
-          <Link href={`/catalog?collection=${collection.id}`} className="group relative block overflow-hidden rounded-md">
+          <Link href={`/catalog?collection=${collection.id}`} className="group relative block overflow-hidden rounded-[1.5rem]">
             <div className="relative aspect-[21/9]">
               <FurnitureImage src={collection.coverUrl} alt="" sizes="100vw" className="transition-transform duration-[1.4s] group-hover:scale-[1.03]" />
-              <div className="absolute inset-0 bg-gradient-to-t from-espresso/70 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-ink/70 to-transparent" />
             </div>
-            <div className="absolute bottom-0 p-8 text-ivory sm:p-12">
-              <div className="mb-2 text-[0.7rem] uppercase tracking-[0.22em] text-ivory/75 rtl:tracking-normal">{t("product.collection")}</div>
+            <div className="absolute bottom-0 p-8 text-paper sm:p-12">
+              <div className="mb-2 text-xs text-paper/80">{t("product.collection")}</div>
               <div className="font-display text-4xl sm:text-5xl">{tx(collection.nameAr, collection.nameEn)}</div>
             </div>
           </Link>

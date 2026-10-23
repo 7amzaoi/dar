@@ -37,7 +37,7 @@ export function TagInput({
     <div className="space-y-2.5">
       <div
         className={cn(
-          "flex min-h-10 flex-wrap items-center gap-1.5 rounded-lg border bg-surface px-2 py-1.5 focus-within:border-ring focus-within:ring-3 focus-within:ring-ring/50",
+          "flex min-h-11 flex-wrap items-center gap-1.5 rounded-xl border bg-card px-3 py-1.5 focus-within:border-ring focus-within:ring-3 focus-within:ring-ring/50",
           invalid ? "border-destructive" : "border-input",
         )}
       >

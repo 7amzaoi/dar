@@ -1,12 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1500" preserveAspectRatio="xMidYMid slice"><defs>
   <radialGradient id="light-dining-table-terracotta-a" cx="0.22" cy="0.18" r="0.9">
-    <stop offset="0" stop-color="#f2e8dd"/>
-    <stop offset="0.55" stop-color="#EBDCCB"/>
-    <stop offset="1" stop-color="#cfc2b3"/>
+    <stop offset="0" stop-color="#f3f1f0"/>
+    <stop offset="0.55" stop-color="#EDEAE8"/>
+    <stop offset="1" stop-color="#d1cecc"/>
   </radialGradient>
   <linearGradient id="floor-dining-table-terracotta-a" x1="0" y1="0" x2="0" y2="1">
-    <stop offset="0" stop-color="#c1a78b"/>
-    <stop offset="1" stop-color="#d5b99d"/>
+    <stop offset="0" stop-color="#c5c1be"/>
+    <stop offset="1" stop-color="#d8d5d2"/>
   </linearGradient>
   <linearGradient id="sheen-dining-table-terracotta-a" x1="0" y1="0" x2="0" y2="1">
     <stop offset="0" stop-color="#ffffff" stop-opacity="0.22"/>
@@ -24,8 +24,8 @@
   <filter id="blur-dining-table-terracotta-a" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="18"/></filter>
   <filter id="soft-dining-table-terracotta-a" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="4"/></filter>
   <linearGradient id="mirror-dining-table-terracotta-a" x1="0" y1="0" x2="1" y2="1">
-    <stop offset="0" stop-color="#f0e5d8"/>
-    <stop offset="0.5" stop-color="#d4c6b7"/>
-    <stop offset="1" stop-color="#766e66"/>
+    <stop offset="0" stop-color="#f2efee"/>
+    <stop offset="0.5" stop-color="#d5d3d1"/>
+    <stop offset="1" stop-color="#777574"/>
   </linearGradient>
-</defs><rect width="1200" height="1500" fill="url(#light-dining-table-terracotta-a)"/><path d="M60 0 L384 0 L936 1080 L504 1080 Z" fill="url(#beam-dining-table-terracotta-a)" opacity="0.55"/><rect y="1066" width="1200" height="14" fill="#d4c6b7"/><rect y="1080" width="1200" height="420" fill="url(#floor-dining-table-terracotta-a)"/><ellipse cx="600" cy="1088" rx="470" ry="34" fill="#000" opacity="0.32" filter="url(#blur-dining-table-terracotta-a)"/><path d="M260 760 L260 600 C260 560 410 560 410 600 L410 760 Z" fill="#af6246"/><path d="M260 760 L260 600 C260 560 410 560 410 600 L410 760 Z" fill="url(#sheen-dining-table-terracotta-a)"/><path d="M525 760 L525 600 C525 560 675 560 675 600 L675 760 Z" fill="#af6246"/><path d="M525 760 L525 600 C525 560 675 560 675 600 L675 760 Z" fill="url(#sheen-dining-table-terracotta-a)"/><path d="M790 760 L790 600 C790 560 940 560 940 600 L940 760 Z" fill="#af6246"/><path d="M790 760 L790 600 C790 560 940 560 940 600 L940 760 Z" fill="url(#sheen-dining-table-terracotta-a)"/><rect x="160" y="760" width="880" height="40" rx="10" fill="#5C3B28" /><rect x="160" y="760" width="880" height="40" rx="10" fill="url(#sheen-dining-table-terracotta-a)" /><path d="M300 800 L340 800 L320 1078 L300 1078 Z M860 800 L900 800 L900 1078 L880 1078 Z" fill="#513423"/><path d="M520 760 Q560 700 600 700 Q640 700 680 760 Z" fill="#F4ECE2"/><path d="M585 700 L560 600 M605 700 L640 590 M595 700 L600 580" stroke="#6e3e2c" stroke-width="5" stroke-linecap="round"/></svg>
+</defs><rect width="1200" height="1500" fill="url(#light-dining-table-terracotta-a)"/><path d="M60 0 L384 0 L936 1080 L504 1080 Z" fill="url(#beam-dining-table-terracotta-a)" opacity="0.55"/><rect y="1066" width="1200" height="14" fill="#d5d3d1"/><rect y="1080" width="1200" height="420" fill="url(#floor-dining-table-terracotta-a)"/><ellipse cx="600" cy="1088" rx="470" ry="34" fill="#000" opacity="0.32" filter="url(#blur-dining-table-terracotta-a)"/><path d="M260 760 L260 600 C260 560 410 560 410 600 L410 760 Z" fill="#b67459"/><path d="M260 760 L260 600 C260 560 410 560 410 600 L410 760 Z" fill="url(#sheen-dining-table-terracotta-a)"/><path d="M525 760 L525 600 C525 560 675 560 675 600 L675 760 Z" fill="#b67459"/><path d="M525 760 L525 600 C525 560 675 560 675 600 L675 760 Z" fill="url(#sheen-dining-table-terracotta-a)"/><path d="M790 760 L790 600 C790 560 940 560 940 600 L940 760 Z" fill="#b67459"/><path d="M790 760 L790 600 C790 560 940 560 940 600 L940 760 Z" fill="url(#sheen-dining-table-terracotta-a)"/><rect x="160" y="760" width="880" height="40" rx="10" fill="#5E4535" /><rect x="160" y="760" width="880" height="40" rx="10" fill="url(#sheen-dining-table-terracotta-a)" /><path d="M300 800 L340 800 L320 1078 L300 1078 Z M860 800 L900 800 L900 1078 L880 1078 Z" fill="#533d2f"/><path d="M520 760 Q560 700 600 700 Q640 700 680 760 Z" fill="#F6F4F2"/><path d="M585 700 L560 600 M605 700 L640 590 M595 700 L600 580" stroke="#734938" stroke-width="5" stroke-linecap="round"/></svg>

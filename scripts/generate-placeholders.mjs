@@ -22,12 +22,13 @@ function shade(hex, amt) {
 
 /* ---------- palettes ---------- */
 const TONES = {
-  ivory: { wall: "#EFE6D8", floor: "#DCCBB2", main: "#CDB89A", wood: "#8A5A3B", accent: "#B08D57", linen: "#F5EFE6" },
-  sage: { wall: "#DFE0D2", floor: "#CBC4AF", main: "#8E9A7E", wood: "#6B4A33", accent: "#B08D57", linen: "#F1EEE4" },
-  terracotta: { wall: "#EBDCCB", floor: "#D2B597", main: "#B8674A", wood: "#5C3B28", accent: "#C9A46A", linen: "#F4ECE2" },
-  espresso: { wall: "#3B2F28", floor: "#2B221D", main: "#9A7357", wood: "#24180F", accent: "#C9A46A", linen: "#E6DCCD" },
-  stone: { wall: "#E5E1DA", floor: "#CCC5B9", main: "#9C958A", wood: "#7A6250", accent: "#A88B5E", linen: "#F3F0EA" },
-  ink: { wall: "#2E3438", floor: "#212528", main: "#5D707A", wood: "#4A3527", accent: "#C2A06B", linen: "#DCD6CB" },
+  // Cool, airy rooms (light grey / mist) to sit with the hero's palette; the furniture keeps its own colour.
+  ivory: { wall: "#ECEEF1", floor: "#D8DCE2", main: "#D9D2C6", wood: "#8A6A4E", accent: "#C7A55E", linen: "#F7F8FA" },
+  sage: { wall: "#E4E8E6", floor: "#CDD3D0", main: "#8E9A86", wood: "#6B5240", accent: "#C7A55E", linen: "#F4F6F5" },
+  terracotta: { wall: "#EDEAE8", floor: "#D6D2CF", main: "#C07A5E", wood: "#5E4535", accent: "#C7A55E", linen: "#F6F4F2" },
+  espresso: { wall: "#2B3242", floor: "#1F2532", main: "#9A7B63", wood: "#2A2019", accent: "#C7A55E", linen: "#E4E7ED" },
+  stone: { wall: "#E7E9EC", floor: "#CFD3DA", main: "#A3A6AD", wood: "#7A6656", accent: "#B79A64", linen: "#F5F6F8" },
+  ink: { wall: "#283246", floor: "#1C2333", main: "#6E8296", wood: "#4A3A2E", accent: "#C7A55E", linen: "#DDE2EA" },
 };
 
 /* ---------- shared defs ---------- */

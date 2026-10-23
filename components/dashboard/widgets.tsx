@@ -47,10 +47,10 @@ export function KpiCard({
   className?: string;
 }) {
   return (
-    <div className={cn("rounded-lg border border-border bg-card p-6 shadow-soft", className)}>
+    <div className={cn("rounded-[1.5rem] border border-border bg-card p-6 shadow-soft", className)}>
       <div className="flex items-center justify-between gap-3">
         <span className="text-sm text-muted-foreground">{label}</span>
-        {Icon && <Icon className="size-4 text-brass-deep" strokeWidth={1.5} />}
+        {Icon && <Icon className="size-4 text-brand-strong" strokeWidth={1.5} />}
       </div>
       <div className="mt-4 font-display text-[2.4rem] leading-none tabular-nums">{loading ? <Skeleton className="h-10 w-24" /> : value}</div>
       {sub && <div className="mt-3 text-xs text-muted-foreground">{loading ? <Skeleton className="h-3 w-20" /> : sub}</div>}
@@ -74,7 +74,7 @@ export function Panel({
   bodyClassName?: string;
 }) {
   return (
-    <section className={cn("rounded-lg border border-border bg-card shadow-soft", className)}>
+    <section className={cn("rounded-[1.5rem] border border-border bg-card shadow-soft", className)}>
       {(title || actions) && (
         <header className="flex items-start justify-between gap-4 border-b border-hairline px-6 py-5">
           <div>

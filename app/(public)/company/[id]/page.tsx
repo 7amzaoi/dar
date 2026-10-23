@@ -76,14 +76,14 @@ export default function CompanyPage({ params }: { params: Promise<{ id: string }
               <h1 className="display-lg">{company.name}</h1>
               <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">{tx(company.about, company.aboutEn)}</p>
             </div>
-            <dl className="space-y-4 rounded-md border border-border bg-surface p-6 text-sm">
+            <dl className="space-y-4 rounded-[1.25rem] border border-border bg-card p-6 text-sm">
               <div className="flex items-center gap-3">
-                <MapPin className="size-4 text-brass-deep" strokeWidth={1.6} />
+                <MapPin className="size-4 text-brand-strong" strokeWidth={1.6} />
                 <dt className="sr-only">{t("company.location")}</dt>
                 <dd>{city(company.city)}, {country(company.country)}</dd>
               </div>
               <div className="flex items-center gap-3">
-                <Phone className="size-4 text-brass-deep" strokeWidth={1.6} />
+                <Phone className="size-4 text-brand-strong" strokeWidth={1.6} />
                 <dt className="sr-only">{t("company.contact")}</dt>
                 <dd dir="ltr" className={isApproved ? "" : "text-muted-foreground"}>{isApproved ? company.phone : t("company.contactGated")}</dd>
               </div>
@@ -110,7 +110,7 @@ export default function CompanyPage({ params }: { params: Promise<{ id: string }
             {collections.map((c, i) => (
               <Reveal key={c.id} delay={i * 0.06}>
                 <Link href={`/catalog?collection=${c.id}`} className="group block">
-                  <div className="relative aspect-[16/10] overflow-hidden rounded-md bg-secondary">
+                  <div className="relative aspect-[16/10] overflow-hidden rounded-[1.5rem] bg-secondary">
                     <FurnitureImage src={c.coverUrl} alt="" className="transition-transform duration-[1.2s] group-hover:scale-[1.04]" />
                   </div>
                   <div className="mt-3 flex items-baseline justify-between">

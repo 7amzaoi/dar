@@ -16,7 +16,7 @@ export function PriceTierTable({ tiers, activeQty, className }: { tiers: PriceTi
   const activeIndex = activeQty == null ? -1 : sorted.reduce((idx, tier, i) => (activeQty >= tier.minQty ? i : idx), 0);
 
   return (
-    <div className={cn("overflow-hidden rounded-md border border-border", className)}>
+    <div className={cn("overflow-hidden rounded-[1.5rem] border border-border", className)}>
       <div className="grid grid-cols-[1fr_auto_auto] gap-4 bg-secondary/60 px-4 py-2.5 text-[0.7rem] uppercase tracking-wider text-muted-foreground rtl:tracking-normal">
         <span>{t("product.tierQty")}</span>
         <span className="text-end">{t("product.tierPrice")}</span>
@@ -29,7 +29,7 @@ export function PriceTierTable({ tiers, activeQty, className }: { tiers: PriceTi
             key={tier.minQty}
             className={cn(
               "grid grid-cols-[1fr_auto_auto] items-center gap-4 border-t border-hairline px-4 py-3 transition-colors",
-              i === activeIndex && "bg-brass/8",
+              i === activeIndex && "bg-brand/8",
             )}
           >
             <span className="text-sm">{t("product.tierRow", { qty: tier.minQty })}</span>
@@ -49,7 +49,7 @@ export function GatedPrice({ className }: { className?: string }) {
   const pending = currentUser?.status === "pending";
 
   return (
-    <div className={cn("grain relative overflow-hidden rounded-md border border-border bg-surface p-6", className)}>
+    <div className={cn("relative overflow-hidden rounded-[1.5rem] border border-border bg-surface p-6", className)}>
       <div className="pointer-events-none absolute inset-x-6 top-6 space-y-3 opacity-60 blur-[6px]" aria-hidden>
         {[0, 1, 2].map((i) => (
           <div key={i} className="flex justify-between">
@@ -59,7 +59,7 @@ export function GatedPrice({ className }: { className?: string }) {
         ))}
       </div>
       <div className="relative pt-20">
-        <div className="mb-2 flex items-center gap-2 text-brass-deep">
+        <div className="mb-2 flex items-center gap-2 text-brand-strong">
           <Lock className="size-4" strokeWidth={1.6} />
           <span className="eyebrow">{t("product.tierTitle")}</span>
         </div>

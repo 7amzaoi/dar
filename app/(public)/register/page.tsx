@@ -109,12 +109,12 @@ export default function RegisterPage() {
                       aria-checked={active}
                       onClick={() => form.setValue("role", r.value)}
                       className={cn(
-                        "flex flex-col items-start gap-3 rounded-md border p-5 text-start transition-all",
+                        "flex flex-col items-start gap-3 rounded-[1.5rem] border p-5 text-start transition-[border-color,background-color,box-shadow]",
                         active ? "border-foreground bg-surface shadow-soft" : "border-border hover:border-foreground/40",
                       )}
                     >
                       <span className="flex w-full items-center justify-between">
-                        <r.icon className="size-6 text-brass-deep" strokeWidth={1.3} />
+                        <r.icon className="size-6 text-brand-strong" strokeWidth={1.3} />
                         <span className={cn("inline-flex size-5 items-center justify-center rounded-full border", active ? "border-foreground bg-foreground text-background" : "border-border")}>
                           {active && <Check className="size-3" />}
                         </span>
@@ -140,7 +140,7 @@ export default function RegisterPage() {
                 </Field>
               </div>
               <Field id="email" label={t("auth.email")} error={err("email")}>
-                <Input id="email" type="email" autoComplete="email" dir="ltr" aria-invalid={!!errors.email} {...form.register("email")} />
+                <Input id="email" type="email" autoComplete="email" spellCheck={false} dir="ltr" aria-invalid={!!errors.email} {...form.register("email")} />
               </Field>
               <div className="grid gap-5 sm:grid-cols-3">
                 <Field id="country" label={t("auth.country")} error={err("country")}>
@@ -185,7 +185,7 @@ export default function RegisterPage() {
                 )}
               />
               {formError && (
-                <p role="alert" className="rounded-md border border-destructive/30 bg-destructive/5 px-4 py-3 text-sm text-destructive">
+                <p role="alert" className="rounded-2xl border border-destructive/30 bg-destructive/5 px-4 py-3 text-sm text-destructive">
                   {formError}
                 </p>
               )}

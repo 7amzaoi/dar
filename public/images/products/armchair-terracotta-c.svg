@@ -1,12 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="260 560 680 850" preserveAspectRatio="xMidYMid slice"><defs>
   <radialGradient id="light-armchair-terracotta-c" cx="0.22" cy="0.18" r="0.9">
-    <stop offset="0" stop-color="#f2e8dd"/>
-    <stop offset="0.55" stop-color="#EBDCCB"/>
-    <stop offset="1" stop-color="#cfc2b3"/>
+    <stop offset="0" stop-color="#f3f1f0"/>
+    <stop offset="0.55" stop-color="#EDEAE8"/>
+    <stop offset="1" stop-color="#d1cecc"/>
   </radialGradient>
   <linearGradient id="floor-armchair-terracotta-c" x1="0" y1="0" x2="0" y2="1">
-    <stop offset="0" stop-color="#c1a78b"/>
-    <stop offset="1" stop-color="#d5b99d"/>
+    <stop offset="0" stop-color="#c5c1be"/>
+    <stop offset="1" stop-color="#d8d5d2"/>
   </linearGradient>
   <linearGradient id="sheen-armchair-terracotta-c" x1="0" y1="0" x2="0" y2="1">
     <stop offset="0" stop-color="#ffffff" stop-opacity="0.22"/>
@@ -24,8 +24,8 @@
   <filter id="blur-armchair-terracotta-c" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="18"/></filter>
   <filter id="soft-armchair-terracotta-c" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="4"/></filter>
   <linearGradient id="mirror-armchair-terracotta-c" x1="0" y1="0" x2="1" y2="1">
-    <stop offset="0" stop-color="#f0e5d8"/>
-    <stop offset="0.5" stop-color="#d4c6b7"/>
-    <stop offset="1" stop-color="#766e66"/>
+    <stop offset="0" stop-color="#f2efee"/>
+    <stop offset="0.5" stop-color="#d5d3d1"/>
+    <stop offset="1" stop-color="#777574"/>
   </linearGradient>
-</defs><rect width="1200" height="1500" fill="url(#light-armchair-terracotta-c)"/><path d="M60 0 L384 0 L936 1080 L504 1080 Z" fill="url(#beam-armchair-terracotta-c)" opacity="0.55"/><rect y="1066" width="1200" height="14" fill="#d4c6b7"/><rect y="1080" width="1200" height="420" fill="url(#floor-armchair-terracotta-c)"/><ellipse cx="600" cy="1085" rx="250" ry="34" fill="#000" opacity="0.32" filter="url(#blur-armchair-terracotta-c)"/><path d="M440 1080 L455 1010 M760 1080 L745 1010" stroke="#5C3B28" stroke-width="16" stroke-linecap="round"/><path d="M395 860 C395 640 470 560 600 560 C730 560 805 640 805 860 Z" fill="#9b573e"/><rect x="380" y="840" width="440" height="180" rx="40" fill="#B8674A" /><path d="M380 800 C330 820 330 1000 380 1020 L440 1020 L440 820 Z" fill="#ab6045"/><path d="M820 800 C870 820 870 1000 820 1020 L760 1020 L760 820 Z" fill="#ab6045"/><rect x="440" y="860" width="320" height="80" rx="26" fill="#bd7257" /><path d="M395 860 C395 640 470 560 600 560 C730 560 805 640 805 860 Z" fill="url(#sheen-armchair-terracotta-c)"/><rect x="330" y="800" width="540" height="220" rx="40" fill="url(#sheen-armchair-terracotta-c)" /></svg>
+</defs><rect width="1200" height="1500" fill="url(#light-armchair-terracotta-c)"/><path d="M60 0 L384 0 L936 1080 L504 1080 Z" fill="url(#beam-armchair-terracotta-c)" opacity="0.55"/><rect y="1066" width="1200" height="14" fill="#d5d3d1"/><rect y="1080" width="1200" height="420" fill="url(#floor-armchair-terracotta-c)"/><ellipse cx="600" cy="1085" rx="250" ry="34" fill="#000" opacity="0.32" filter="url(#blur-armchair-terracotta-c)"/><path d="M440 1080 L455 1010 M760 1080 L745 1010" stroke="#5E4535" stroke-width="16" stroke-linecap="round"/><path d="M395 860 C395 640 470 560 600 560 C730 560 805 640 805 860 Z" fill="#a1664f"/><rect x="380" y="840" width="440" height="180" rx="40" fill="#C07A5E" /><path d="M380 800 C330 820 330 1000 380 1020 L440 1020 L440 820 Z" fill="#b37157"/><path d="M820 800 C870 820 870 1000 820 1020 L760 1020 L760 820 Z" fill="#b37157"/><rect x="440" y="860" width="320" height="80" rx="26" fill="#c48369" /><path d="M395 860 C395 640 470 560 600 560 C730 560 805 640 805 860 Z" fill="url(#sheen-armchair-terracotta-c)"/><rect x="330" y="800" width="540" height="220" rx="40" fill="url(#sheen-armchair-terracotta-c)" /></svg>

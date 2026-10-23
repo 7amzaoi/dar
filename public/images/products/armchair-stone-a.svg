@@ -1,12 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1500" preserveAspectRatio="xMidYMid slice"><defs>
   <radialGradient id="light-armchair-stone-a" cx="0.22" cy="0.18" r="0.9">
-    <stop offset="0" stop-color="#eeece7"/>
-    <stop offset="0.55" stop-color="#E5E1DA"/>
-    <stop offset="1" stop-color="#cac6c0"/>
+    <stop offset="0" stop-color="#eff1f3"/>
+    <stop offset="0.55" stop-color="#E7E9EC"/>
+    <stop offset="1" stop-color="#cbcdd0"/>
   </radialGradient>
   <linearGradient id="floor-armchair-stone-a" x1="0" y1="0" x2="0" y2="1">
-    <stop offset="0" stop-color="#bcb5aa"/>
-    <stop offset="1" stop-color="#cfc8bd"/>
+    <stop offset="0" stop-color="#bec2c9"/>
+    <stop offset="1" stop-color="#d2d6dc"/>
   </linearGradient>
   <linearGradient id="sheen-armchair-stone-a" x1="0" y1="0" x2="0" y2="1">
     <stop offset="0" stop-color="#ffffff" stop-opacity="0.22"/>
@@ -24,8 +24,8 @@
   <filter id="blur-armchair-stone-a" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="18"/></filter>
   <filter id="soft-armchair-stone-a" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="4"/></filter>
   <linearGradient id="mirror-armchair-stone-a" x1="0" y1="0" x2="1" y2="1">
-    <stop offset="0" stop-color="#ece9e3"/>
-    <stop offset="0.5" stop-color="#cecbc4"/>
-    <stop offset="1" stop-color="#73716d"/>
+    <stop offset="0" stop-color="#edeff1"/>
+    <stop offset="0.5" stop-color="#d0d2d4"/>
+    <stop offset="1" stop-color="#747576"/>
   </linearGradient>
-</defs><rect width="1200" height="1500" fill="url(#light-armchair-stone-a)"/><path d="M60 0 L384 0 L936 1080 L504 1080 Z" fill="url(#beam-armchair-stone-a)" opacity="0.55"/><rect y="1066" width="1200" height="14" fill="#cecbc4"/><rect y="1080" width="1200" height="420" fill="url(#floor-armchair-stone-a)"/><ellipse cx="600" cy="1085" rx="250" ry="34" fill="#000" opacity="0.32" filter="url(#blur-armchair-stone-a)"/><path d="M440 1080 L455 1010 M760 1080 L745 1010" stroke="#7A6250" stroke-width="16" stroke-linecap="round"/><path d="M395 860 C395 640 470 560 600 560 C730 560 805 640 805 860 Z" fill="#837d74"/><rect x="380" y="840" width="440" height="180" rx="40" fill="#9C958A" /><path d="M380 800 C330 820 330 1000 380 1020 L440 1020 L440 820 Z" fill="#918b80"/><path d="M820 800 C870 820 870 1000 820 1020 L760 1020 L760 820 Z" fill="#918b80"/><rect x="440" y="860" width="320" height="80" rx="26" fill="#a39c92" /><path d="M395 860 C395 640 470 560 600 560 C730 560 805 640 805 860 Z" fill="url(#sheen-armchair-stone-a)"/><rect x="330" y="800" width="540" height="220" rx="40" fill="url(#sheen-armchair-stone-a)" /></svg>
+</defs><rect width="1200" height="1500" fill="url(#light-armchair-stone-a)"/><path d="M60 0 L384 0 L936 1080 L504 1080 Z" fill="url(#beam-armchair-stone-a)" opacity="0.55"/><rect y="1066" width="1200" height="14" fill="#d0d2d4"/><rect y="1080" width="1200" height="420" fill="url(#floor-armchair-stone-a)"/><ellipse cx="600" cy="1085" rx="250" ry="34" fill="#000" opacity="0.32" filter="url(#blur-armchair-stone-a)"/><path d="M440 1080 L455 1010 M760 1080 L745 1010" stroke="#7A6656" stroke-width="16" stroke-linecap="round"/><path d="M395 860 C395 640 470 560 600 560 C730 560 805 640 805 860 Z" fill="#898b91"/><rect x="380" y="840" width="440" height="180" rx="40" fill="#A3A6AD" /><path d="M380 800 C330 820 330 1000 380 1020 L440 1020 L440 820 Z" fill="#989aa1"/><path d="M820 800 C870 820 870 1000 820 1020 L760 1020 L760 820 Z" fill="#989aa1"/><rect x="440" y="860" width="320" height="80" rx="26" fill="#a9acb3" /><path d="M395 860 C395 640 470 560 600 560 C730 560 805 640 805 860 Z" fill="url(#sheen-armchair-stone-a)"/><rect x="330" y="800" width="540" height="220" rx="40" fill="url(#sheen-armchair-stone-a)" /></svg>

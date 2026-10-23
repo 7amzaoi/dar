@@ -37,15 +37,14 @@ function NavList({ items, onNavigate }: { items: NavItem[]; onNavigate?: () => v
               onClick={onNavigate}
               aria-current={active ? "page" : undefined}
               className={cn(
-                "group relative flex items-center gap-3 rounded-md px-3 py-2.5 text-sm transition-colors",
-                active ? "bg-sidebar-accent font-medium text-sidebar-accent-foreground" : "text-muted-foreground hover:bg-sidebar-accent/60 hover:text-foreground",
+                "group relative flex items-center gap-3 rounded-full px-4 py-2.5 text-sm transition-colors",
+                active ? "bg-card font-medium text-sidebar-accent-foreground shadow-soft" : "text-muted-foreground hover:bg-sidebar-accent/60 hover:text-foreground",
               )}
             >
-              {active && <span className="absolute inset-y-2 start-0 w-0.5 rounded-full bg-brass" aria-hidden />}
-              <item.icon className={cn("size-4 shrink-0", active ? "text-brass-deep" : "")} strokeWidth={1.6} />
+                            <item.icon className={cn("size-4 shrink-0", active ? "text-brand-strong" : "")} strokeWidth={1.6} />
               <span className="flex-1 truncate">{item.label}</span>
               {!!item.badge && (
-                <span className="rounded-full bg-brass/15 px-2 py-0.5 text-[0.68rem] font-medium tabular-nums text-brass-deep">{item.badge}</span>
+                <span className="rounded-full bg-brand/15 px-2 py-0.5 text-[0.68rem] font-medium tabular-nums text-brand-strong">{item.badge}</span>
               )}
             </Link>
           </li>
@@ -93,7 +92,7 @@ export function DashboardShell({ area, items, children }: { area: string; items:
       </aside>
 
       <div className="flex min-w-0 flex-col">
-        <header className="sticky top-0 z-30 flex h-16 items-center gap-3 border-b border-hairline bg-background/85 px-5 backdrop-blur sm:px-8">
+        <header className="sticky top-0 z-30 px-3 pt-3 sm:px-5"><div className="glass flex h-14 items-center gap-3 rounded-full ps-3 pe-2 sm:ps-5">
           <Sheet>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon-sm" className="lg:hidden" aria-label={t("common.menu")}>
@@ -111,6 +110,7 @@ export function DashboardShell({ area, items, children }: { area: string; items:
           <div className="ms-auto flex items-center gap-1.5">
             <NotificationBell />
             <UserMenu />
+          </div>
           </div>
         </header>
         <main id="main" className="mx-auto w-full max-w-[1280px] flex-1 px-5 pb-20 pt-8 sm:px-8 lg:px-12 lg:pt-12">

@@ -4,11 +4,11 @@ import type { AccountStatus, OrderStatus, StockStatus } from "@/lib/data";
 import { useT } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
-type Tone = "neutral" | "brass" | "success" | "warning" | "danger" | "info";
+type Tone = "neutral" | "brand" | "success" | "warning" | "danger" | "info";
 
 const TONES: Record<Tone, string> = {
   neutral: "bg-secondary text-secondary-foreground border-border",
-  brass: "bg-brass/12 text-brass-deep border-brass/30",
+  brand: "bg-brand/12 text-brand-strong border-brand/30",
   success: "bg-success/12 text-success border-success/30",
   warning: "bg-warning/12 text-warning border-warning/30",
   danger: "bg-destructive/10 text-destructive border-destructive/30",
@@ -25,7 +25,7 @@ export function Pill({ tone = "neutral", className, children }: { tone?: Tone; c
 }
 
 const ORDER_TONE: Record<OrderStatus, Tone> = {
-  quote_requested: "brass",
+  quote_requested: "brand",
   quoted: "info",
   confirmed: "neutral",
   in_production: "warning",
@@ -34,7 +34,7 @@ const ORDER_TONE: Record<OrderStatus, Tone> = {
   cancelled: "danger",
 };
 
-const STOCK_TONE: Record<StockStatus, Tone> = { in_stock: "success", made_to_order: "brass", out_of_stock: "danger" };
+const STOCK_TONE: Record<StockStatus, Tone> = { in_stock: "success", made_to_order: "brand", out_of_stock: "danger" };
 const ACCOUNT_TONE: Record<AccountStatus, Tone> = { pending: "warning", approved: "success", suspended: "danger" };
 
 export function OrderStatusBadge({ status, className }: { status: OrderStatus; className?: string }) {

@@ -73,13 +73,13 @@ function LoginForm() {
 
       <form onSubmit={onSubmit} className="mt-10 space-y-5" noValidate>
         <Field id="email" label={t("auth.email")} error={errors.email?.message}>
-          <Input id="email" type="email" autoComplete="email" dir="ltr" aria-invalid={!!errors.email} aria-describedby={errors.email ? "email-error" : undefined} {...form.register("email")} />
+          <Input id="email" type="email" autoComplete="email" spellCheck={false} dir="ltr" aria-invalid={!!errors.email} aria-describedby={errors.email ? "email-error" : undefined} {...form.register("email")} />
         </Field>
         <Field id="password" label={t("auth.password")} error={errors.password?.message} hint={t("auth.passwordHint")}>
           <Input id="password" type="password" autoComplete="current-password" dir="ltr" aria-invalid={!!errors.password} {...form.register("password")} />
         </Field>
         {formError && (
-          <p role="alert" className="rounded-md border border-destructive/30 bg-destructive/5 px-4 py-3 text-sm text-destructive">
+          <p role="alert" className="rounded-2xl border border-destructive/30 bg-destructive/5 px-4 py-3 text-sm text-destructive">
             {formError}
           </p>
         )}
@@ -105,9 +105,9 @@ function LoginForm() {
               key={d.role}
               type="button"
               onClick={async () => finish(await login(d.role))}
-              className="group flex items-center gap-4 rounded-md border border-border bg-surface px-4 py-3.5 text-start transition-all hover:border-brass/60 hover:shadow-soft"
+              className="group flex items-center gap-4 rounded-[1.25rem] border border-border bg-card px-4 py-3.5 text-start transition-[border-color,box-shadow] hover:border-brand/60 hover:shadow-soft"
             >
-              <d.icon className="size-5 shrink-0 text-brass-deep" strokeWidth={1.4} />
+              <d.icon className="size-5 shrink-0 text-brand-strong" strokeWidth={1.4} />
               <span className="min-w-0 flex-1">
                 <span className="block text-sm font-medium">{d.title}</span>
                 <span className="block truncate text-xs text-muted-foreground">{d.body}</span>

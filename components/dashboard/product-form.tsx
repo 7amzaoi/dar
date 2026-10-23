@@ -1,6 +1,6 @@
 "use client";
 
-import type { ReactNode } from "react";
+import { useEffect, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { Controller, useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -120,7 +120,16 @@ export function ProductForm({
         },
   });
 
-  const { errors, isSubmitting } = form.formState;
+  const { errors, isSubmitting, isDirty, isSubmitSuccessful } = form.formState;
+
+  // Warn before leaving with unsaved edits (browser refresh / close).
+  // TODO(backend): also guard in-app navigation once drafts are saved server-side.
+  useEffect(() => {
+    if (!isDirty || isSubmitSuccessful) return;
+    const onBeforeUnload = (e: BeforeUnloadEvent) => e.preventDefault();
+    window.addEventListener("beforeunload", onBeforeUnload);
+    return () => window.removeEventListener("beforeunload", onBeforeUnload);
+  }, [isDirty, isSubmitSuccessful]);
   const moq = useWatch({ control: form.control, name: "minOrderQty" });
 
   const onSubmit = form.handleSubmit(async (v) => {
@@ -319,7 +328,7 @@ export function ProductForm({
           control={form.control}
           name="published"
           render={({ field }) => (
-            <label className="flex cursor-pointer items-start justify-between gap-6 rounded-md border border-border bg-surface p-5">
+            <label className="flex cursor-pointer items-start justify-between gap-6 rounded-[1.25rem] border border-border bg-card p-5">
               <span>
                 <span className="block text-sm font-medium">{t("mfr.publishNow")}</span>
                 <span className="mt-1 block text-xs text-muted-foreground">{t("mfr.publishNowBody")}</span>

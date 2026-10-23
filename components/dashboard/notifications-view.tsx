@@ -46,22 +46,22 @@ export function NotificationsView() {
       />
       <QueryView query={q} loading={<SkeletonRows rows={6} />} empty={<EmptyState icon={Bell} title={t("notifications.empty")} body={t("notifications.emptyBody")} />}>
         {(list) => (
-          <ul className="overflow-hidden rounded-lg border border-border bg-card shadow-soft">
+          <ul className="overflow-hidden rounded-[1.5rem] border border-border bg-card shadow-soft">
             {list.map((n) => {
               const Icon = iconFor(n.type);
               const content = (
                 <>
-                  <span className={cn("mt-0.5 inline-flex size-9 shrink-0 items-center justify-center rounded-full", n.read ? "bg-muted text-muted-foreground" : "bg-brass/15 text-brass-deep")}>
+                  <span className={cn("mt-0.5 inline-flex size-9 shrink-0 items-center justify-center rounded-full", n.read ? "bg-muted text-muted-foreground" : "bg-brand/15 text-brand-strong")}>
                     <Icon className="size-4" strokeWidth={1.6} />
                   </span>
                   <span className="min-w-0 flex-1">
                     <span className={cn("block text-sm", !n.read && "font-medium")}>{text(n)}</span>
                     <span className="text-xs text-muted-foreground">{relativeTime(n.createdAt)}</span>
                   </span>
-                  {!n.read && <span className="mt-2 size-2 shrink-0 rounded-full bg-brass" aria-label="unread" />}
+                  {!n.read && <span className="mt-2 size-2 shrink-0 rounded-full bg-brand" aria-label="unread" />}
                 </>
               );
-              const cls = cn("flex items-start gap-4 border-b border-hairline px-6 py-4 transition-colors last:border-b-0 hover:bg-muted/40", !n.read && "bg-brass/[0.04]");
+              const cls = cn("flex items-start gap-4 border-b border-hairline px-6 py-4 transition-colors last:border-b-0 hover:bg-muted/40", !n.read && "bg-brand/[0.04]");
               return (
                 <li key={n.id}>
                   {n.href ? (

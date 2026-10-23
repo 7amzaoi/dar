@@ -1,12 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1500" preserveAspectRatio="xMidYMid slice"><defs>
   <radialGradient id="light-mirror-ivory-b" cx="0.22" cy="0.18" r="0.9">
-    <stop offset="0" stop-color="#f5efe6"/>
-    <stop offset="0.55" stop-color="#EFE6D8"/>
-    <stop offset="1" stop-color="#d2cabe"/>
+    <stop offset="0" stop-color="#f3f4f6"/>
+    <stop offset="0.55" stop-color="#ECEEF1"/>
+    <stop offset="1" stop-color="#d0d1d4"/>
   </radialGradient>
   <linearGradient id="floor-mirror-ivory-b" x1="0" y1="0" x2="0" y2="1">
-    <stop offset="0" stop-color="#cabba4"/>
-    <stop offset="1" stop-color="#deceb7"/>
+    <stop offset="0" stop-color="#c7cad0"/>
+    <stop offset="1" stop-color="#dadee4"/>
   </linearGradient>
   <linearGradient id="sheen-mirror-ivory-b" x1="0" y1="0" x2="0" y2="1">
     <stop offset="0" stop-color="#ffffff" stop-opacity="0.22"/>
@@ -24,8 +24,8 @@
   <filter id="blur-mirror-ivory-b" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="18"/></filter>
   <filter id="soft-mirror-ivory-b" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="4"/></filter>
   <linearGradient id="mirror-mirror-ivory-b" x1="0" y1="0" x2="1" y2="1">
-    <stop offset="0" stop-color="#f3ece2"/>
-    <stop offset="0.5" stop-color="#d7cfc2"/>
-    <stop offset="1" stop-color="#78736c"/>
+    <stop offset="0" stop-color="#f1f2f5"/>
+    <stop offset="0.5" stop-color="#d4d6d9"/>
+    <stop offset="1" stop-color="#767779"/>
   </linearGradient>
-</defs><rect width="1200" height="1500" fill="url(#light-mirror-ivory-b)"/><path d="M300 1080 V494.4 A300 300 0 0 1 900 494.4 V1080 Z" fill="#ded6c9"/><path d="M60 0 L384 0 L936 1080 L504 1080 Z" fill="url(#beam-mirror-ivory-b)" opacity="0.55"/><rect y="1066" width="1200" height="14" fill="#d7cfc2"/><rect y="1080" width="1200" height="420" fill="url(#floor-mirror-ivory-b)"/><g transform="translate(1200 0) scale(-1 1)"><ellipse cx="600" cy="1084" rx="240" ry="24" fill="#000" opacity="0.32" filter="url(#blur-mirror-ivory-b)"/><path d="M380 1070 V520 A220 220 0 0 1 820 520 V1070 Z" fill="#B08D57"/><path d="M400 1056 V522 A200 200 0 0 1 800 522 V1056 Z" fill="url(#mirror-mirror-ivory-b)"/><path d="M460 1000 L720 420" stroke="#fff" stroke-opacity="0.25" stroke-width="40"/><path d="M540 1030 L760 560" stroke="#fff" stroke-opacity="0.15" stroke-width="16"/><path d="M180 1078 C170 980 190 900 230 860 L270 860 C310 900 330 980 320 1078 Z" fill="#CDB89A"/><path d="M250 860 C240 760 200 700 150 660 M250 860 C270 740 330 690 360 650 M250 860 C250 760 260 700 250 620" stroke="#6e482f" stroke-width="4" fill="none"/></g></svg>
+</defs><rect width="1200" height="1500" fill="url(#light-mirror-ivory-b)"/><path d="M300 1080 V494.4 A300 300 0 0 1 900 494.4 V1080 Z" fill="#dbdde0"/><path d="M60 0 L384 0 L936 1080 L504 1080 Z" fill="url(#beam-mirror-ivory-b)" opacity="0.55"/><rect y="1066" width="1200" height="14" fill="#d4d6d9"/><rect y="1080" width="1200" height="420" fill="url(#floor-mirror-ivory-b)"/><g transform="translate(1200 0) scale(-1 1)"><ellipse cx="600" cy="1084" rx="240" ry="24" fill="#000" opacity="0.32" filter="url(#blur-mirror-ivory-b)"/><path d="M380 1070 V520 A220 220 0 0 1 820 520 V1070 Z" fill="#C7A55E"/><path d="M400 1056 V522 A200 200 0 0 1 800 522 V1056 Z" fill="url(#mirror-mirror-ivory-b)"/><path d="M460 1000 L720 420" stroke="#fff" stroke-opacity="0.25" stroke-width="40"/><path d="M540 1030 L760 560" stroke="#fff" stroke-opacity="0.15" stroke-width="16"/><path d="M180 1078 C170 980 190 900 230 860 L270 860 C310 900 330 980 320 1078 Z" fill="#D9D2C6"/><path d="M250 860 C240 760 200 700 150 660 M250 860 C270 740 330 690 360 650 M250 860 C250 760 260 700 250 620" stroke="#6e553e" stroke-width="4" fill="none"/></g></svg>

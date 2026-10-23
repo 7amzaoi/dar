@@ -78,7 +78,7 @@ function CollectionDialog({
                   role="radio"
                   aria-checked={cover === src}
                   onClick={() => setCover(src)}
-                  className={cn("relative aspect-[16/10] overflow-hidden rounded-md bg-secondary ring-offset-2 ring-offset-background", cover === src ? "ring-2 ring-brass" : "opacity-80 hover:opacity-100")}
+                  className={cn("relative aspect-[16/10] overflow-hidden rounded-[1.5rem] bg-secondary ring-offset-2 ring-offset-background", cover === src ? "ring-2 ring-brand" : "opacity-80 hover:opacity-100")}
                 >
                   <FurnitureImage src={src} alt="" sizes="160px" />
                 </button>
@@ -129,7 +129,7 @@ export default function ManufacturerCollections() {
         {(items) => (
           <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
             {items.map(({ collection: c, count }) => (
-              <article key={c.id} className="overflow-hidden rounded-lg border border-border bg-card shadow-soft">
+              <article key={c.id} className="overflow-hidden rounded-[1.5rem] border border-border bg-card shadow-soft">
                 <Link href={`/catalog?collection=${c.id}`} className="relative block aspect-[16/10] bg-secondary">
                   <FurnitureImage src={c.coverUrl} alt="" sizes="(min-width: 1280px) 30vw, 50vw" />
                 </Link>

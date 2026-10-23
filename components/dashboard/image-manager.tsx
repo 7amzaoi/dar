@@ -42,7 +42,7 @@ export function ImageManager({
   return (
     <div className="space-y-4">
       <div
-        className={cn("grid grid-cols-3 gap-3 sm:grid-cols-4", invalid && value.length === 0 && "rounded-md ring-1 ring-destructive")}
+        className={cn("grid grid-cols-3 gap-3 sm:grid-cols-4", invalid && value.length === 0 && "rounded-2xl ring-1 ring-destructive")}
         onDragOver={(e) => e.preventDefault()}
         onDrop={(e) => {
           e.preventDefault();
@@ -50,10 +50,10 @@ export function ImageManager({
         }}
       >
         {value.map((src, i) => (
-          <div key={src + i} className="group relative aspect-[4/5] overflow-hidden rounded-md bg-secondary">
+          <div key={src + i} className="group relative aspect-[4/5] overflow-hidden rounded-[1.5rem] bg-secondary">
             <FurnitureImage src={src} alt="" sizes="160px" />
             {i === 0 && <span className="absolute start-2 top-2 rounded-full bg-background/90 px-2 py-0.5 text-[0.65rem] font-medium">{t("mfr.cover")}</span>}
-            <div className="absolute inset-x-0 bottom-0 flex justify-end gap-1 bg-gradient-to-t from-espresso/60 to-transparent p-2 opacity-0 transition-opacity focus-within:opacity-100 group-hover:opacity-100">
+            <div className="absolute inset-x-0 bottom-0 flex justify-end gap-1 bg-gradient-to-t from-ink/60 to-transparent p-2 opacity-0 transition-opacity focus-within:opacity-100 group-hover:opacity-100">
               {i > 0 && (
                 <button
                   type="button"
@@ -80,7 +80,7 @@ export function ImageManager({
           <button
             type="button"
             onClick={() => fileRef.current?.click()}
-            className="flex aspect-[4/5] flex-col items-center justify-center gap-2 rounded-md border border-dashed border-border text-xs text-muted-foreground transition-colors hover:border-brass hover:text-foreground"
+            className="flex aspect-[4/5] flex-col items-center justify-center gap-2 rounded-[1.25rem] border border-dashed border-border text-xs text-muted-foreground transition-colors hover:border-brand hover:text-foreground"
           >
             <ImagePlus className="size-5" strokeWidth={1.4} />
             {t("mfr.uploadImages")}
@@ -112,7 +112,7 @@ export function ImageManager({
                     onChange([...value, ...add].slice(0, max));
                     setLibraryOpen(false);
                   }}
-                  className="relative aspect-[4/5] overflow-hidden rounded-md bg-secondary ring-offset-2 ring-offset-background transition hover:ring-2 hover:ring-brass focus-visible:ring-2 focus-visible:ring-brass"
+                  className="relative aspect-[4/5] overflow-hidden rounded-[1.5rem] bg-secondary ring-offset-2 ring-offset-background transition hover:ring-2 hover:ring-brand focus-visible:ring-2 focus-visible:ring-brand"
                 >
                   <FurnitureImage src={src} alt="" sizes="140px" />
                 </button>

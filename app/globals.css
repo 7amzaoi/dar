@@ -4,16 +4,30 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* Site face (taken from the RIVR-style hero). Arabic glyphs fall through to IBM Plex Sans Arabic. */
+@font-face {
+  font-family: "Helvetica Regular";
+  src: url("https://db.onlinewebfonts.com/t/a64ff11d2c24584c767f6257e880dc65.eot");
+  src: url("https://db.onlinewebfonts.com/t/a64ff11d2c24584c767f6257e880dc65.eot?#iefix") format("embedded-opentype"),
+    url("https://db.onlinewebfonts.com/t/a64ff11d2c24584c767f6257e880dc65.woff2") format("woff2"),
+    url("https://db.onlinewebfonts.com/t/a64ff11d2c24584c767f6257e880dc65.woff") format("woff"),
+    url("https://db.onlinewebfonts.com/t/a64ff11d2c24584c767f6257e880dc65.ttf") format("truetype"),
+    url("https://db.onlinewebfonts.com/t/a64ff11d2c24584c767f6257e880dc65.svg#Helvetica Regular") format("svg");
+  font-display: swap;
+}
+
 /* ------------------------------------------------------------------ */
-/* Dār design tokens — warm neutrals, walnut, one brass accent          */
+/* Dār design tokens: the hero's language. Cool light grey, one navy   */
+/* accent, slate text, frosted glass, pill controls, big soft radii.   */
 /* ------------------------------------------------------------------ */
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-body), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-display-latin), var(--font-display-arabic), ui-serif, Georgia, serif;
-  --font-heading: var(--font-display-latin), var(--font-display-arabic), ui-serif, Georgia, serif;
+  --font-sans: "Helvetica Regular", var(--font-instrument), var(--font-plex-arabic), ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Helvetica Regular", var(--font-instrument), var(--font-plex-arabic), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-display);
+  --font-helvetica: var(--font-display);
   --font-mono: ui-monospace, SFMono-Regular, monospace;
 
   --color-card: var(--card);
@@ -33,21 +47,23 @@
   --color-input: var(--input);
   --color-ring: var(--ring);
 
-  /* brand */
-  --color-brass: var(--brass);
-  --color-brass-deep: var(--brass-deep);
-  --color-brass-foreground: var(--brass-foreground);
-  --color-walnut: var(--walnut);
-  --color-oak: var(--oak);
-  --color-terracotta: var(--terracotta);
-  --color-sage: var(--sage);
-  --color-ivory: var(--ivory);
-  --color-espresso: var(--espresso);
+  /* brand: the single navy accent */
+  --color-brand: var(--brand);
+  --color-brand-strong: var(--brand-strong);
+  --color-brand-foreground: var(--brand-foreground);
+  --color-ink: var(--ink);
+  --color-paper: var(--paper);
   --color-surface: var(--surface);
   --color-hairline: var(--hairline);
   --color-success: var(--success);
   --color-warning: var(--warning);
   --color-info: var(--info);
+
+  /* landing hero */
+  --color-hero-ink: var(--hero-ink);
+  --color-hero-text: var(--hero-text);
+  --color-hero-nav: var(--hero-nav);
+  --color-hero-panel-ink: var(--hero-panel-ink);
 
   --color-chart-1: var(--chart-1);
   --color-chart-2: var(--chart-2);
@@ -64,120 +80,130 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 
-  --radius-sm: calc(var(--radius) * 0.6);
-  --radius-md: calc(var(--radius) * 0.8);
+  /* radius scale: pills for controls, soft squircles for surfaces */
+  --radius-sm: calc(var(--radius) * 0.5);
+  --radius-md: calc(var(--radius) * 0.75);
   --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) * 1.4);
-  --radius-2xl: calc(var(--radius) * 1.8);
-  --radius-3xl: calc(var(--radius) * 2.2);
-  --radius-4xl: calc(var(--radius) * 2.6);
+  --radius-xl: calc(var(--radius) * 1.5);
+  --radius-2xl: calc(var(--radius) * 2);
+  --radius-3xl: calc(var(--radius) * 2.5);
+  --radius-4xl: calc(var(--radius) * 3);
 
-  --shadow-soft: 0 1px 2px rgb(42 33 28 / 0.04), 0 8px 24px -12px rgb(42 33 28 / 0.12);
-  --shadow-lift: 0 2px 4px rgb(42 33 28 / 0.04), 0 24px 48px -20px rgb(42 33 28 / 0.28);
+  /* shadows tinted with the navy ink, one light source from above */
+  --shadow-soft: 0 1px 2px rgb(30 50 90 / 0.04), 0 10px 30px -14px rgb(30 50 90 / 0.14);
+  --shadow-lift: 0 2px 6px rgb(30 50 90 / 0.05), 0 28px 60px -24px rgb(30 50 90 / 0.3);
 
-  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-out-soft: cubic-bezier(0.32, 0.72, 0, 1);
 }
 
 :root {
-  --font-body: var(--font-instrument), var(--font-plex-arabic);
-  --radius: 0.375rem;
+  color-scheme: light;
+  --radius: 1rem;
 
-  --ivory: #f7f2ea;
-  --espresso: #2a211c;
-  --walnut: #6b4a33;
-  --oak: #b89470;
-  --terracotta: #b5573e;
-  --sage: #7f8b6f;
+  --paper: #f7f8fa;
+  --ink: #18223a;
 
-  --background: #f7f2ea;
-  --foreground: #2a211c;
-  --surface: #fbf8f3;
-  --card: #fbf8f3;
-  --card-foreground: #2a211c;
-  --popover: #fdfbf7;
-  --popover-foreground: #2a211c;
-  --primary: #2a211c;
-  --primary-foreground: #f7f2ea;
-  --secondary: #ece4d7;
-  --secondary-foreground: #2a211c;
-  --muted: #efe8dd;
-  --muted-foreground: #6c5e53;
-  --accent: #ebe2d3;
-  --accent-foreground: #2a211c;
-  --destructive: #b5513a;
-  --border: #e0d5c5;
-  --hairline: #e7ddcf;
-  --input: #d8ccba;
-  --ring: #a8834a;
+  --background: #f0f0f0;
+  --foreground: #1c2438;
+  --surface: #f7f7f8;
+  --card: #fbfbfc;
+  --card-foreground: #1c2438;
+  --popover: #ffffff;
+  --popover-foreground: #1c2438;
+  --primary: #1e325a;
+  --primary-foreground: #ffffff;
+  --secondary: #e6e8ec;
+  --secondary-foreground: #1c2438;
+  --muted: #e9eaee;
+  --muted-foreground: #5e6470;
+  --accent: #e3e7ef;
+  --accent-foreground: #1c2438;
+  --destructive: #b4483c;
+  --border: #dcdfe5;
+  --hairline: #e3e5ea;
+  --input: #d3d7de;
+  --ring: #4a6290;
 
-  --brass: #a8834a;
-  --brass-deep: #84632f;
-  --brass-foreground: #fffdf8;
+  --brand: #2e4777;
+  --brand-strong: #1e325a;
+  --brand-foreground: #ffffff;
 
-  --success: #5e7a55;
-  --warning: #a8742a;
-  --info: #4f6874;
+  --success: #3f7356;
+  --warning: #9a6a1f;
+  --info: #3f5f8f;
 
-  --chart-1: #6b4a33;
-  --chart-2: #a8834a;
-  --chart-3: #b5673f;
-  --chart-4: #7f8b6f;
-  --chart-5: #5d707a;
+  /* hero: ink sits on the (always light) video, panel ink sits on the page background */
+  --hero-ink: rgb(30 50 90);
+  --hero-text: #5e6470;
+  --hero-nav: rgb(45 45 45);
+  --hero-panel-ink: rgb(30 50 90);
 
-  --sidebar: #f1eadf;
-  --sidebar-foreground: #2a211c;
-  --sidebar-primary: #2a211c;
-  --sidebar-primary-foreground: #f7f2ea;
-  --sidebar-accent: #e7ddcd;
-  --sidebar-accent-foreground: #2a211c;
-  --sidebar-border: #e0d5c5;
-  --sidebar-ring: #a8834a;
+  --chart-1: #1e325a;
+  --chart-2: #4a6290;
+  --chart-3: #7f95bd;
+  --chart-4: #a9b7cf;
+  --chart-5: #5e6470;
+
+  --sidebar: #f7f7f8;
+  --sidebar-foreground: #1c2438;
+  --sidebar-primary: #1e325a;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #e9ecf2;
+  --sidebar-accent-foreground: #1c2438;
+  --sidebar-border: #e3e5ea;
+  --sidebar-ring: #4a6290;
 }
 
 .dark {
-  --background: #15110e;
-  --foreground: #efe6d8;
-  --surface: #1c1713;
-  --card: #1c1713;
-  --card-foreground: #efe6d8;
-  --popover: #201a16;
-  --popover-foreground: #efe6d8;
-  --primary: #e9dcc6;
-  --primary-foreground: #1c1713;
-  --secondary: #29221c;
-  --secondary-foreground: #efe6d8;
-  --muted: #241e19;
-  --muted-foreground: #a99b8b;
-  --accent: #2d251f;
-  --accent-foreground: #efe6d8;
-  --destructive: #d27359;
-  --border: #382e27;
-  --hairline: #2f2721;
-  --input: #43382f;
-  --ring: #c9a46a;
+  color-scheme: dark;
+  --paper: #eef1f6;
+  --ink: #0b101b;
 
-  --brass: #c9a46a;
-  --brass-deep: #d8b77f;
-  --brass-foreground: #1c1713;
+  --background: #0e121b;
+  --foreground: #e6eaf2;
+  --surface: #141a26;
+  --card: #151b28;
+  --card-foreground: #e6eaf2;
+  --popover: #18202e;
+  --popover-foreground: #e6eaf2;
+  --primary: #d6deee;
+  --primary-foreground: #0e121b;
+  --secondary: #1d2535;
+  --secondary-foreground: #e6eaf2;
+  --muted: #1a2130;
+  --muted-foreground: #9aa4b6;
+  --accent: #222b3d;
+  --accent-foreground: #e6eaf2;
+  --destructive: #e07a6c;
+  --border: #283244;
+  --hairline: #222b3b;
+  --input: #2f3a4e;
+  --ring: #8ea6d6;
 
-  --success: #8fa883;
-  --warning: #d2a159;
-  --info: #8aa3ae;
+  --brand: #8ea6d6;
+  --brand-strong: #b9c8e8;
+  --brand-foreground: #0e121b;
 
-  --chart-1: #c9a46a;
-  --chart-2: #b89470;
-  --chart-3: #d27359;
-  --chart-4: #9aa88a;
-  --chart-5: #8aa3ae;
+  --success: #7fb394;
+  --warning: #d6a85a;
+  --info: #8ea6d6;
 
-  --sidebar: #1a1511;
-  --sidebar-foreground: #efe6d8;
-  --sidebar-primary: #e9dcc6;
-  --sidebar-primary-foreground: #1c1713;
-  --sidebar-accent: #2a231d;
-  --sidebar-accent-foreground: #efe6d8;
-  --sidebar-border: #2f2721;
-  --sidebar-ring: #c9a46a;
+  --hero-panel-ink: rgb(214 222 238);
+
+  --chart-1: #b9c8e8;
+  --chart-2: #8ea6d6;
+  --chart-3: #6a83b4;
+  --chart-4: #4d6290;
+  --chart-5: #9aa4b6;
+
+  --sidebar: #121825;
+  --sidebar-foreground: #e6eaf2;
+  --sidebar-primary: #d6deee;
+  --sidebar-primary-foreground: #0e121b;
+  --sidebar-accent: #1d2535;
+  --sidebar-accent-foreground: #e6eaf2;
+  --sidebar-border: #222b3b;
+  --sidebar-ring: #8ea6d6;
 }
 
 @layer base {
@@ -190,65 +216,109 @@
     @apply font-sans;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
+    -webkit-tap-highlight-color: transparent;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
   }
   body {
     @apply bg-background text-foreground;
     font-feature-settings: "kern", "liga";
-    /* Cormorant defaults to old-style figures; prices and KPIs need lining numerals */
     font-variant-numeric: lining-nums;
   }
+  /* Helvetica ships one weight here: hierarchy comes from size and tracking, not weight. */
   h1, h2, h3, h4 {
     @apply font-display;
-    font-weight: 500;
-    letter-spacing: -0.01em;
+    font-weight: 400;
+    letter-spacing: -0.02em;
     text-wrap: balance;
   }
   :lang(ar) h1, :lang(ar) h2, :lang(ar) h3, :lang(ar) h4 {
-    /* Arabic never takes negative tracking; Amiri wants a little more leading */
+    /* Arabic never takes negative tracking and needs more leading */
     letter-spacing: 0;
     line-height: 1.35;
   }
   :lang(ar) body {
     line-height: 1.75;
   }
+  p {
+    text-wrap: pretty;
+  }
+  [id] {
+    scroll-margin-top: 6rem;
+  }
+  a, button, [role="button"], input, select, textarea, label {
+    touch-action: manipulation;
+  }
   ::selection {
-    background: color-mix(in oklab, var(--brass) 30%, transparent);
+    background: color-mix(in oklab, var(--brand) 25%, transparent);
   }
   button:not(:disabled), [role="button"]:not(:disabled) {
     cursor: pointer;
   }
+  [data-slot="sheet-content"], [data-slot="dialog-content"], [data-slot="alert-dialog-content"] {
+    overscroll-behavior: contain;
+  }
 }
 
 @layer components {
-  /* Small-caps eyebrow label. Tracking is disabled for Arabic, where it breaks letter joins. */
+  /* Small label above a title. Sentence case; Arabic never gets tracking (it breaks letter joins). */
   .eyebrow {
-    @apply text-[0.7rem] font-medium uppercase text-brass-deep;
-    letter-spacing: 0.22em;
-  }
-  :lang(ar) .eyebrow {
-    @apply text-xs;
-    letter-spacing: 0;
+    @apply text-[0.8rem] font-normal text-brand;
   }
   .hairline {
     @apply border-hairline;
   }
   .container-page {
-    @apply mx-auto w-full max-w-[1360px] px-5 sm:px-8 lg:px-12;
+    @apply mx-auto w-full max-w-[1400px] px-4 sm:px-8 lg:px-12;
   }
   .display-xl {
-    @apply font-display text-[2.75rem] leading-[1.02] sm:text-6xl lg:text-[5.25rem];
+    @apply font-display text-[2.75rem] leading-[1.02] sm:text-6xl lg:text-[5rem];
+    letter-spacing: -0.035em;
   }
   .display-lg {
-    @apply font-display text-4xl leading-[1.08] sm:text-5xl;
+    @apply font-display text-4xl leading-[1.05] sm:text-5xl lg:text-[3.5rem];
+    letter-spacing: -0.03em;
   }
   .display-md {
-    @apply font-display text-3xl leading-tight sm:text-[2.5rem];
+    @apply font-display text-3xl leading-[1.1] sm:text-[2.5rem];
+    letter-spacing: -0.025em;
   }
   :lang(ar) .display-xl,
   :lang(ar) .display-lg,
   :lang(ar) .display-md {
     line-height: 1.3;
+    letter-spacing: 0;
   }
+
+  /* Frosted glass, as in the hero: translucent white, hairline edge, inner highlight. */
+  .glass {
+    background-color: rgb(255 255 255 / 0.6);
+    border: 1px solid rgb(255 255 255 / 0.5);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.7), var(--shadow-soft);
+    backdrop-filter: blur(20px) saturate(160%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+  }
+  .dark .glass {
+    background-color: rgb(21 27 40 / 0.6);
+    border-color: rgb(255 255 255 / 0.08);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.06), var(--shadow-soft);
+  }
+
+  /* Double bezel: an outer tray with a nested core and concentric radii. */
+  .bezel {
+    @apply rounded-[2rem] bg-foreground/[0.035] p-1.5 ring-1 ring-foreground/[0.05];
+  }
+  .bezel-core {
+    @apply rounded-[calc(2rem-0.375rem)] bg-card;
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.8), var(--shadow-soft);
+  }
+  .dark .bezel-core {
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.04), var(--shadow-soft);
+  }
+
   .link-underline {
     background-image: linear-gradient(currentColor, currentColor);
     background-size: 0% 1px;
@@ -260,17 +330,25 @@
     background-size: 100% 1px;
     background-position: 0 100%;
   }
-  .grain {
-    position: relative;
-  }
-  .grain::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    opacity: 0.06;
-    mix-blend-mode: multiply;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* One fixed, non-interactive grain layer for the whole page (never on scrolling containers). */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  pointer-events: none;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .glass,
+  [class*="backdrop-blur"] {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background-color: color-mix(in oklab, var(--card) 96%, transparent) !important;
   }
 }
 

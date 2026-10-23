@@ -1,12 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="260 560 680 850" preserveAspectRatio="xMidYMid slice"><defs>
   <radialGradient id="light-sectional-sage-c" cx="0.22" cy="0.18" r="0.9">
-    <stop offset="0" stop-color="#eaebe2"/>
-    <stop offset="0.55" stop-color="#DFE0D2"/>
-    <stop offset="1" stop-color="#c4c5b9"/>
+    <stop offset="0" stop-color="#edf0ef"/>
+    <stop offset="0.55" stop-color="#E4E8E6"/>
+    <stop offset="1" stop-color="#c9ccca"/>
   </radialGradient>
   <linearGradient id="floor-sectional-sage-c" x1="0" y1="0" x2="0" y2="1">
-    <stop offset="0" stop-color="#bbb4a1"/>
-    <stop offset="1" stop-color="#cec8b4"/>
+    <stop offset="0" stop-color="#bdc2bf"/>
+    <stop offset="1" stop-color="#d0d6d3"/>
   </linearGradient>
   <linearGradient id="sheen-sectional-sage-c" x1="0" y1="0" x2="0" y2="1">
     <stop offset="0" stop-color="#ffffff" stop-opacity="0.22"/>
@@ -24,8 +24,8 @@
   <filter id="blur-sectional-sage-c" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="18"/></filter>
   <filter id="soft-sectional-sage-c" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="4"/></filter>
   <linearGradient id="mirror-sectional-sage-c" x1="0" y1="0" x2="1" y2="1">
-    <stop offset="0" stop-color="#e7e8dd"/>
-    <stop offset="0.5" stop-color="#c9cabd"/>
-    <stop offset="1" stop-color="#707069"/>
+    <stop offset="0" stop-color="#ebeeec"/>
+    <stop offset="0.5" stop-color="#cdd1cf"/>
+    <stop offset="1" stop-color="#727473"/>
   </linearGradient>
-</defs><rect width="1200" height="1500" fill="url(#light-sectional-sage-c)"/><path d="M60 0 L384 0 L936 1080 L504 1080 Z" fill="url(#beam-sectional-sage-c)" opacity="0.55"/><rect y="1066" width="1200" height="14" fill="#c9cabd"/><rect y="1080" width="1200" height="420" fill="url(#floor-sectional-sage-c)"/><ellipse cx="600" cy="1090" rx="520" ry="34" fill="#000" opacity="0.32" filter="url(#blur-sectional-sage-c)"/><rect x="130" y="690" width="940" height="240" rx="44" fill="#747e67" /><rect x="110" y="870" width="980" height="180" rx="30" fill="#8E9A7E" /><rect x="80" y="790" width="120" height="262" rx="46" fill="#838e74" /><rect x="200" y="720" width="280" height="160" rx="34" fill="#99a48b" /><rect x="490" y="720" width="280" height="160" rx="34" fill="#99a48b" /><rect x="780" y="720" width="270" height="160" rx="34" fill="#99a48b" /><rect x="760" y="930" width="360" height="140" rx="30" fill="#939e83" /><rect x="196" y="850" width="560" height="90" rx="26" fill="#949f84" /><rect x="860" y="752" width="120" height="112" rx="22" fill="#B08D57" transform="rotate(7 920 808)"/><rect x="80" y="690" width="1040" height="380" rx="40" fill="url(#sheen-sectional-sage-c)" /></svg>
+</defs><rect width="1200" height="1500" fill="url(#light-sectional-sage-c)"/><path d="M60 0 L384 0 L936 1080 L504 1080 Z" fill="url(#beam-sectional-sage-c)" opacity="0.55"/><rect y="1066" width="1200" height="14" fill="#cdd1cf"/><rect y="1080" width="1200" height="420" fill="url(#floor-sectional-sage-c)"/><ellipse cx="600" cy="1090" rx="520" ry="34" fill="#000" opacity="0.32" filter="url(#blur-sectional-sage-c)"/><rect x="130" y="690" width="940" height="240" rx="44" fill="#747e6e" /><rect x="110" y="870" width="980" height="180" rx="30" fill="#8E9A86" /><rect x="80" y="790" width="120" height="262" rx="46" fill="#838e7b" /><rect x="200" y="720" width="280" height="160" rx="34" fill="#99a492" /><rect x="490" y="720" width="280" height="160" rx="34" fill="#99a492" /><rect x="780" y="720" width="270" height="160" rx="34" fill="#99a492" /><rect x="760" y="930" width="360" height="140" rx="30" fill="#939e8b" /><rect x="196" y="850" width="560" height="90" rx="26" fill="#949f8c" /><rect x="860" y="752" width="120" height="112" rx="22" fill="#C7A55E" transform="rotate(7 920 808)"/><rect x="80" y="690" width="1040" height="380" rx="40" fill="url(#sheen-sectional-sage-c)" /></svg>

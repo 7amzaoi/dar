@@ -1,12 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="260 560 680 850" preserveAspectRatio="xMidYMid slice"><defs>
   <radialGradient id="light-desk-ivory-c" cx="0.22" cy="0.18" r="0.9">
-    <stop offset="0" stop-color="#f5efe6"/>
-    <stop offset="0.55" stop-color="#EFE6D8"/>
-    <stop offset="1" stop-color="#d2cabe"/>
+    <stop offset="0" stop-color="#f3f4f6"/>
+    <stop offset="0.55" stop-color="#ECEEF1"/>
+    <stop offset="1" stop-color="#d0d1d4"/>
   </radialGradient>
   <linearGradient id="floor-desk-ivory-c" x1="0" y1="0" x2="0" y2="1">
-    <stop offset="0" stop-color="#cabba4"/>
-    <stop offset="1" stop-color="#deceb7"/>
+    <stop offset="0" stop-color="#c7cad0"/>
+    <stop offset="1" stop-color="#dadee4"/>
   </linearGradient>
   <linearGradient id="sheen-desk-ivory-c" x1="0" y1="0" x2="0" y2="1">
     <stop offset="0" stop-color="#ffffff" stop-opacity="0.22"/>
@@ -24,8 +24,8 @@
   <filter id="blur-desk-ivory-c" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="18"/></filter>
   <filter id="soft-desk-ivory-c" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="4"/></filter>
   <linearGradient id="mirror-desk-ivory-c" x1="0" y1="0" x2="1" y2="1">
-    <stop offset="0" stop-color="#f3ece2"/>
-    <stop offset="0.5" stop-color="#d7cfc2"/>
-    <stop offset="1" stop-color="#78736c"/>
+    <stop offset="0" stop-color="#f1f2f5"/>
+    <stop offset="0.5" stop-color="#d4d6d9"/>
+    <stop offset="1" stop-color="#767779"/>
   </linearGradient>
-</defs><rect width="1200" height="1500" fill="url(#light-desk-ivory-c)"/><path d="M60 0 L384 0 L936 1080 L504 1080 Z" fill="url(#beam-desk-ivory-c)" opacity="0.55"/><rect y="1066" width="1200" height="14" fill="#d7cfc2"/><rect y="1080" width="1200" height="420" fill="url(#floor-desk-ivory-c)"/><ellipse cx="600" cy="1086" rx="420" ry="34" fill="#000" opacity="0.32" filter="url(#blur-desk-ivory-c)"/><rect x="210" y="760" width="780" height="34" rx="8" fill="#8A5A3B" /><rect x="210" y="760" width="780" height="34" rx="8" fill="url(#sheen-desk-ivory-c)" /><path d="M250 794 L270 1078 L300 1078 L290 794 Z M910 794 L900 1078 L930 1078 L950 794 Z" fill="#754d32"/><rect x="680" y="794" width="240" height="150" rx="6" fill="#916447" /><rect x="700" y="860" width="200" height="4" rx="0" fill="#68442c" /><circle cx="800" cy="830" r="7" fill="#B08D57"/><path d="M330 760 L360 560 M360 560 L470 520" stroke="#B08D57" stroke-width="10" stroke-linecap="round" fill="none"/><path d="M440 500 L520 500 L540 560 L420 560 Z" fill="#B08D57"/><circle cx="480" cy="600" r="120" fill="url(#glow-desk-ivory-c)"/><rect x="600" y="730" width="150" height="30" rx="3" fill="#CDB89A" /><rect x="612" y="704" width="130" height="26" rx="3" fill="#F5EFE6" /><rect x="605" y="682" width="140" height="22" rx="3" fill="#a4937b" /></svg>
+</defs><rect width="1200" height="1500" fill="url(#light-desk-ivory-c)"/><path d="M60 0 L384 0 L936 1080 L504 1080 Z" fill="url(#beam-desk-ivory-c)" opacity="0.55"/><rect y="1066" width="1200" height="14" fill="#d4d6d9"/><rect y="1080" width="1200" height="420" fill="url(#floor-desk-ivory-c)"/><ellipse cx="600" cy="1086" rx="420" ry="34" fill="#000" opacity="0.32" filter="url(#blur-desk-ivory-c)"/><rect x="210" y="760" width="780" height="34" rx="8" fill="#8A6A4E" /><rect x="210" y="760" width="780" height="34" rx="8" fill="url(#sheen-desk-ivory-c)" /><path d="M250 794 L270 1078 L300 1078 L290 794 Z M910 794 L900 1078 L930 1078 L950 794 Z" fill="#755a42"/><rect x="680" y="794" width="240" height="150" rx="6" fill="#917359" /><rect x="700" y="860" width="200" height="4" rx="0" fill="#68503b" /><circle cx="800" cy="830" r="7" fill="#C7A55E"/><path d="M330 760 L360 560 M360 560 L470 520" stroke="#C7A55E" stroke-width="10" stroke-linecap="round" fill="none"/><path d="M440 500 L520 500 L540 560 L420 560 Z" fill="#C7A55E"/><circle cx="480" cy="600" r="120" fill="url(#glow-desk-ivory-c)"/><rect x="600" y="730" width="150" height="30" rx="3" fill="#D9D2C6" /><rect x="612" y="704" width="130" height="26" rx="3" fill="#F7F8FA" /><rect x="605" y="682" width="140" height="22" rx="3" fill="#aea89e" /></svg>

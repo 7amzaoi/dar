@@ -34,7 +34,7 @@ export default function MakersPage() {
             {makers.map(({ company, count, images }, i) => (
               <Reveal key={company.id} delay={(i % 2) * 0.08}>
                 <Link href={`/company/${company.id}`} className="group block">
-                  <div className="grid grid-cols-3 gap-2 overflow-hidden rounded-md">
+                  <div className="grid grid-cols-3 gap-2 overflow-hidden rounded-[1.5rem]">
                     {images.map((src, j) => (
                       <div key={j} className="relative aspect-[4/5] bg-secondary">
                         <FurnitureImage src={src} alt="" sizes="(min-width: 768px) 16vw, 33vw" className="transition-transform duration-[1.2s] group-hover:scale-[1.04]" />
@@ -46,7 +46,7 @@ export default function MakersPage() {
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center gap-1.5 font-display text-2xl">
                         {company.name}
-                        <BadgeCheck className="size-4 text-brass-deep" strokeWidth={1.6} aria-label={t("company.verified")} />
+                        <BadgeCheck className="size-4 text-brand-strong" strokeWidth={1.6} aria-label={t("company.verified")} />
                       </div>
                       <div className="text-sm text-muted-foreground">
                         {city(company.city)}, {country(company.country)} · {t("company.piecesCount", { count })}

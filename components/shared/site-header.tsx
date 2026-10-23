@@ -1,8 +1,10 @@
 "use client";
 
+import { useState } from "react";
+import { useMotionValueEvent, useScroll } from "motion/react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { Bell, ClipboardList, Heart, LayoutDashboard, LogOut, Menu, Search } from "lucide-react";
+import { ArrowUpRight, Bell, ClipboardList, Heart, LayoutDashboard, LogOut, Menu, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -31,7 +33,7 @@ const NAV: { href: string; key: TKey }[] = [
 function CountBadge({ count }: { count: number }) {
   if (!count) return null;
   return (
-    <span className="absolute -top-0.5 -end-0.5 inline-flex min-w-4 items-center justify-center rounded-full bg-brass px-1 text-[0.6rem] font-semibold leading-4 text-brass-foreground">
+    <span className="absolute -top-0.5 -end-0.5 inline-flex min-w-4 items-center justify-center rounded-full bg-brand px-1 text-[0.6rem] font-semibold leading-4 text-brand-foreground">
       {count > 99 ? "99+" : count}
     </span>
   );
@@ -47,7 +49,7 @@ export function UserMenu({ align = "end" }: { align?: "start" | "end" }) {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <button
-          className="inline-flex size-9 items-center justify-center rounded-full border border-border bg-surface font-display text-sm text-foreground transition-colors hover:border-brass"
+          className="inline-flex size-9 items-center justify-center rounded-full border border-border bg-surface font-display text-sm text-foreground transition-colors hover:border-brand"
           aria-label={t("nav.account")}
         >
           {initials}
@@ -57,7 +59,7 @@ export function UserMenu({ align = "end" }: { align?: "start" | "end" }) {
         <DropdownMenuLabel className="font-normal">
           <div className="text-sm font-medium text-foreground">{currentUser.name}</div>
           <div className="truncate text-xs text-muted-foreground">{company?.name ?? currentUser.email}</div>
-          <div className="mt-1 text-[0.7rem] text-brass-deep">{t(`status.role.${currentUser.role}`)}</div>
+          <div className="mt-1 text-[0.7rem] text-brand-strong">{t(`status.role.${currentUser.role}`)}</div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem onSelect={() => router.push(homeFor(currentUser))}>
@@ -101,19 +103,35 @@ export function SiteHeader() {
   const rfq = useRfq();
   const isRetailer = currentUser?.role === "retailer" && isApproved;
 
+  // The landing hero carries its own navbar; this header slides in once the hero scrolls away.
+  const isHome = pathname === "/";
+  const [pastHero, setPastHero] = useState(false);
+  const { scrollY } = useScroll();
+  useMotionValueEvent(scrollY, "change", (y) => {
+    if (isHome) setPastHero(y > window.innerHeight * 0.85);
+  });
+  const hidden = isHome && !pastHero;
+
   return (
-    <header className="sticky top-0 z-40 border-b border-hairline bg-background/85 backdrop-blur-md supports-[backdrop-filter]:bg-background/70">
+    <header
+      className={cn(
+        "top-0 z-40 px-3 pt-3 transition-[transform,opacity] duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] md:px-5",
+        isHome ? "fixed inset-x-0" : "sticky",
+        hidden && "-translate-y-[120%] opacity-0",
+      )}
+      inert={hidden || undefined}
+    >
       <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:start-4 focus:top-3 focus:z-50 focus:rounded focus:bg-primary focus:px-3 focus:py-2 focus:text-primary-foreground">
         {t("common.skipToContent")}
       </a>
-      <div className="container-page flex h-[4.5rem] items-center gap-6">
+      <div className="glass mx-auto flex h-16 w-full max-w-[1400px] items-center gap-4 rounded-full ps-3 pe-2 sm:ps-5 lg:gap-6">
         <Sheet>
           <SheetTrigger asChild>
             <Button variant="ghost" size="icon-sm" className="lg:hidden" aria-label={t("common.menu")}>
               <Menu className="size-5" strokeWidth={1.5} />
             </Button>
           </SheetTrigger>
-          <SheetContent side={dir === "rtl" ? "right" : "left"} className="w-[86vw] max-w-sm p-0">
+          <SheetContent side={dir === "rtl" ? "right" : "left"} className="w-[86vw] max-w-sm border-0 bg-background/95 p-0 backdrop-blur-2xl">
             <SheetTitle className="sr-only">{t("common.menu")}</SheetTitle>
             <div className="flex h-full flex-col">
               <div className="border-b border-hairline px-6 py-5">
@@ -121,7 +139,7 @@ export function SiteHeader() {
               </div>
               <nav className="flex flex-col px-6 py-6">
                 {NAV.map((item) => (
-                  <Link key={item.href} href={item.href} className="border-b border-hairline py-4 font-display text-2xl">
+                  <Link key={item.href} href={item.href} className="border-b border-hairline py-4 font-display text-3xl tracking-tight transition-colors hover:text-brand">
                     {t(item.key)}
                   </Link>
                 ))}
@@ -134,16 +152,18 @@ export function SiteHeader() {
           </SheetContent>
         </Sheet>
 
-        <Logo />
+        <div className="flex-1 lg:flex-none">
+          <Logo />
+        </div>
 
-        <nav className="hidden items-center gap-8 lg:flex" aria-label="Main">
+        <nav className="hidden flex-1 items-center justify-center gap-8 lg:flex" aria-label="Main">
           {NAV.map((item) => {
             const active = pathname.startsWith(item.href);
             return (
               <Link
                 key={item.href}
                 href={item.href}
-                className={cn("link-underline py-1 text-sm transition-colors", active ? "text-foreground" : "text-muted-foreground hover:text-foreground")}
+                className={cn("relative py-1 text-sm transition-colors", active ? "text-foreground after:absolute after:inset-x-0 after:-bottom-1 after:mx-auto after:h-0.5 after:w-4 after:rounded-full after:bg-brand" : "text-hero-nav/80 hover:text-foreground dark:text-muted-foreground")}
                 aria-current={active ? "page" : undefined}
               >
                 {t(item.key)}
@@ -152,7 +172,7 @@ export function SiteHeader() {
           })}
         </nav>
 
-        <div className="ms-auto flex items-center gap-1 sm:gap-1.5">
+        <div className="flex items-center gap-1 sm:gap-1.5">
           <Button variant="ghost" size="icon-sm" asChild>
             <Link href="/catalog" aria-label={t("common.search")}>
               <Search className="size-4" strokeWidth={1.6} />
@@ -192,8 +212,13 @@ export function SiteHeader() {
               <Button variant="ghost" size="sm" asChild className="hidden sm:inline-flex">
                 <Link href="/login">{t("common.signIn")}</Link>
               </Button>
-              <Button size="sm" asChild className="ms-1">
-                <Link href="/register">{t("common.register")}</Link>
+              <Button size="sm" asChild className="group ms-1 ps-1.5">
+                <Link href="/register">
+                  <span className="flex size-6 items-center justify-center rounded-full bg-white/20 transition-transform duration-300 group-hover:-translate-y-px group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5">
+                    <ArrowUpRight className="size-3.5 rtl:-scale-x-100" />
+                  </span>
+                  {t("common.register")}
+                </Link>
               </Button>
             </>
           )}

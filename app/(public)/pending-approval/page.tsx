@@ -40,12 +40,12 @@ export default function PendingApprovalPage() {
                   className={cn(
                     "relative inline-flex size-9 shrink-0 items-center justify-center rounded-full border",
                     s.state === "done" && "border-foreground bg-foreground text-background",
-                    s.state === "current" && "border-brass bg-brass/10 text-brass-deep",
+                    s.state === "current" && "border-brand bg-brand/10 text-brand-strong",
                     s.state === "todo" && "border-border text-muted-foreground",
                   )}
                 >
                   <s.icon className="size-4" strokeWidth={1.6} />
-                  {s.state === "current" && <span className="absolute inset-0 animate-ping rounded-full border border-brass/50" aria-hidden />}
+                  {s.state === "current" && <span className="absolute inset-0 animate-ping rounded-full border border-brand/50" aria-hidden />}
                 </span>
                 <span className={cn("pt-1.5", s.state === "todo" && "text-muted-foreground")}>{s.label}</span>
               </li>

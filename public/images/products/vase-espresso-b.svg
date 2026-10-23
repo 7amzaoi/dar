@@ -1,12 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1500" preserveAspectRatio="xMidYMid slice"><defs>
   <radialGradient id="light-vase-espresso-b" cx="0.22" cy="0.18" r="0.9">
-    <stop offset="0" stop-color="#807873"/>
-    <stop offset="0.55" stop-color="#3B2F28"/>
-    <stop offset="1" stop-color="#342923"/>
+    <stop offset="0" stop-color="#757a84"/>
+    <stop offset="0.55" stop-color="#2B3242"/>
+    <stop offset="1" stop-color="#262c3a"/>
   </radialGradient>
   <linearGradient id="floor-vase-espresso-b" x1="0" y1="0" x2="0" y2="1">
-    <stop offset="0" stop-color="#281f1b"/>
-    <stop offset="1" stop-color="#382f2b"/>
+    <stop offset="0" stop-color="#1d222e"/>
+    <stop offset="1" stop-color="#2c323e"/>
   </linearGradient>
   <linearGradient id="sheen-vase-espresso-b" x1="0" y1="0" x2="0" y2="1">
     <stop offset="0" stop-color="#ffffff" stop-opacity="0.22"/>
@@ -24,8 +24,8 @@
   <filter id="blur-vase-espresso-b" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="18"/></filter>
   <filter id="soft-vase-espresso-b" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="4"/></filter>
   <linearGradient id="mirror-vase-espresso-b" x1="0" y1="0" x2="1" y2="1">
-    <stop offset="0" stop-color="#6c635e"/>
-    <stop offset="0.5" stop-color="#352a24"/>
-    <stop offset="1" stop-color="#1e1814"/>
+    <stop offset="0" stop-color="#606571"/>
+    <stop offset="0.5" stop-color="#272d3b"/>
+    <stop offset="1" stop-color="#161921"/>
   </linearGradient>
-</defs><rect width="1200" height="1500" fill="url(#light-vase-espresso-b)"/><path d="M300 1080 V494.4 A300 300 0 0 1 900 494.4 V1080 Z" fill="#372c25"/><path d="M60 0 L384 0 L936 1080 L504 1080 Z" fill="url(#beam-vase-espresso-b)" opacity="0.55"/><rect y="1066" width="1200" height="14" fill="#352a24"/><rect y="1080" width="1200" height="420" fill="url(#floor-vase-espresso-b)"/><g transform="translate(1200 0) scale(-1 1)"><ellipse cx="600" cy="1084" rx="330" ry="26" fill="#000" opacity="0.32" filter="url(#blur-vase-espresso-b)"/><rect x="240" y="920" width="720" height="160" rx="6" fill="#2f241b" /><rect x="240" y="920" width="720" height="160" rx="6" fill="url(#sheen-vase-espresso-b)" /><path d="M330 920 C280 840 290 700 360 640 L380 600 L420 600 L440 640 C510 700 520 840 470 920 Z" fill="#9A7357"/><path d="M330 920 C280 840 290 700 360 640 L380 600 L420 600 L440 640 C510 700 520 840 470 920 Z" fill="url(#sheen-vase-espresso-b)"/><path d="M400 600 C390 480 340 380 280 300 M400 600 C430 470 500 400 560 330 M400 600 C400 500 420 420 410 330" stroke="#1b120b" stroke-width="5" fill="none" stroke-linecap="round"/><ellipse cx="640" cy="860" rx="80" ry="62" fill="#E6DCCD"/><path d="M560 920 C560 870 720 870 720 920 Z" fill="#E6DCCD"/><path d="M760 920 C740 860 750 790 790 760 L800 720 L840 720 L850 760 C890 790 900 860 880 920 Z" fill="#C9A46A"/><path d="M760 920 C740 860 750 790 790 760 L800 720 L840 720 L850 760 C890 790 900 860 880 920 Z" fill="url(#sheen-vase-espresso-b)"/></g></svg>
+</defs><rect width="1200" height="1500" fill="url(#light-vase-espresso-b)"/><path d="M300 1080 V494.4 A300 300 0 0 1 900 494.4 V1080 Z" fill="#282f3d"/><path d="M60 0 L384 0 L936 1080 L504 1080 Z" fill="url(#beam-vase-espresso-b)" opacity="0.55"/><rect y="1066" width="1200" height="14" fill="#272d3b"/><rect y="1080" width="1200" height="420" fill="url(#floor-vase-espresso-b)"/><g transform="translate(1200 0) scale(-1 1)"><ellipse cx="600" cy="1084" rx="330" ry="26" fill="#000" opacity="0.32" filter="url(#blur-vase-espresso-b)"/><rect x="240" y="920" width="720" height="160" rx="6" fill="#352b25" /><rect x="240" y="920" width="720" height="160" rx="6" fill="url(#sheen-vase-espresso-b)" /><path d="M330 920 C280 840 290 700 360 640 L380 600 L420 600 L440 640 C510 700 520 840 470 920 Z" fill="#9A7B63"/><path d="M330 920 C280 840 290 700 360 640 L380 600 L420 600 L440 640 C510 700 520 840 470 920 Z" fill="url(#sheen-vase-espresso-b)"/><path d="M400 600 C390 480 340 380 280 300 M400 600 C430 470 500 400 560 330 M400 600 C400 500 420 420 410 330" stroke="#201813" stroke-width="5" fill="none" stroke-linecap="round"/><ellipse cx="640" cy="860" rx="80" ry="62" fill="#E4E7ED"/><path d="M560 920 C560 870 720 870 720 920 Z" fill="#E4E7ED"/><path d="M760 920 C740 860 750 790 790 760 L800 720 L840 720 L850 760 C890 790 900 860 880 920 Z" fill="#C7A55E"/><path d="M760 920 C740 860 750 790 790 760 L800 720 L840 720 L850 760 C890 790 900 860 880 920 Z" fill="url(#sheen-vase-espresso-b)"/></g></svg>

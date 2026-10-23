@@ -50,7 +50,7 @@ export function PriceTierEditor({
 
   return (
     <div className="space-y-3">
-      <div className={cn("overflow-hidden rounded-md border", invalid && errors.length ? "border-destructive/60" : "border-border")}>
+      <div className={cn("overflow-hidden rounded-[1.5rem] border", invalid && errors.length ? "border-destructive/60" : "border-border")}>
         <div className="grid grid-cols-[1fr_1fr_5rem_2.5rem] gap-3 bg-secondary/60 px-4 py-2.5 text-xs text-muted-foreground">
           <span>{t("mfr.tierMinQty")}</span>
           <span>{t("mfr.tierUnitPrice")}</span>

@@ -83,7 +83,7 @@ export function DataTable<T>({
   };
 
   return (
-    <div className={cn("rounded-lg border border-border bg-card shadow-soft", className)}>
+    <div className={cn("rounded-[1.5rem] border border-border bg-card shadow-soft", className)}>
       {(searchText || toolbar) && (
         <div className="flex flex-wrap items-center gap-3 border-b border-hairline p-4">
           {searchText && (
@@ -148,7 +148,15 @@ export function DataTable<T>({
                 return (
                   <TableRow
                     key={getRowId(row)}
-                    className={cn("border-hairline", href && "cursor-pointer")}
+                    className={cn("border-hairline", href && "cursor-pointer focus-visible:bg-muted/60 focus-visible:outline-none")}
+                    tabIndex={href ? 0 : undefined}
+                    onKeyDown={
+                      href
+                        ? (e) => {
+                            if (e.key === "Enter" && e.target === e.currentTarget) router.push(href);
+                          }
+                        : undefined
+                    }
                     onClick={
                       href
                         ? (e) => {

@@ -31,7 +31,7 @@ export function RoleGuard({ role, children }: { role: Role; children: ReactNode 
         <div className="flex flex-col items-center gap-4 opacity-70">
           <Logo href="#" />
           <span className="h-px w-24 overflow-hidden bg-border">
-            <span className="block h-full w-1/3 animate-[shimmer_1.2s_ease-in-out_infinite] bg-brass" />
+            <span className="block h-full w-1/3 animate-[shimmer_1.2s_ease-in-out_infinite] bg-brand" />
           </span>
         </div>
       </div>

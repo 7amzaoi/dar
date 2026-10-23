@@ -142,7 +142,7 @@ export function OrderTimeline({ order }: { order: Order }) {
             <span
               className={cn(
                 "relative z-10 mt-0.5 inline-flex size-[1.4rem] shrink-0 items-center justify-center rounded-full border",
-                s === "cancelled" ? "border-destructive bg-destructive text-background" : current ? "border-brass bg-brass text-brass-foreground" : done ? "border-foreground bg-foreground text-background" : "border-border bg-background",
+                s === "cancelled" ? "border-destructive bg-destructive text-background" : current ? "border-brand bg-brand text-brand-foreground" : done ? "border-foreground bg-foreground text-background" : "border-border bg-background",
               )}
             >
               {s === "cancelled" ? <X className="size-3" /> : done && <Check className="size-3" />}
@@ -315,16 +315,24 @@ export function OrderDetail({ side, id }: { side: Side; id: string }) {
           {side === "manufacturer" && order.status === "quote_requested" && <QuoteForm order={order} products={products} />}
 
           {side === "retailer" && order.status === "quoted" && (
-            <Panel className="border-brass/40 bg-brass/5">
+            <Panel className="border-brand/40 bg-brand/5">
               <div className="flex flex-wrap items-center justify-between gap-4">
                 <div>
                   <div className="eyebrow mb-1">{t("ret.quotesReady")}</div>
                   <div className="font-display text-3xl tabular-nums">{formatPrice(total)}</div>
                 </div>
                 <div className="flex gap-2">
-                  <Button variant="ghost" disabled={busy} onClick={() => setStatus("cancelled", t("ret.quoteDeclined"))}>
-                    {t("ret.declineQuote")}
-                  </Button>
+                  <ConfirmDialog
+                    title={t("ret.declineConfirm")}
+                    description={t("ret.declineConfirmBody")}
+                    confirmLabel={t("ret.declineQuote")}
+                    onConfirm={() => setStatus("cancelled", t("ret.quoteDeclined"))}
+                    trigger={
+                      <Button variant="ghost" disabled={busy}>
+                        {t("ret.declineQuote")}
+                      </Button>
+                    }
+                  />
                   <Button disabled={busy} onClick={() => setStatus("confirmed", t("ret.quoteAccepted"))}>
                     <Check className="size-4" /> {t("ret.acceptQuote")}
                   </Button>

@@ -1,12 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1500" preserveAspectRatio="xMidYMid slice"><defs>
   <radialGradient id="light-bed-sage-a" cx="0.22" cy="0.18" r="0.9">
-    <stop offset="0" stop-color="#eaebe2"/>
-    <stop offset="0.55" stop-color="#DFE0D2"/>
-    <stop offset="1" stop-color="#c4c5b9"/>
+    <stop offset="0" stop-color="#edf0ef"/>
+    <stop offset="0.55" stop-color="#E4E8E6"/>
+    <stop offset="1" stop-color="#c9ccca"/>
   </radialGradient>
   <linearGradient id="floor-bed-sage-a" x1="0" y1="0" x2="0" y2="1">
-    <stop offset="0" stop-color="#bbb4a1"/>
-    <stop offset="1" stop-color="#cec8b4"/>
+    <stop offset="0" stop-color="#bdc2bf"/>
+    <stop offset="1" stop-color="#d0d6d3"/>
   </linearGradient>
   <linearGradient id="sheen-bed-sage-a" x1="0" y1="0" x2="0" y2="1">
     <stop offset="0" stop-color="#ffffff" stop-opacity="0.22"/>
@@ -24,8 +24,8 @@
   <filter id="blur-bed-sage-a" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="18"/></filter>
   <filter id="soft-bed-sage-a" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="4"/></filter>
   <linearGradient id="mirror-bed-sage-a" x1="0" y1="0" x2="1" y2="1">
-    <stop offset="0" stop-color="#e7e8dd"/>
-    <stop offset="0.5" stop-color="#c9cabd"/>
-    <stop offset="1" stop-color="#707069"/>
+    <stop offset="0" stop-color="#ebeeec"/>
+    <stop offset="0.5" stop-color="#cdd1cf"/>
+    <stop offset="1" stop-color="#727473"/>
   </linearGradient>
-</defs><rect width="1200" height="1500" fill="url(#light-bed-sage-a)"/><path d="M60 0 L384 0 L936 1080 L504 1080 Z" fill="url(#beam-bed-sage-a)" opacity="0.55"/><rect y="1066" width="1200" height="14" fill="#c9cabd"/><rect y="1080" width="1200" height="420" fill="url(#floor-bed-sage-a)"/><ellipse cx="600" cy="1088" rx="470" ry="34" fill="#000" opacity="0.32" filter="url(#blur-bed-sage-a)"/><rect x="240" y="600" width="720" height="420" rx="26" fill="#8E9A7E" /><line x1="290" y1="640" x2="290" y2="880" stroke="#79836b" stroke-width="3"/><line x1="368" y1="640" x2="368" y2="880" stroke="#79836b" stroke-width="3"/><line x1="446" y1="640" x2="446" y2="880" stroke="#79836b" stroke-width="3"/><line x1="524" y1="640" x2="524" y2="880" stroke="#79836b" stroke-width="3"/><line x1="602" y1="640" x2="602" y2="880" stroke="#79836b" stroke-width="3"/><line x1="680" y1="640" x2="680" y2="880" stroke="#79836b" stroke-width="3"/><line x1="758" y1="640" x2="758" y2="880" stroke="#79836b" stroke-width="3"/><line x1="836" y1="640" x2="836" y2="880" stroke="#79836b" stroke-width="3"/><line x1="914" y1="640" x2="914" y2="880" stroke="#79836b" stroke-width="3"/><rect x="240" y="600" width="720" height="420" rx="26" fill="url(#sheen-bed-sage-a)" /><rect x="320" y="790" width="240" height="110" rx="30" fill="#ece9df" /><rect x="640" y="790" width="240" height="110" rx="30" fill="#ece9df" /><rect x="390" y="830" width="160" height="84" rx="22" fill="#B08D57" /><rect x="200" y="880" width="800" height="190" rx="22" fill="#F1EEE4" /><rect x="200" y="960" width="800" height="66" rx="6" fill="#bc9e70" /><rect x="200" y="880" width="800" height="190" rx="22" fill="url(#sheen-bed-sage-a)" /><rect x="40" y="860" width="140" height="210" rx="8" fill="#6B4A33" /><rect x="56" y="910" width="108" height="6" rx="3" fill="#907766" /><path d="M70 860 L80 790 L140 790 L150 860 Z" fill="#e5e2d9"/><circle cx="110" cy="800" r="70" fill="url(#glow-bed-sage-a)"/><rect x="1020" y="860" width="140" height="210" rx="8" fill="#6B4A33" /><rect x="1036" y="910" width="108" height="6" rx="3" fill="#907766" /></svg>
+</defs><rect width="1200" height="1500" fill="url(#light-bed-sage-a)"/><path d="M60 0 L384 0 L936 1080 L504 1080 Z" fill="url(#beam-bed-sage-a)" opacity="0.55"/><rect y="1066" width="1200" height="14" fill="#cdd1cf"/><rect y="1080" width="1200" height="420" fill="url(#floor-bed-sage-a)"/><ellipse cx="600" cy="1088" rx="470" ry="34" fill="#000" opacity="0.32" filter="url(#blur-bed-sage-a)"/><rect x="240" y="600" width="720" height="420" rx="26" fill="#8E9A86" /><line x1="290" y1="640" x2="290" y2="880" stroke="#798372" stroke-width="3"/><line x1="368" y1="640" x2="368" y2="880" stroke="#798372" stroke-width="3"/><line x1="446" y1="640" x2="446" y2="880" stroke="#798372" stroke-width="3"/><line x1="524" y1="640" x2="524" y2="880" stroke="#798372" stroke-width="3"/><line x1="602" y1="640" x2="602" y2="880" stroke="#798372" stroke-width="3"/><line x1="680" y1="640" x2="680" y2="880" stroke="#798372" stroke-width="3"/><line x1="758" y1="640" x2="758" y2="880" stroke="#798372" stroke-width="3"/><line x1="836" y1="640" x2="836" y2="880" stroke="#798372" stroke-width="3"/><line x1="914" y1="640" x2="914" y2="880" stroke="#798372" stroke-width="3"/><rect x="240" y="600" width="720" height="420" rx="26" fill="url(#sheen-bed-sage-a)" /><rect x="320" y="790" width="240" height="110" rx="30" fill="#eff1f0" /><rect x="640" y="790" width="240" height="110" rx="30" fill="#eff1f0" /><rect x="390" y="830" width="160" height="84" rx="22" fill="#C7A55E" /><rect x="200" y="880" width="800" height="190" rx="22" fill="#F4F6F5" /><rect x="200" y="960" width="800" height="66" rx="6" fill="#cfb376" /><rect x="200" y="880" width="800" height="190" rx="22" fill="url(#sheen-bed-sage-a)" /><rect x="40" y="860" width="140" height="210" rx="8" fill="#6B5240" /><rect x="56" y="910" width="108" height="6" rx="3" fill="#907d70" /><path d="M70 860 L80 790 L140 790 L150 860 Z" fill="#e8eae9"/><circle cx="110" cy="800" r="70" fill="url(#glow-bed-sage-a)"/><rect x="1020" y="860" width="140" height="210" rx="8" fill="#6B5240" /><rect x="1036" y="910" width="108" height="6" rx="3" fill="#907d70" /></svg>

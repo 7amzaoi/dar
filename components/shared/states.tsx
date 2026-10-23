@@ -22,8 +22,8 @@ export function EmptyState({
   className?: string;
 }) {
   return (
-    <div className={cn("flex flex-col items-center justify-center rounded-lg border border-dashed border-border px-6 py-16 text-center", className)}>
-      <span className="mb-5 inline-flex size-14 items-center justify-center rounded-full bg-secondary text-brass-deep">
+    <div className={cn("flex flex-col items-center justify-center rounded-[1.5rem] border border-dashed border-border px-6 py-16 text-center", className)}>
+      <span className="mb-5 inline-flex size-14 items-center justify-center rounded-full bg-secondary text-brand-strong">
         <Icon className="size-6" strokeWidth={1.4} />
       </span>
       <h3 className="font-display text-2xl">{title}</h3>
@@ -36,7 +36,7 @@ export function EmptyState({
 export function ErrorState({ onRetry, className, message }: { onRetry?: () => void; className?: string; message?: string }) {
   const { t } = useT();
   return (
-    <div role="alert" className={cn("flex flex-col items-center justify-center rounded-lg border border-destructive/30 bg-destructive/5 px-6 py-14 text-center", className)}>
+    <div role="alert" className={cn("flex flex-col items-center justify-center rounded-[1.5rem] border border-destructive/30 bg-destructive/5 px-6 py-14 text-center", className)}>
       <AlertTriangle className="mb-4 size-7 text-destructive" strokeWidth={1.4} />
       <h3 className="font-display text-2xl">{t("common.errorTitle")}</h3>
       <p className="mt-2 max-w-sm text-sm text-muted-foreground">{message ?? t("common.errorBody")}</p>
@@ -54,7 +54,7 @@ export function SkeletonGrid({ count = 6, className }: { count?: number; classNa
     <div className={cn("grid grid-cols-2 gap-x-5 gap-y-10 md:grid-cols-3", className)} aria-busy>
       {Array.from({ length: count }, (_, i) => (
         <div key={i} className="space-y-3">
-          <Skeleton className="aspect-[4/5] w-full rounded-md" />
+          <Skeleton className="aspect-[4/5] w-full rounded-[1.5rem]" />
           <Skeleton className="h-4 w-3/4" />
           <Skeleton className="h-3 w-1/2" />
         </div>

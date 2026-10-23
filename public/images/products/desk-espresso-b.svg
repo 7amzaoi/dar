@@ -1,12 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1500" preserveAspectRatio="xMidYMid slice"><defs>
   <radialGradient id="light-desk-espresso-b" cx="0.22" cy="0.18" r="0.9">
-    <stop offset="0" stop-color="#807873"/>
-    <stop offset="0.55" stop-color="#3B2F28"/>
-    <stop offset="1" stop-color="#342923"/>
+    <stop offset="0" stop-color="#757a84"/>
+    <stop offset="0.55" stop-color="#2B3242"/>
+    <stop offset="1" stop-color="#262c3a"/>
   </radialGradient>
   <linearGradient id="floor-desk-espresso-b" x1="0" y1="0" x2="0" y2="1">
-    <stop offset="0" stop-color="#281f1b"/>
-    <stop offset="1" stop-color="#382f2b"/>
+    <stop offset="0" stop-color="#1d222e"/>
+    <stop offset="1" stop-color="#2c323e"/>
   </linearGradient>
   <linearGradient id="sheen-desk-espresso-b" x1="0" y1="0" x2="0" y2="1">
     <stop offset="0" stop-color="#ffffff" stop-opacity="0.22"/>
@@ -24,8 +24,8 @@
   <filter id="blur-desk-espresso-b" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="18"/></filter>
   <filter id="soft-desk-espresso-b" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="4"/></filter>
   <linearGradient id="mirror-desk-espresso-b" x1="0" y1="0" x2="1" y2="1">
-    <stop offset="0" stop-color="#6c635e"/>
-    <stop offset="0.5" stop-color="#352a24"/>
-    <stop offset="1" stop-color="#1e1814"/>
+    <stop offset="0" stop-color="#606571"/>
+    <stop offset="0.5" stop-color="#272d3b"/>
+    <stop offset="1" stop-color="#161921"/>
   </linearGradient>
-</defs><rect width="1200" height="1500" fill="url(#light-desk-espresso-b)"/><path d="M300 1080 V494.4 A300 300 0 0 1 900 494.4 V1080 Z" fill="#372c25"/><path d="M60 0 L384 0 L936 1080 L504 1080 Z" fill="url(#beam-desk-espresso-b)" opacity="0.55"/><rect y="1066" width="1200" height="14" fill="#352a24"/><rect y="1080" width="1200" height="420" fill="url(#floor-desk-espresso-b)"/><g transform="translate(1200 0) scale(-1 1)"><ellipse cx="600" cy="1086" rx="420" ry="34" fill="#000" opacity="0.32" filter="url(#blur-desk-espresso-b)"/><rect x="210" y="760" width="780" height="34" rx="8" fill="#24180F" /><rect x="210" y="760" width="780" height="34" rx="8" fill="url(#sheen-desk-espresso-b)" /><path d="M250 794 L270 1078 L300 1078 L290 794 Z M910 794 L900 1078 L930 1078 L950 794 Z" fill="#1f140d"/><rect x="680" y="794" width="240" height="150" rx="6" fill="#31261d" /><rect x="700" y="860" width="200" height="4" rx="0" fill="#1b120b" /><circle cx="800" cy="830" r="7" fill="#C9A46A"/><path d="M330 760 L360 560 M360 560 L470 520" stroke="#C9A46A" stroke-width="10" stroke-linecap="round" fill="none"/><path d="M440 500 L520 500 L540 560 L420 560 Z" fill="#C9A46A"/><circle cx="480" cy="600" r="120" fill="url(#glow-desk-espresso-b)"/><rect x="600" y="730" width="150" height="30" rx="3" fill="#9A7357" /><rect x="612" y="704" width="130" height="26" rx="3" fill="#E6DCCD" /><rect x="605" y="682" width="140" height="22" rx="3" fill="#7b5c46" /></g></svg>
+</defs><rect width="1200" height="1500" fill="url(#light-desk-espresso-b)"/><path d="M300 1080 V494.4 A300 300 0 0 1 900 494.4 V1080 Z" fill="#282f3d"/><path d="M60 0 L384 0 L936 1080 L504 1080 Z" fill="url(#beam-desk-espresso-b)" opacity="0.55"/><rect y="1066" width="1200" height="14" fill="#272d3b"/><rect y="1080" width="1200" height="420" fill="url(#floor-desk-espresso-b)"/><g transform="translate(1200 0) scale(-1 1)"><ellipse cx="600" cy="1086" rx="420" ry="34" fill="#000" opacity="0.32" filter="url(#blur-desk-espresso-b)"/><rect x="210" y="760" width="780" height="34" rx="8" fill="#2A2019" /><rect x="210" y="760" width="780" height="34" rx="8" fill="url(#sheen-desk-espresso-b)" /><path d="M250 794 L270 1078 L300 1078 L290 794 Z M910 794 L900 1078 L930 1078 L950 794 Z" fill="#241b15"/><rect x="680" y="794" width="240" height="150" rx="6" fill="#372d27" /><rect x="700" y="860" width="200" height="4" rx="0" fill="#201813" /><circle cx="800" cy="830" r="7" fill="#C7A55E"/><path d="M330 760 L360 560 M360 560 L470 520" stroke="#C7A55E" stroke-width="10" stroke-linecap="round" fill="none"/><path d="M440 500 L520 500 L540 560 L420 560 Z" fill="#C7A55E"/><circle cx="480" cy="600" r="120" fill="url(#glow-desk-espresso-b)"/><rect x="600" y="730" width="150" height="30" rx="3" fill="#9A7B63" /><rect x="612" y="704" width="130" height="26" rx="3" fill="#E4E7ED" /><rect x="605" y="682" width="140" height="22" rx="3" fill="#7b624f" /></g></svg>

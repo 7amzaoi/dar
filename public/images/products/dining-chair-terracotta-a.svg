@@ -1,12 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1500" preserveAspectRatio="xMidYMid slice"><defs>
   <radialGradient id="light-dining-chair-terracotta-a" cx="0.22" cy="0.18" r="0.9">
-    <stop offset="0" stop-color="#f2e8dd"/>
-    <stop offset="0.55" stop-color="#EBDCCB"/>
-    <stop offset="1" stop-color="#cfc2b3"/>
+    <stop offset="0" stop-color="#f3f1f0"/>
+    <stop offset="0.55" stop-color="#EDEAE8"/>
+    <stop offset="1" stop-color="#d1cecc"/>
   </radialGradient>
   <linearGradient id="floor-dining-chair-terracotta-a" x1="0" y1="0" x2="0" y2="1">
-    <stop offset="0" stop-color="#c1a78b"/>
-    <stop offset="1" stop-color="#d5b99d"/>
+    <stop offset="0" stop-color="#c5c1be"/>
+    <stop offset="1" stop-color="#d8d5d2"/>
   </linearGradient>
   <linearGradient id="sheen-dining-chair-terracotta-a" x1="0" y1="0" x2="0" y2="1">
     <stop offset="0" stop-color="#ffffff" stop-opacity="0.22"/>
@@ -24,8 +24,8 @@
   <filter id="blur-dining-chair-terracotta-a" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="18"/></filter>
   <filter id="soft-dining-chair-terracotta-a" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="4"/></filter>
   <linearGradient id="mirror-dining-chair-terracotta-a" x1="0" y1="0" x2="1" y2="1">
-    <stop offset="0" stop-color="#f0e5d8"/>
-    <stop offset="0.5" stop-color="#d4c6b7"/>
-    <stop offset="1" stop-color="#766e66"/>
+    <stop offset="0" stop-color="#f2efee"/>
+    <stop offset="0.5" stop-color="#d5d3d1"/>
+    <stop offset="1" stop-color="#777574"/>
   </linearGradient>
-</defs><rect width="1200" height="1500" fill="url(#light-dining-chair-terracotta-a)"/><path d="M60 0 L384 0 L936 1080 L504 1080 Z" fill="url(#beam-dining-chair-terracotta-a)" opacity="0.55"/><rect y="1066" width="1200" height="14" fill="#d4c6b7"/><rect y="1080" width="1200" height="420" fill="url(#floor-dining-chair-terracotta-a)"/><ellipse cx="600" cy="1086" rx="220" ry="34" fill="#000" opacity="0.32" filter="url(#blur-dining-chair-terracotta-a)"/><path d="M460 1078 L475 880 M740 1078 L725 880 M500 1078 L510 900 M700 1078 L690 900" stroke="#5C3B28" stroke-width="20" stroke-linecap="round"/><path d="M470 880 L470 560 C470 500 730 500 730 560 L730 880 Z" fill="#644533"/><path d="M495 860 L495 580 C495 540 705 540 705 580 L705 860 Z" fill="#af6246"/><rect x="430" y="850" width="340" height="70" rx="18" fill="#B8674A" /><rect x="430" y="850" width="340" height="70" rx="18" fill="url(#sheen-dining-chair-terracotta-a)" /><path d="M470 880 L470 560 C470 500 730 500 730 560 L730 880 Z" fill="url(#sheen-dining-chair-terracotta-a)"/></svg>
+</defs><rect width="1200" height="1500" fill="url(#light-dining-chair-terracotta-a)"/><path d="M60 0 L384 0 L936 1080 L504 1080 Z" fill="url(#beam-dining-chair-terracotta-a)" opacity="0.55"/><rect y="1066" width="1200" height="14" fill="#d5d3d1"/><rect y="1080" width="1200" height="420" fill="url(#floor-dining-chair-terracotta-a)"/><ellipse cx="600" cy="1086" rx="220" ry="34" fill="#000" opacity="0.32" filter="url(#blur-dining-chair-terracotta-a)"/><path d="M460 1078 L475 880 M740 1078 L725 880 M500 1078 L510 900 M700 1078 L690 900" stroke="#5E4535" stroke-width="20" stroke-linecap="round"/><path d="M470 880 L470 560 C470 500 730 500 730 560 L730 880 Z" fill="#664e3f"/><path d="M495 860 L495 580 C495 540 705 540 705 580 L705 860 Z" fill="#b67459"/><rect x="430" y="850" width="340" height="70" rx="18" fill="#C07A5E" /><rect x="430" y="850" width="340" height="70" rx="18" fill="url(#sheen-dining-chair-terracotta-a)" /><path d="M470 880 L470 560 C470 500 730 500 730 560 L730 880 Z" fill="url(#sheen-dining-chair-terracotta-a)"/></svg>

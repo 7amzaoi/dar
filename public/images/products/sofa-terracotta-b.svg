@@ -1,12 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1500" preserveAspectRatio="xMidYMid slice"><defs>
   <radialGradient id="light-sofa-terracotta-b" cx="0.22" cy="0.18" r="0.9">
-    <stop offset="0" stop-color="#f2e8dd"/>
-    <stop offset="0.55" stop-color="#EBDCCB"/>
-    <stop offset="1" stop-color="#cfc2b3"/>
+    <stop offset="0" stop-color="#f3f1f0"/>
+    <stop offset="0.55" stop-color="#EDEAE8"/>
+    <stop offset="1" stop-color="#d1cecc"/>
   </radialGradient>
   <linearGradient id="floor-sofa-terracotta-b" x1="0" y1="0" x2="0" y2="1">
-    <stop offset="0" stop-color="#c1a78b"/>
-    <stop offset="1" stop-color="#d5b99d"/>
+    <stop offset="0" stop-color="#c5c1be"/>
+    <stop offset="1" stop-color="#d8d5d2"/>
   </linearGradient>
   <linearGradient id="sheen-sofa-terracotta-b" x1="0" y1="0" x2="0" y2="1">
     <stop offset="0" stop-color="#ffffff" stop-opacity="0.22"/>
@@ -24,8 +24,8 @@
   <filter id="blur-sofa-terracotta-b" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="18"/></filter>
   <filter id="soft-sofa-terracotta-b" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="4"/></filter>
   <linearGradient id="mirror-sofa-terracotta-b" x1="0" y1="0" x2="1" y2="1">
-    <stop offset="0" stop-color="#f0e5d8"/>
-    <stop offset="0.5" stop-color="#d4c6b7"/>
-    <stop offset="1" stop-color="#766e66"/>
+    <stop offset="0" stop-color="#f2efee"/>
+    <stop offset="0.5" stop-color="#d5d3d1"/>
+    <stop offset="1" stop-color="#777574"/>
   </linearGradient>
-</defs><rect width="1200" height="1500" fill="url(#light-sofa-terracotta-b)"/><path d="M300 1080 V494.4 A300 300 0 0 1 900 494.4 V1080 Z" fill="#dbcdbd"/><path d="M60 0 L384 0 L936 1080 L504 1080 Z" fill="url(#beam-sofa-terracotta-b)" opacity="0.55"/><rect y="1066" width="1200" height="14" fill="#d4c6b7"/><rect y="1080" width="1200" height="420" fill="url(#floor-sofa-terracotta-b)"/><g transform="translate(1200 0) scale(-1 1)"><ellipse cx="600" cy="1085" rx="430" ry="34" fill="#000" opacity="0.32" filter="url(#blur-sofa-terracotta-b)"/><rect x="250" y="1040" width="18" height="42" rx="4" fill="#5C3B28" /><rect x="932" y="1040" width="18" height="42" rx="4" fill="#5C3B28" /><rect x="230" y="700" width="740" height="240" rx="44" fill="#97543d" /><rect x="210" y="880" width="780" height="172" rx="30" fill="#B8674A" /><rect x="180" y="790" width="120" height="262" rx="46" fill="#a95f44" /><rect x="900" y="790" width="120" height="262" rx="46" fill="#a95f44" /><rect x="298" y="728" width="296" height="158" rx="34" fill="#bf765c" /><rect x="606" y="728" width="296" height="158" rx="34" fill="#bf765c" /><rect x="292" y="852" width="302" height="92" rx="26" fill="#bc6f53" /><rect x="606" y="852" width="302" height="92" rx="26" fill="#bc6f53" /><rect x="330" y="760" width="130" height="120" rx="24" fill="#C9A46A" transform="rotate(-9 395 820)"/><rect x="180" y="700" width="840" height="352" rx="40" fill="url(#sheen-sofa-terracotta-b)" /></g></svg>
+</defs><rect width="1200" height="1500" fill="url(#light-sofa-terracotta-b)"/><path d="M300 1080 V494.4 A300 300 0 0 1 900 494.4 V1080 Z" fill="#dcdad8"/><path d="M60 0 L384 0 L936 1080 L504 1080 Z" fill="url(#beam-sofa-terracotta-b)" opacity="0.55"/><rect y="1066" width="1200" height="14" fill="#d5d3d1"/><rect y="1080" width="1200" height="420" fill="url(#floor-sofa-terracotta-b)"/><g transform="translate(1200 0) scale(-1 1)"><ellipse cx="600" cy="1085" rx="430" ry="34" fill="#000" opacity="0.32" filter="url(#blur-sofa-terracotta-b)"/><rect x="250" y="1040" width="18" height="42" rx="4" fill="#5E4535" /><rect x="932" y="1040" width="18" height="42" rx="4" fill="#5E4535" /><rect x="230" y="700" width="740" height="240" rx="44" fill="#9d644d" /><rect x="210" y="880" width="780" height="172" rx="30" fill="#C07A5E" /><rect x="180" y="790" width="120" height="262" rx="46" fill="#b17056" /><rect x="900" y="790" width="120" height="262" rx="46" fill="#b17056" /><rect x="298" y="728" width="296" height="158" rx="34" fill="#c6876e" /><rect x="606" y="728" width="296" height="158" rx="34" fill="#c6876e" /><rect x="292" y="852" width="302" height="92" rx="26" fill="#c38166" /><rect x="606" y="852" width="302" height="92" rx="26" fill="#c38166" /><rect x="330" y="760" width="130" height="120" rx="24" fill="#C7A55E" transform="rotate(-9 395 820)"/><rect x="180" y="700" width="840" height="352" rx="40" fill="url(#sheen-sofa-terracotta-b)" /></g></svg>

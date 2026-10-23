@@ -1,12 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1500" preserveAspectRatio="xMidYMid slice"><defs>
   <radialGradient id="light-office-chair-espresso-b" cx="0.22" cy="0.18" r="0.9">
-    <stop offset="0" stop-color="#807873"/>
-    <stop offset="0.55" stop-color="#3B2F28"/>
-    <stop offset="1" stop-color="#342923"/>
+    <stop offset="0" stop-color="#757a84"/>
+    <stop offset="0.55" stop-color="#2B3242"/>
+    <stop offset="1" stop-color="#262c3a"/>
   </radialGradient>
   <linearGradient id="floor-office-chair-espresso-b" x1="0" y1="0" x2="0" y2="1">
-    <stop offset="0" stop-color="#281f1b"/>
-    <stop offset="1" stop-color="#382f2b"/>
+    <stop offset="0" stop-color="#1d222e"/>
+    <stop offset="1" stop-color="#2c323e"/>
   </linearGradient>
   <linearGradient id="sheen-office-chair-espresso-b" x1="0" y1="0" x2="0" y2="1">
     <stop offset="0" stop-color="#ffffff" stop-opacity="0.22"/>
@@ -24,8 +24,8 @@
   <filter id="blur-office-chair-espresso-b" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="18"/></filter>
   <filter id="soft-office-chair-espresso-b" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="4"/></filter>
   <linearGradient id="mirror-office-chair-espresso-b" x1="0" y1="0" x2="1" y2="1">
-    <stop offset="0" stop-color="#6c635e"/>
-    <stop offset="0.5" stop-color="#352a24"/>
-    <stop offset="1" stop-color="#1e1814"/>
+    <stop offset="0" stop-color="#606571"/>
+    <stop offset="0.5" stop-color="#272d3b"/>
+    <stop offset="1" stop-color="#161921"/>
   </linearGradient>
-</defs><rect width="1200" height="1500" fill="url(#light-office-chair-espresso-b)"/><path d="M300 1080 V494.4 A300 300 0 0 1 900 494.4 V1080 Z" fill="#372c25"/><path d="M60 0 L384 0 L936 1080 L504 1080 Z" fill="url(#beam-office-chair-espresso-b)" opacity="0.55"/><rect y="1066" width="1200" height="14" fill="#352a24"/><rect y="1080" width="1200" height="420" fill="url(#floor-office-chair-espresso-b)"/><g transform="translate(1200 0) scale(-1 1)"><ellipse cx="600" cy="1086" rx="230" ry="34" fill="#000" opacity="0.32" filter="url(#blur-office-chair-espresso-b)"/><path d="M600 960 L600 1040 M600 1040 L440 1066 M600 1040 L760 1066 M600 1040 L520 1074 M600 1040 L680 1074" stroke="#20160e" stroke-width="16" stroke-linecap="round"/><circle cx="440" cy="1068" r="12" fill="#222"/><circle cx="760" cy="1068" r="12" fill="#222"/><circle cx="520" cy="1076" r="10" fill="#222"/><circle cx="680" cy="1076" r="10" fill="#222"/><rect x="470" y="880" width="260" height="80" rx="26" fill="#9A7357" /><path d="M490 880 L480 520 C480 450 720 450 720 520 L710 880 Z" fill="#8e6a50"/><path d="M490 880 L480 520 C480 450 720 450 720 520 L710 880 Z" fill="url(#sheen-office-chair-espresso-b)"/><path d="M460 820 L460 880 M740 820 L740 880" stroke="#20160e" stroke-width="12" stroke-linecap="round"/><rect x="430" y="800" width="70" height="22" rx="10" fill="#83624a" /><rect x="700" y="800" width="70" height="22" rx="10" fill="#83624a" /></g></svg>
+</defs><rect width="1200" height="1500" fill="url(#light-office-chair-espresso-b)"/><path d="M300 1080 V494.4 A300 300 0 0 1 900 494.4 V1080 Z" fill="#282f3d"/><path d="M60 0 L384 0 L936 1080 L504 1080 Z" fill="url(#beam-office-chair-espresso-b)" opacity="0.55"/><rect y="1066" width="1200" height="14" fill="#272d3b"/><rect y="1080" width="1200" height="420" fill="url(#floor-office-chair-espresso-b)"/><g transform="translate(1200 0) scale(-1 1)"><ellipse cx="600" cy="1086" rx="230" ry="34" fill="#000" opacity="0.32" filter="url(#blur-office-chair-espresso-b)"/><path d="M600 960 L600 1040 M600 1040 L440 1066 M600 1040 L760 1066 M600 1040 L520 1074 M600 1040 L680 1074" stroke="#261d17" stroke-width="16" stroke-linecap="round"/><circle cx="440" cy="1068" r="12" fill="#222"/><circle cx="760" cy="1068" r="12" fill="#222"/><circle cx="520" cy="1076" r="10" fill="#222"/><circle cx="680" cy="1076" r="10" fill="#222"/><rect x="470" y="880" width="260" height="80" rx="26" fill="#9A7B63" /><path d="M490 880 L480 520 C480 450 720 450 720 520 L710 880 Z" fill="#8e715b"/><path d="M490 880 L480 520 C480 450 720 450 720 520 L710 880 Z" fill="url(#sheen-office-chair-espresso-b)"/><path d="M460 820 L460 880 M740 820 L740 880" stroke="#261d17" stroke-width="12" stroke-linecap="round"/><rect x="430" y="800" width="70" height="22" rx="10" fill="#836954" /><rect x="700" y="800" width="70" height="22" rx="10" fill="#836954" /></g></svg>

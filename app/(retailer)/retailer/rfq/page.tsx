@@ -100,7 +100,16 @@ function MakerGroup({
             </div>
             <QuantityInput value={line.qty} onChange={(v) => rfq.set(line.productId, v)} min={1} size="sm" />
             <div className="w-28 text-end font-display text-lg tabular-nums">{formatPrice(unit * line.qty)}</div>
-            <Button variant="ghost" size="icon-sm" onClick={() => rfq.remove(line.productId)} aria-label={t("ret.removeLine")}>
+            <Button
+              variant="ghost"
+              size="icon-sm"
+              onClick={() => {
+                const removed = line;
+                rfq.remove(line.productId);
+                toast(t("ret.lineRemoved"), { action: { label: t("common.undo"), onClick: () => rfq.set(removed.productId, removed.qty) } });
+              }}
+              aria-label={t("ret.removeLine")}
+            >
               <Trash2 className="size-3.5" strokeWidth={1.6} />
             </Button>
           </li>
@@ -119,7 +128,7 @@ function MakerGroup({
                   role="radio"
                   aria-checked={mode === m}
                   onClick={() => setMode(m)}
-                  className={cn("rounded-md border px-4 py-3 text-start transition-colors", mode === m ? "border-foreground bg-surface" : "border-border hover:border-foreground/40")}
+                  className={cn("rounded-2xl border px-4 py-3 text-start transition-colors", mode === m ? "border-foreground bg-surface" : "border-border hover:border-foreground/40")}
                 >
                   <span className="block text-sm font-medium">{m === "quote" ? t("ret.modeQuote") : t("ret.modeOrder")}</span>
                   <span className="block text-xs text-muted-foreground">{m === "quote" ? t("ret.modeQuoteBody") : t("ret.modeOrderBody")}</span>
@@ -167,7 +176,14 @@ export default function RfqPage() {
         description={t("ret.rfqSubtitle")}
         actions={
           rfq.count > 0 && (
-            <Button variant="ghost" onClick={rfq.clear}>
+            <Button
+              variant="ghost"
+              onClick={() => {
+                const snapshot = rfq.lines;
+                rfq.clear();
+                toast(t("ret.listCleared"), { action: { label: t("common.undo"), onClick: () => snapshot.forEach((l) => rfq.set(l.productId, l.qty)) } });
+              }}
+            >
               {t("ret.clearList")}
             </Button>
           )

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion } from "motion/react";
 import { FurnitureImage } from "@/components/shared/furniture-image";
 import { cn } from "@/lib/utils";
 
@@ -11,7 +11,7 @@ export function ProductGallery({ images, title }: { images: string[]; title: str
 
   return (
     <div className="space-y-4">
-      <div className="relative aspect-[4/5] overflow-hidden rounded-md bg-secondary shadow-soft">
+      <div className="relative aspect-[4/5] overflow-hidden rounded-[2rem] bg-secondary">
         <AnimatePresence mode="popLayout" initial={false}>
           <motion.div
             key={current}
@@ -36,7 +36,7 @@ export function ProductGallery({ images, title }: { images: string[]; title: str
               aria-label={`${title} — ${i + 1}`}
               onClick={() => setActive(i)}
               className={cn(
-                "relative aspect-square overflow-hidden rounded-sm bg-secondary ring-offset-2 ring-offset-background transition-all",
+                "relative aspect-square overflow-hidden rounded-2xl bg-secondary ring-offset-2 ring-offset-background transition-[opacity,box-shadow]",
                 i === active ? "ring-1 ring-foreground" : "opacity-70 hover:opacity-100",
               )}
             >

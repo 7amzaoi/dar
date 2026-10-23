@@ -36,7 +36,7 @@ function ApplicationCard({ user, company }: { user: User; company?: Company }) {
   };
 
   return (
-    <motion.li layout initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="rounded-lg border border-border bg-card p-6 shadow-soft">
+    <motion.li layout initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="rounded-[1.5rem] border border-border bg-card p-6 shadow-soft">
       <div className="flex flex-wrap items-start gap-5">
         <CompanyMark name={name} />
         <div className="min-w-0 flex-1">

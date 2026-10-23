@@ -137,13 +137,17 @@ function CatalogView() {
         <p className="mt-4 text-muted-foreground">{t("catalog.subtitle")}</p>
       </FadeIn>
 
-      <div className="sticky top-[4.5rem] z-30 -mx-5 mb-10 flex flex-wrap items-center gap-3 border-y border-hairline bg-background/90 px-5 py-3 backdrop-blur sm:-mx-8 sm:px-8 lg:-mx-12 lg:px-12">
+      <div className="glass sticky top-[5.5rem] z-30 mb-10 flex flex-wrap items-center gap-3 rounded-[1.75rem] p-2 sm:rounded-full">
         <div className="relative min-w-0 flex-1 sm:max-w-sm">
           <Search className="pointer-events-none absolute start-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" strokeWidth={1.6} />
           <Input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder={t("catalog.searchPlaceholder")}
+            type="search"
+            name="q"
+            autoComplete="off"
+            spellCheck={false}
             className="ps-9"
             aria-label={t("common.search")}
           />
@@ -154,7 +158,7 @@ function CatalogView() {
             <Button variant="outline" className="lg:hidden">
               <SlidersHorizontal className="size-4" strokeWidth={1.6} />
               {t("common.filters")}
-              {activeCount > 0 && <span className="rounded-full bg-brass px-1.5 text-[0.65rem] text-brass-foreground">{activeCount}</span>}
+              {activeCount > 0 && <span className="rounded-full bg-brand px-1.5 text-[0.65rem] text-brand-foreground">{activeCount}</span>}
             </Button>
           </SheetTrigger>
           <SheetContent side="bottom" className="max-h-[85dvh] overflow-y-auto rounded-t-xl px-6 pb-8 pt-6">
@@ -183,7 +187,7 @@ function CatalogView() {
 
       <div className="grid gap-12 lg:grid-cols-[240px_1fr]">
         <aside className="hidden lg:block" aria-label={t("common.filters")}>
-          <div className="sticky top-44">
+          <div className="sticky top-48">
             {activeCount > 0 && (
               <button onClick={clearAll} className="mb-6 inline-flex items-center gap-1.5 text-xs text-muted-foreground underline-offset-4 hover:text-foreground hover:underline">
                 <X className="size-3" /> {t("catalog.clearFilters")}

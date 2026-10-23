@@ -136,7 +136,7 @@ export default function CategoriesPage() {
       />
       <QueryView query={q} loading={<SkeletonRows rows={8} />} isEmpty={(d) => d.categories.length === 0} empty={<EmptyState icon={FolderTree} title={t("common.noResults")} />}>
         {(d) => (
-          <ul className="overflow-hidden rounded-lg border border-border bg-card shadow-soft">
+          <ul className="overflow-hidden rounded-[1.5rem] border border-border bg-card shadow-soft">
             {topLevelCategories(d.categories).map((top) => (
               <li key={top.id}>
                 <ul>

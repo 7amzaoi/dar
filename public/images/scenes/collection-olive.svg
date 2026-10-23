@@ -1,12 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice"><defs>
   <radialGradient id="light-scene-collection-olive" cx="0.22" cy="0.18" r="0.9">
-    <stop offset="0" stop-color="#eaebe2"/>
-    <stop offset="0.55" stop-color="#DFE0D2"/>
-    <stop offset="1" stop-color="#c4c5b9"/>
+    <stop offset="0" stop-color="#edf0ef"/>
+    <stop offset="0.55" stop-color="#E4E8E6"/>
+    <stop offset="1" stop-color="#c9ccca"/>
   </radialGradient>
   <linearGradient id="floor-scene-collection-olive" x1="0" y1="0" x2="0" y2="1">
-    <stop offset="0" stop-color="#bbb4a1"/>
-    <stop offset="1" stop-color="#cec8b4"/>
+    <stop offset="0" stop-color="#bdc2bf"/>
+    <stop offset="1" stop-color="#d0d6d3"/>
   </linearGradient>
   <linearGradient id="sheen-scene-collection-olive" x1="0" y1="0" x2="0" y2="1">
     <stop offset="0" stop-color="#ffffff" stop-opacity="0.22"/>
@@ -24,8 +24,8 @@
   <filter id="blur-scene-collection-olive" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="18"/></filter>
   <filter id="soft-scene-collection-olive" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="4"/></filter>
   <linearGradient id="mirror-scene-collection-olive" x1="0" y1="0" x2="1" y2="1">
-    <stop offset="0" stop-color="#e7e8dd"/>
-    <stop offset="0.5" stop-color="#c9cabd"/>
-    <stop offset="1" stop-color="#707069"/>
+    <stop offset="0" stop-color="#ebeeec"/>
+    <stop offset="0.5" stop-color="#cdd1cf"/>
+    <stop offset="1" stop-color="#727473"/>
   </linearGradient>
-</defs><rect width="1600" height="1000" fill="url(#light-scene-collection-olive)"/><path d="M400 780 V540.4 A400 400 0 0 1 1200 540.4 V780 Z" fill="#cfd0c3"/><path d="M80 0 L512 0 L1248 780 L672 780 Z" fill="url(#beam-scene-collection-olive)" opacity="0.55"/><rect y="766" width="1600" height="14" fill="#c9cabd"/><rect y="780" width="1600" height="220" fill="url(#floor-scene-collection-olive)"/><g transform="translate(366.6666666666667 0) scale(0.7222222222222222)"><ellipse cx="600" cy="1088" rx="470" ry="34" fill="#000" opacity="0.32" filter="url(#blur-scene-collection-olive)"/><path d="M260 760 L260 600 C260 560 410 560 410 600 L410 760 Z" fill="#879278"/><path d="M260 760 L260 600 C260 560 410 560 410 600 L410 760 Z" fill="url(#sheen-scene-collection-olive)"/><path d="M525 760 L525 600 C525 560 675 560 675 600 L675 760 Z" fill="#879278"/><path d="M525 760 L525 600 C525 560 675 560 675 600 L675 760 Z" fill="url(#sheen-scene-collection-olive)"/><path d="M790 760 L790 600 C790 560 940 560 940 600 L940 760 Z" fill="#879278"/><path d="M790 760 L790 600 C790 560 940 560 940 600 L940 760 Z" fill="url(#sheen-scene-collection-olive)"/><rect x="160" y="760" width="880" height="40" rx="10" fill="#6B4A33" /><rect x="160" y="760" width="880" height="40" rx="10" fill="url(#sheen-scene-collection-olive)" /><path d="M300 800 L340 800 L320 1078 L300 1078 Z M860 800 L900 800 L900 1078 L880 1078 Z" fill="#5e412d"/><path d="M520 760 Q560 700 600 700 Q640 700 680 760 Z" fill="#F1EEE4"/><path d="M585 700 L560 600 M605 700 L640 590 M595 700 L600 580" stroke="#555c4c" stroke-width="5" stroke-linecap="round"/></g></svg>
+</defs><rect width="1600" height="1000" fill="url(#light-scene-collection-olive)"/><path d="M400 780 V540.4 A400 400 0 0 1 1200 540.4 V780 Z" fill="#d4d8d6"/><path d="M80 0 L512 0 L1248 780 L672 780 Z" fill="url(#beam-scene-collection-olive)" opacity="0.55"/><rect y="766" width="1600" height="14" fill="#cdd1cf"/><rect y="780" width="1600" height="220" fill="url(#floor-scene-collection-olive)"/><g transform="translate(366.6666666666667 0) scale(0.7222222222222222)"><ellipse cx="600" cy="1088" rx="470" ry="34" fill="#000" opacity="0.32" filter="url(#blur-scene-collection-olive)"/><path d="M260 760 L260 600 C260 560 410 560 410 600 L410 760 Z" fill="#87927f"/><path d="M260 760 L260 600 C260 560 410 560 410 600 L410 760 Z" fill="url(#sheen-scene-collection-olive)"/><path d="M525 760 L525 600 C525 560 675 560 675 600 L675 760 Z" fill="#87927f"/><path d="M525 760 L525 600 C525 560 675 560 675 600 L675 760 Z" fill="url(#sheen-scene-collection-olive)"/><path d="M790 760 L790 600 C790 560 940 560 940 600 L940 760 Z" fill="#87927f"/><path d="M790 760 L790 600 C790 560 940 560 940 600 L940 760 Z" fill="url(#sheen-scene-collection-olive)"/><rect x="160" y="760" width="880" height="40" rx="10" fill="#6B5240" /><rect x="160" y="760" width="880" height="40" rx="10" fill="url(#sheen-scene-collection-olive)" /><path d="M300 800 L340 800 L320 1078 L300 1078 Z M860 800 L900 800 L900 1078 L880 1078 Z" fill="#5e4838"/><path d="M520 760 Q560 700 600 700 Q640 700 680 760 Z" fill="#F4F6F5"/><path d="M585 700 L560 600 M605 700 L640 590 M595 700 L600 580" stroke="#555c50" stroke-width="5" stroke-linecap="round"/></g></svg>
