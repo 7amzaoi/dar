@@ -3,7 +3,7 @@
 import { use, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { BadgeCheck, Check, ClipboardList, MessageSquare, Pencil } from "lucide-react";
+import { BadgeCheck, Check, ClipboardList, Pencil } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -17,18 +17,19 @@ import { ProductGallery } from "@/components/shared/product-gallery";
 import { QuantityInput } from "@/components/shared/quantity-input";
 import { EmptyState, ErrorState } from "@/components/shared/states";
 import { StockBadge } from "@/components/shared/status-badge";
+import { WhatsAppButton } from "@/components/shared/whatsapp-button";
 import { useAuth } from "@/lib/auth";
-import { db, tierFor, topLevelOf, type Product } from "@/lib/data";
+import { db, tierFor, topLevelOf, type Company, type Product } from "@/lib/data";
 import { useRfq } from "@/lib/hooks/commerce-providers";
 import { useQuery } from "@/lib/hooks/use-query";
-import { useStartChat } from "@/lib/hooks/use-start-chat";
 import { useT } from "@/lib/i18n";
 
-function RfqBox({ product, makerName }: { product: Product; makerName: string }) {
-  const { t, formatPrice } = useT();
+function RfqBox({ product, maker }: { product: Product; maker: Company | null }) {
+  const { t, tx, formatPrice } = useT();
+  const { currentUser, company } = useAuth();
   const rfq = useRfq();
   const router = useRouter();
-  const startChat = useStartChat();
+  const makerName = maker?.name ?? "";
   const existing = rfq.qtyOf(product.id);
   const [qty, setQty] = useState(existing ?? product.minOrderQty);
   const tier = tierFor(product.priceTiers, qty);
@@ -62,10 +63,22 @@ function RfqBox({ product, makerName }: { product: Product; makerName: string })
             : tier && t("product.estimate", { total: formatPrice(tier.unitPrice * qty, tier.currency), price: formatPrice(tier.unitPrice, tier.currency) })}
         </p>
       </div>
-      <Button variant="ghost" className="px-0 text-muted-foreground hover:bg-transparent hover:text-foreground" onClick={() => startChat(product.manufacturerId)}>
-        <MessageSquare className="size-4" strokeWidth={1.6} />
-        {t("product.messageMaker")}
-      </Button>
+      {maker && (
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+          <WhatsAppButton
+            company={maker}
+            label={t("whatsapp.chatMaker")}
+            text={t("whatsapp.productText", {
+              maker: maker.name,
+              name: currentUser?.name ?? "",
+              company: company?.name ?? "",
+              product: tx(product.titleAr, product.titleEn),
+              ref: product.id,
+            })}
+          />
+          <span className="text-xs text-muted-foreground">{t("whatsapp.note")}</span>
+        </div>
+      )}
     </div>
   );
 }
@@ -188,7 +201,7 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
                 </div>
               </div>
             ) : canSeePrices && isRetailer ? (
-              <RfqBox product={product} makerName={maker?.name ?? ""} />
+              <RfqBox product={product} maker={maker} />
             ) : canSeePrices ? (
               <div className="space-y-3">
                 <PriceTierTable tiers={product.priceTiers} />

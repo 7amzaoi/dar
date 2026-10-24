@@ -2,9 +2,7 @@ import type {
   Category,
   Collection,
   Company,
-  Conversation,
   Favorite,
-  Message,
   Notification,
   Order,
   Product,
@@ -26,14 +24,10 @@ export interface Tables {
   products: Product[];
   favorites: Favorite[];
   orders: Order[];
-  conversations: Conversation[];
-  messages: Message[];
   notifications: Notification[];
-  /** `${conversationId}:${userId}` -> ISO time the user last read the thread */
-  reads: Record<string, string>;
 }
 
-const STORAGE_KEY = "dar.mockdb.v1";
+const STORAGE_KEY = "dar.mockdb.v2";
 
 function fromSeed(): Tables {
   return structuredClone({
@@ -44,10 +38,7 @@ function fromSeed(): Tables {
     products: seed.products,
     favorites: seed.favorites,
     orders: seed.orders,
-    conversations: seed.conversations,
-    messages: seed.messages,
     notifications: seed.notifications,
-    reads: {},
   });
 }
 

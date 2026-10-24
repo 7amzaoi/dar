@@ -1,14 +1,12 @@
 import type {
   AnalyticsRepository,
-  ConversationSummary,
-  MessageRepository,
   Order,
   OrderRepository,
   OrderStatus,
   TimePoint,
 } from "../types";
 import { notifyCompany } from "./accounts";
-import { getTables, latency, mutate, NotFoundError, now, uid } from "./store";
+import { getTables, latency, mutate, NotFoundError, now } from "./store";
 
 const byNewest = (a: { createdAt: string }, b: { createdAt: string }) => b.createdAt.localeCompare(a.createdAt);
 
@@ -102,80 +100,6 @@ export const mockOrders: OrderRepository = {
       return o;
     });
     return latency(updated, 300);
-  },
-};
-
-// TODO(backend): replace polling-by-subscribe with realtime channels (e.g. Supabase Realtime / websockets).
-export const mockMessages: MessageRepository = {
-  async listConversations(userId) {
-    const t = getTables();
-    const summaries: ConversationSummary[] = t.conversations
-      .filter((c) => c.participantIds.includes(userId))
-      .map((conversation) => {
-        const msgs = t.messages.filter((m) => m.conversationId === conversation.id).sort((a, b) => a.createdAt.localeCompare(b.createdAt));
-        const lastRead = t.reads[`${conversation.id}:${userId}`] ?? "";
-        return {
-          conversation,
-          otherParticipants: t.users.filter((u) => u.id !== userId && conversation.participantIds.includes(u.id)),
-          lastMessage: msgs.at(-1),
-          unread: msgs.filter((m) => m.senderId !== userId && m.createdAt > lastRead).length,
-        };
-      })
-      .sort((a, b) => (b.lastMessage?.createdAt ?? "").localeCompare(a.lastMessage?.createdAt ?? ""));
-    return latency(summaries, 150);
-  },
-  async getConversation(id) {
-    return latency(getTables().conversations.find((c) => c.id === id) ?? null, 80);
-  },
-  async listMessages(conversationId) {
-    const list = getTables()
-      .messages.filter((m) => m.conversationId === conversationId)
-      .sort((a, b) => a.createdAt.localeCompare(b.createdAt));
-    return latency(list, 120);
-  },
-  async send(conversationId, senderId, body) {
-    const message = { id: uid("msg"), conversationId, senderId, body, createdAt: now() };
-    mutate((t) => {
-      t.messages.push(message);
-      t.reads[`${conversationId}:${senderId}`] = message.createdAt;
-      const conv = t.conversations.find((c) => c.id === conversationId);
-      const sender = t.users.find((u) => u.id === senderId);
-      for (const pid of conv?.participantIds ?? []) {
-        if (pid === senderId) continue;
-        const other = t.users.find((u) => u.id === pid);
-        t.notifications.unshift({
-          id: uid("n"),
-          userId: pid,
-          type: "message",
-          body: `New message from ${sender?.name ?? "a member"}`,
-          read: false,
-          createdAt: now(),
-          href: other?.role === "retailer" ? "/retailer/messages" : "/manufacturer/messages",
-          params: { name: sender?.name ?? "" },
-        });
-      }
-    });
-    return latency(message, 150);
-  },
-  async startConversation(participantIds, orderId) {
-    const t = getTables();
-    const key = [...participantIds].sort().join("|");
-    const existing = t.conversations.find((c) => [...c.participantIds].sort().join("|") === key && c.orderId === orderId);
-    if (existing) return latency(existing, 80);
-    const conversation = { id: uid("cv"), participantIds, orderId };
-    mutate((tb) => tb.conversations.push(conversation));
-    return latency(conversation, 150);
-  },
-  async markRead(conversationId, userId) {
-    const t = getTables();
-    const key = `${conversationId}:${userId}`;
-    const latest = t.messages.filter((m) => m.conversationId === conversationId).reduce((max, m) => (m.createdAt > max ? m.createdAt : max), "");
-    if (latest && (t.reads[key] ?? "") < latest) {
-      mutate((tb) => {
-        tb.reads[key] = latest;
-      });
-    }
-    return latency(undefined, 40);
   },
 };
 

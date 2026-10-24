@@ -1,6 +1,17 @@
-import type { Category, Order, OrderStatus, PriceTier, Product } from "./types";
+import type { Category, Company, Order, OrderStatus, PriceTier, Product } from "./types";
 
-/** Pure domain helpers — safe to keep when the data source changes. */
+/** Pure domain helpers: safe to keep when the data source changes. */
+
+/** The number members reach a company on: its WhatsApp number, else its phone. */
+export function whatsappNumber(c: Pick<Company, "phone" | "whatsapp">) {
+  return (c.whatsapp || c.phone).replace(/[^\d]/g, "");
+}
+
+/** https://wa.me deep link (international number, digits only) with an optional prefilled message. */
+export function whatsappLink(c: Pick<Company, "phone" | "whatsapp">, text?: string) {
+  const n = whatsappNumber(c);
+  return `https://wa.me/${n}${text ? `?text=${encodeURIComponent(text)}` : ""}`;
+}
 
 export function basePrice(p: Pick<Product, "priceTiers">) {
   return p.priceTiers[0]?.unitPrice ?? 0;

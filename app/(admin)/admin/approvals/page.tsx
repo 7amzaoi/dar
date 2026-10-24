@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { ConfirmDialog } from "@/components/dashboard/confirm-dialog";
 import { PageHeader } from "@/components/dashboard/widgets";
 import { CompanyMark } from "@/components/shared/logo";
+import { WhatsAppButton } from "@/components/shared/whatsapp-button";
 import { motion } from "@/components/shared/motion";
 import { EmptyState, QueryView, SkeletonRows } from "@/components/shared/states";
 import { db, type Company, type User } from "@/lib/data";
@@ -53,7 +54,14 @@ function ApplicationCard({ user, company }: { user: User; company?: Company }) {
             {company && <div className="flex items-center gap-1.5"><MapPin className="size-3.5 text-muted-foreground" /><dt className="sr-only">{t("company.location")}</dt><dd>{city(company.city)}, {country(company.country)}</dd></div>}
           </dl>
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
+          {company && (
+            <WhatsAppButton
+              company={company}
+              label={t("whatsapp.chatApplicant")}
+              text={t("whatsapp.applicantText", { name: user.name, company: name })}
+            />
+          )}
           <ConfirmDialog
             title={`${t("admin.reject")} — ${name}`}
             confirmLabel={t("admin.reject")}

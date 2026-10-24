@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Bell, CheckCheck, MessageSquare, Receipt, UserCheck } from "lucide-react";
+import { Bell, CheckCheck, Receipt, UserCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PageHeader } from "@/components/dashboard/widgets";
 import { EmptyState, QueryView, SkeletonRows } from "@/components/shared/states";
@@ -13,7 +13,6 @@ import { cn } from "@/lib/utils";
 
 function iconFor(type: string) {
   if (type.startsWith("order")) return Receipt;
-  if (type === "message") return MessageSquare;
   if (type.startsWith("account")) return UserCheck;
   return Bell;
 }

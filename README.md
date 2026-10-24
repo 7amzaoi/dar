@@ -53,13 +53,13 @@ Next.js 16 (App Router) · TypeScript strict · Tailwind CSS v4 · shadcn/ui on 
 ```
 app/
   (public)/        landing, catalog, product/[id], company/[id], makers, collections, login, register, pending-approval
-  (manufacturer)/manufacturer/   overview, products (+new, [id]/edit), collections, orders (+[id]), messages, notifications, profile
-  (retailer)/retailer/           overview, saved, rfq, orders (+[id]), messages, notifications
+  (manufacturer)/manufacturer/   overview, products (+new, [id]/edit), collections, orders (+[id]), notifications, profile
+  (retailer)/retailer/           overview, saved, rfq, orders (+[id]), notifications
   (admin)/admin/                 overview, approvals, users, companies, categories, products (moderation), reports, notifications
 components/
   ui/          shadcn primitives, re-themed through tokens
   shared/      navbar, footer, ProductCard, Filters, PriceTierTable/GatedPrice, gallery, states, motion, logo…
-  dashboard/   DashboardShell, RoleGuard, DataTable, PriceTierEditor, ImageManager, ProductForm, orders, messages…
+  dashboard/   DashboardShell, RoleGuard, DataTable, PriceTierEditor, ImageManager, ProductForm, orders, notifications…
 lib/
   data/        THE swappable data layer
     types.ts     entities + repository interfaces + DataSource
@@ -75,16 +75,23 @@ scripts/       placeholder art generator
 Route groups don't add URL segments, so each dashboard group holds a real segment (`/manufacturer`, `/retailer`, `/admin`).
 Each segment's layout wraps its pages in `RoleGuard`.
 
+## Contact between members: WhatsApp
+
+There is no in-app messaging. Makers and showrooms talk directly on WhatsApp, which both sides already use and trust.
+- Each company has an optional `whatsapp` number (`Company.whatsapp`). It falls back to `phone`, and is editable at registration and in the company profile.
+- `whatsappLink()` in `lib/data/helpers.ts` builds a `https://wa.me/<digits>` link. `components/shared/whatsapp-button.tsx` renders it with a prefilled message that names the piece (product page), the order (order page) or the company.
+- **Who sees it:** approved members only, like other contact details. Admins also get it on applications, to verify a business before approving.
+
 ## Data-layer swap plan (Phase 2)
 
-1. Every repository in `lib/data/types.ts` is async and typed: `ProductRepository`, `UserRepository`, `CompanyRepository`, `CategoryRepository`, `CollectionRepository`, `FavoriteRepository`, `OrderRepository`, `MessageRepository`, `NotificationRepository` and `AnalyticsRepository`. They are grouped into one `DataSource`, which also has a `subscribe()` change feed.
+1. Every repository in `lib/data/types.ts` is async and typed: `ProductRepository`, `UserRepository`, `CompanyRepository`, `CategoryRepository`, `CollectionRepository`, `FavoriteRepository`, `OrderRepository`, `NotificationRepository` and `AnalyticsRepository`. They are grouped into one `DataSource`, which also has a `subscribe()` change feed.
 2. Implement a `DataSource` against the chosen backend, for example `lib/data/supabase/index.ts`.
 3. In `lib/data/index.ts`, change the single line `export const db: DataSource = mockDataSource;`.
 4. Delete `lib/data/mock/` and the dev-only exports next to it (`resetDemoData`, `demoUserIdByRole`).
 5. Map `subscribe()` to realtime channels or to query-cache invalidation. `useQuery` refetches on every event.
 
 The UI never imports from `lib/data/mock`.
-Side effects the mock does inline (notifications on new RFQs, quotes, status changes and messages) belong in server-side triggers or actions.
+Side effects the mock does inline (notifications on new RFQs, quotes and status changes) belong in server-side triggers or actions.
 
 **Where auth plugs in:** `lib/auth/index.tsx`.
 - Replace the localStorage session with the provider's session.
@@ -101,7 +108,7 @@ Side effects the mock does inline (notifications on new RFQs, quotes, status cha
 | `lib/data/mock/store.ts` | whole in-memory/localStorage store goes away |
 | `lib/data/mock/catalog.ts` | SQL / full-text search + pagination for `products.list`; ownership check on product create; FK policy for deleting categories in use |
 | `lib/data/mock/accounts.ts` | user creation via the auth provider's sign-up; admin-only approval action + email |
-| `lib/data/mock/commerce.ts` | server-validated order state machine; realtime messaging; real analytics pipeline / SQL views |
+| `lib/data/mock/commerce.ts` | server-validated order state machine; real analytics pipeline / SQL views |
 | `lib/auth/index.tsx` | real session; credential check; sign-up transaction + verification email; server-side logout; remove demo `login(role)` |
 | `components/dashboard/role-guard.tsx` | enforce roles on the server too |
 | `components/shared/dev-role-switcher.tsx` | delete with mock auth |

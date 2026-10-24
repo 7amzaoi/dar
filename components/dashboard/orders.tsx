@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Check, MessageSquare, X } from "lucide-react";
+import { Check, X } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,6 +14,7 @@ import { FurnitureImage } from "@/components/shared/furniture-image";
 import { ArrowBack, ArrowForward } from "@/components/shared/icons";
 import { EmptyState, ErrorState, SkeletonRows } from "@/components/shared/states";
 import { OrderStatusBadge } from "@/components/shared/status-badge";
+import { WhatsAppButton } from "@/components/shared/whatsapp-button";
 import { useAuth } from "@/lib/auth";
 import {
   db,
@@ -27,7 +28,6 @@ import {
   type Product,
 } from "@/lib/data";
 import { useQuery } from "@/lib/hooks/use-query";
-import { useStartChat } from "@/lib/hooks/use-start-chat";
 import { useT } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
@@ -243,8 +243,7 @@ function QuoteForm({ order, products }: { order: Order; products: Map<string, Pr
 
 export function OrderDetail({ side, id }: { side: Side; id: string }) {
   const { t, tx, formatPrice, formatDate, city, country } = useT();
-  const { currentUser } = useAuth();
-  const startChat = useStartChat();
+  const { currentUser, company: myCompany } = useAuth();
   const [busy, setBusy] = useState(false);
 
   const q = useQuery(async () => {
@@ -302,9 +301,11 @@ export function OrderDetail({ side, id }: { side: Side; id: string }) {
           <>
             <OrderStatusBadge status={order.status} className="h-8 px-3 text-xs" />
             {counterparty && (
-              <Button variant="outline" onClick={() => startChat(counterparty.id, order.id)}>
-                <MessageSquare className="size-4" strokeWidth={1.6} /> {t("messages.title")}
-              </Button>
+              <WhatsAppButton
+                company={counterparty}
+                label={side === "manufacturer" ? t("whatsapp.chatShowroom") : t("whatsapp.chatMaker")}
+                text={t("whatsapp.orderText", { other: counterparty.name, name: currentUser?.name ?? "", company: myCompany?.name ?? "", order: order.id })}
+              />
             )}
           </>
         }
@@ -408,6 +409,12 @@ export function OrderDetail({ side, id }: { side: Side; id: string }) {
               <div className="font-display text-xl">{counterparty.name}</div>
               <div className="mt-1 text-sm text-muted-foreground">{city(counterparty.city)}, {country(counterparty.country)}</div>
               <div className="mt-1 text-sm text-muted-foreground" dir="ltr">{counterparty.phone}</div>
+              {counterparty.whatsapp && counterparty.whatsapp !== counterparty.phone && (
+                <div className="mt-1 flex items-center gap-2 text-sm text-muted-foreground">
+                  <span className="sr-only">{t("whatsapp.number")}</span>
+                  <span dir="ltr">{counterparty.whatsapp}</span>
+                </div>
+              )}
               {counterparty.type === "manufacturer" && (
                 <Button variant="link" className="mt-2 px-0" asChild>
                   <Link href={`/company/${counterparty.id}`}>{t("product.viewProfile")}</Link>

@@ -20,6 +20,8 @@ export interface RegisterInput {
   country: string;
   city: string;
   phone: string;
+  /** optional; members are contacted on WhatsApp, falling back to `phone` */
+  whatsapp?: string;
   about: string;
 }
 
@@ -140,6 +142,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         country: input.country,
         city: input.city,
         phone: input.phone,
+        whatsapp: input.whatsapp || undefined,
         about: input.about,
         verified: false,
       });

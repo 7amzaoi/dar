@@ -2,9 +2,7 @@ import type {
   Category,
   Collection,
   Company,
-  Conversation,
   Favorite,
-  Message,
   Notification,
   Order,
   OrderHistoryEntry,
@@ -30,6 +28,7 @@ export const companies: Company[] = [
     country: "EG",
     city: "Damietta",
     phone: "+20 57 222 4810",
+    whatsapp: "+20 100 482 7731",
     verified: true,
     about:
       "ورشة عائلية في دمياط منذ عام 1962، متخصصة في الأخشاب الصلبة المنحوتة يدوياً وغرف النوم والسفرة الكلاسيكية المعاصرة. نعمل مع صالات العرض في الخليج والمشرق بطلبيات مخصصة وتشطيبات حسب الطلب.",
@@ -43,6 +42,7 @@ export const companies: Company[] = [
     country: "TR",
     city: "İnegöl",
     phone: "+90 224 715 3300",
+    whatsapp: "+90 532 418 2290",
     verified: true,
     about:
       "مصنع تنجيد حديث في إينجول، قلب صناعة الأثاث التركية. نتميز بالكنب المعياري وأقمشة البوكليه والكتان وبأوقات تسليم سريعة للطلبيات بالجملة.",
@@ -56,6 +56,7 @@ export const companies: Company[] = [
     country: "IT",
     city: "Meda",
     phone: "+39 0362 330 912",
+    whatsapp: "+39 347 812 4406",
     verified: true,
     about:
       "دار تصميم إيطالية من منطقة بريانزا، تجمع بين الحرفية التقليدية والتصميم المعاصر. قطع محدودة الإنتاج من الجلد والمخمل والحجر الطبيعي.",
@@ -69,6 +70,7 @@ export const companies: Company[] = [
     country: "ID",
     city: "Jepara",
     phone: "+62 291 598 220",
+    whatsapp: "+62 812 2904 7718",
     verified: true,
     about:
       "خشب ساج معتمد من مزارع مستدامة في جاوة الوسطى. طاولات سفرة وأثاث خارجي وقطع روطان منسوجة يدوياً.",
@@ -82,6 +84,7 @@ export const companies: Company[] = [
     country: "SA",
     city: "Riyadh",
     phone: "+966 11 482 9930",
+    whatsapp: "+966 55 482 9930",
     verified: true,
     about:
       "مصنع سعودي للأثاث المكتبي والتنفيذي، بتصاميم تستلهم العمارة النجدية. خدمة تصنيع محلية وتسليم سريع داخل المملكة.",
@@ -95,6 +98,7 @@ export const companies: Company[] = [
     country: "AE",
     city: "Dubai",
     phone: "+971 4 339 1208",
+    whatsapp: "+971 50 339 1208",
     verified: true,
     about:
       "استوديو للإضاءة والمرايا والإكسسوارات في دبي، بتشطيبات نحاسية مصقولة وخزف مصنوع يدوياً.",
@@ -108,6 +112,7 @@ export const companies: Company[] = [
     country: "MA",
     city: "Marrakech",
     phone: "+212 524 388 104",
+    whatsapp: "+212 661 388 104",
     verified: false,
     about: "نسّاجون تقليديون للسجاد والمنسوجات والوسائد من المدينة الحمراء.",
     aboutEn: "Traditional weavers of rugs, textiles and cushions from the Red City.",
@@ -119,6 +124,7 @@ export const companies: Company[] = [
     country: "PT",
     city: "Guimarães",
     phone: "+351 253 410 776",
+    whatsapp: "+351 912 410 776",
     verified: false,
     about: "منسوجات كتان برتغالية لغرف النوم والضيافة.",
     aboutEn: "Portuguese linen textiles for bedroom and hospitality projects.",
@@ -130,6 +136,7 @@ export const companies: Company[] = [
     country: "SA",
     city: "Riyadh",
     phone: "+966 11 205 7741",
+    whatsapp: "+966 50 205 7741",
     verified: true,
     about: "صالة عرض أثاث فاخر في حي الملقا بالرياض، مع فرع ثانٍ في جدة.",
     aboutEn: "A luxury furniture showroom in Al Malqa, Riyadh, with a second branch in Jeddah.",
@@ -141,6 +148,7 @@ export const companies: Company[] = [
     country: "AE",
     city: "Dubai",
     phone: "+971 4 557 2210",
+    whatsapp: "+971 55 557 2210",
     verified: true,
     about: "متجر مفاهيمي للتصميم الداخلي في حي دبي للتصميم.",
     aboutEn: "A concept interiors store in Dubai Design District.",
@@ -152,6 +160,7 @@ export const companies: Company[] = [
     country: "KW",
     city: "Kuwait City",
     phone: "+965 2240 1180",
+    whatsapp: "+965 9940 1180",
     verified: true,
     about: "من أعرق معارض الأثاث في الكويت، يخدم المنازل والمشاريع الفندقية.",
     aboutEn: "One of Kuwait's longest-standing furniture houses, serving homes and hospitality projects.",
@@ -163,6 +172,7 @@ export const companies: Company[] = [
     country: "JO",
     city: "Amman",
     phone: "+962 6 592 0034",
+    whatsapp: "+962 79 592 0034",
     verified: true,
     about: "استوديو تصميم داخلي وصالة عرض في عبدون، عمّان.",
     aboutEn: "An interior design studio and showroom in Abdoun, Amman.",
@@ -174,6 +184,7 @@ export const companies: Company[] = [
     country: "EG",
     city: "Cairo",
     phone: "+20 2 2736 5590",
+    whatsapp: "+20 122 736 5590",
     verified: false,
     about: "صالة عرض جديدة في التجمع الخامس بالقاهرة الجديدة.",
     aboutEn: "A new showroom in the Fifth Settlement, New Cairo.",
@@ -488,57 +499,17 @@ export const favorites: Favorite[] = [
 ].map(([retailerId, productId], i) => ({ id: `f${i + 1}`, retailerId, productId }));
 
 /* ------------------------------------------------------------------ */
-/* Conversations + messages                                            */
-/* ------------------------------------------------------------------ */
-
-export const conversations: Conversation[] = [
-  { id: "cv-1", participantIds: ["u-r1", "u-m2"], orderId: "o-1001" },
-  { id: "cv-2", participantIds: ["u-r2", "u-m3"], orderId: "o-1002" },
-  { id: "cv-3", participantIds: ["u-r1", "u-m1"], orderId: "o-1009" },
-  { id: "cv-4", participantIds: ["u-r3", "u-m1"], orderId: "o-1004" },
-  { id: "cv-5", participantIds: ["u-r4", "u-m6"] },
-  { id: "cv-6", participantIds: ["u-r1", "u-m4"], orderId: "o-1003" },
-];
-
-type MsgRow = [conversationId: string, senderId: string, body: string, d: number, h: number];
-const msgRows: MsgRow[] = [
-  ["cv-1", "u-r1", "مرحباً إمري، أرسلنا طلب عرض سعر لكنبة الساحل والكرسي الصدفي. هل يمكن تقديم التسليم إلى الأسبوع الأول من ديسمبر؟", 1, 4],
-  ["cv-1", "u-m2", "Merhaba Abdullah — thank you! December is possible for the sofas. I'll confirm the lighter bouclé shade with our fabric supplier tomorrow.", 1, 2],
-  ["cv-1", "u-r1", "ممتاز، بانتظار عرضكم.", 0, 20],
-  ["cv-2", "u-m3", "Buongiorno Mariam, the quote is ready. Nocturne velvet is available in ink, moss and oxblood.", 4, 6],
-  ["cv-2", "u-r2", "Lovely — ink for the sofa please. Can we get swatches couriered to Dubai?", 3, 9],
-  ["cv-2", "u-m3", "Of course, swatches will ship today via DHL.", 3, 5],
-  ["cv-3", "u-m1", "أهلاً عبدالله، أرفقنا عرض السعر للخزانة والسرير المنحوت. السعر يشمل التغليف الخشبي للتصدير.", 3, 10],
-  ["cv-3", "u-r1", "شكراً عمر، سأراجع العرض مع فريق المشتريات وأعود إليك.", 2, 7],
-  ["cv-4", "u-r3", "عمر، كيف يسير الإنتاج؟ نحتاج صوراً من الورشة للعميل.", 6, 3],
-  ["cv-4", "u-m1", "الإنتاج في المرحلة الثانية — النجارة اكتملت ونبدأ التنجيد الأسبوع القادم. سأرسل الصور اليوم.", 5, 22],
-  ["cv-5", "u-r4", "Hi Rania, do you offer the Andalus mirror in a larger size for a hotel lobby?", 9, 2],
-  ["cv-5", "u-m6", "Hi Dana — yes, we can produce it at 120 × 240 cm on a made-to-order basis, around 4 weeks.", 8, 20],
-  ["cv-6", "u-m4", "Order confirmed! Teak is selected and curing. Expected dispatch in 3 weeks.", 8, 1],
-];
-
-export const messages: Message[] = msgRows.map(([conversationId, senderId, body, d, h], i) => ({
-  id: `msg-${i + 1}`,
-  conversationId,
-  senderId,
-  body,
-  createdAt: daysAgo(d, h),
-}));
-
-/* ------------------------------------------------------------------ */
 /* Notifications                                                       */
 /* ------------------------------------------------------------------ */
 
 type NotifRow = [userId: string, type: string, body: string, d: number, read: boolean, href?: string, params?: Record<string, string>];
 const notifRows: NotifRow[] = [
   ["u-m1", "order.rfq", "New quote request o-1008 from Zaha Interiors", 2, false, "/manufacturer/orders/o-1008", { order: "o-1008", company: "Zaha Interiors" }],
-  ["u-m1", "message", "New message from Abdullah Al-Rashid", 2, false, "/manufacturer/messages", { name: "Abdullah Al-Rashid" }],
   ["u-m1", "order.status", "Order o-1004 moved to In production", 10, true, "/manufacturer/orders/o-1004", { order: "o-1004" }],
   ["u-m2", "order.rfq", "New quote request o-1001 from Bayt Showroom", 1, false, "/manufacturer/orders/o-1001", { order: "o-1001", company: "Bayt Showroom" }],
   ["u-m6", "order.rfq", "New quote request o-1014 from Bayt Showroom", 0, false, "/manufacturer/orders/o-1014", { order: "o-1014", company: "Bayt Showroom" }],
   ["u-r1", "order.quoted", "Damietta Atelier sent a quote for o-1009", 3, false, "/retailer/orders/o-1009", { order: "o-1009", company: "Damietta Atelier" }],
   ["u-r1", "order.status", "Order o-1003 confirmed by Jepara Teak Works", 9, true, "/retailer/orders/o-1003", { order: "o-1003" }],
-  ["u-r1", "message", "New message from Emre Yılmaz", 1, false, "/retailer/messages", { name: "Emre Yılmaz" }],
   ["u-r2", "order.quoted", "Casa Brianza sent a quote for o-1002", 4, false, "/retailer/orders/o-1002", { order: "o-1002", company: "Casa Brianza" }],
   ["u-admin", "account.pending", "Nile Home Gallery applied for a retailer account", 1, false, "/admin/approvals", { company: "Nile Home Gallery" }],
   ["u-admin", "account.pending", "Marrakech Loom House applied for a manufacturer account", 2, false, "/admin/approvals", { company: "Marrakech Loom House" }],

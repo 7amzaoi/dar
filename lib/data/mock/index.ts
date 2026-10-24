@@ -1,7 +1,7 @@
 import type { DataSource } from "../types";
 import { mockNotifications, mockUsers } from "./accounts";
 import { mockCategories, mockCollections, mockCompanies, mockFavorites, mockProducts } from "./catalog";
-import { mockAnalytics, mockMessages, mockOrders } from "./commerce";
+import { mockAnalytics, mockOrders } from "./commerce";
 import { subscribe } from "./store";
 
 export const mockDataSource: DataSource = {
@@ -12,7 +12,6 @@ export const mockDataSource: DataSource = {
   collections: mockCollections,
   favorites: mockFavorites,
   orders: mockOrders,
-  messages: mockMessages,
   notifications: mockNotifications,
   analytics: mockAnalytics,
   subscribe,

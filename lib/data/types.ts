@@ -37,6 +37,11 @@ export interface Company {
   /** optional English description; UI falls back to `about` */
   aboutEn?: string;
   phone: string;
+  /**
+   * WhatsApp number, international format (e.g. "+966 11 482 9930").
+   * Members talk to each other on WhatsApp; falls back to `phone` when empty.
+   */
+  whatsapp?: string;
   verified: boolean;
 }
 
@@ -129,25 +134,10 @@ export interface Order {
   history?: OrderHistoryEntry[];
 }
 
-export interface Message {
-  id: string;
-  conversationId: string;
-  senderId: string;
-  body: string;
-  createdAt: string;
-}
-
-export interface Conversation {
-  id: string;
-  /** User ids */
-  participantIds: string[];
-  orderId?: string;
-}
-
 export interface Notification {
   id: string;
   userId: string;
-  /** e.g. "order.rfq", "order.quoted", "order.status", "account.approved", "message" */
+  /** e.g. "order.rfq", "order.quoted", "order.status", "account.pending", "account.approved" */
   type: string;
   body: string;
   read: boolean;
@@ -212,13 +202,6 @@ export interface CompanyFilter {
   type?: Company["type"];
   verified?: boolean;
   search?: string;
-}
-
-export interface ConversationSummary {
-  conversation: Conversation;
-  otherParticipants: User[];
-  lastMessage?: Message;
-  unread: number;
 }
 
 export interface TimePoint {
@@ -316,16 +299,6 @@ export interface OrderRepository {
   updateStatus(id: string, status: OrderStatus): Promise<Order>;
 }
 
-export interface MessageRepository {
-  listConversations(userId: string): Promise<ConversationSummary[]>;
-  getConversation(id: string): Promise<Conversation | null>;
-  listMessages(conversationId: string): Promise<Message[]>;
-  send(conversationId: string, senderId: string, body: string): Promise<Message>;
-  /** returns an existing conversation between the participants (and order) if one exists */
-  startConversation(participantIds: string[], orderId?: string): Promise<Conversation>;
-  markRead(conversationId: string, userId: string): Promise<void>;
-}
-
 export interface NotificationRepository {
   listByUser(userId: string): Promise<Notification[]>;
   unreadCount(userId: string): Promise<number>;
@@ -348,7 +321,6 @@ export interface DataSource {
   collections: CollectionRepository;
   favorites: FavoriteRepository;
   orders: OrderRepository;
-  messages: MessageRepository;
   notifications: NotificationRepository;
   analytics: AnalyticsRepository;
   /**

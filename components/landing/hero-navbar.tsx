@@ -31,7 +31,7 @@ export function HeroNavbar() {
   return (
     <nav className="relative z-10 flex w-full items-center justify-between px-6 py-6 md:px-10">
       <div className="hidden flex-1 md:block">
-        <Logo className="opacity-80 transition-opacity hover:opacity-100" />
+        <Logo tone="ink" />
       </div>
 
       <ul className="hidden items-center gap-8 text-sm font-normal text-hero-nav md:flex">

@@ -1,7 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { Bell, ClipboardList, Heart, LayoutGrid, MessageSquare, Receipt, Store } from "lucide-react";
+import { Bell, ClipboardList, Heart, LayoutGrid, Receipt, Store } from "lucide-react";
 import { DashboardShell, type NavItem } from "@/components/dashboard/dashboard-shell";
 import { RoleGuard } from "@/components/dashboard/role-guard";
 import { useAuth } from "@/lib/auth";
@@ -19,12 +19,8 @@ function RetailerShell({ children }: { children: ReactNode }) {
   const userId = currentUser?.id ?? "";
 
   const badges = useQuery(async () => {
-    const [orders, unread, convs] = await Promise.all([
-      db.orders.listByRetailer(companyId),
-      db.notifications.unreadCount(userId),
-      db.messages.listConversations(userId),
-    ]);
-    return { quoted: orders.filter((o) => o.status === "quoted").length, unread, messages: convs.reduce((s, c) => s + c.unread, 0) };
+    const [orders, unread] = await Promise.all([db.orders.listByRetailer(companyId), db.notifications.unreadCount(userId)]);
+    return { quoted: orders.filter((o) => o.status === "quoted").length, unread };
   }, [companyId, userId]);
 
   const items: NavItem[] = [
@@ -33,7 +29,6 @@ function RetailerShell({ children }: { children: ReactNode }) {
     { href: "/retailer/saved", label: t("dash.saved"), icon: Heart, badge: favorites.ids.size },
     { href: "/retailer/rfq", label: t("dash.rfq"), icon: ClipboardList, badge: rfq.count },
     { href: "/retailer/orders", label: t("dash.orders"), icon: Receipt, badge: badges.data?.quoted },
-    { href: "/retailer/messages", label: t("dash.messages"), icon: MessageSquare, badge: badges.data?.messages },
     { href: "/retailer/notifications", label: t("dash.notifications"), icon: Bell, badge: badges.data?.unread },
   ];
 

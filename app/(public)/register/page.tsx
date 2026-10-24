@@ -38,6 +38,7 @@ export default function RegisterPage() {
     country: z.string().min(1, t("auth.errRequired")),
     city: z.string().trim().min(2, t("auth.errMin", { n: 2 })),
     phone: z.string().trim().min(6, t("auth.errMin", { n: 6 })),
+    whatsapp: z.string().trim().refine((v) => v === "" || /^\+?[\d\s()-]{8,}$/.test(v), t("whatsapp.errNumber")),
     about: z.string().trim().min(20, t("auth.errMin", { n: 20 })),
     agree: z.boolean().refine((v) => v, t("auth.errAgree")),
   });
@@ -45,7 +46,7 @@ export default function RegisterPage() {
 
   const form = useForm<Values>({
     resolver: zodResolver(schema),
-    defaultValues: { role: "retailer", companyName: "", contactName: "", email: "", country: "", city: "", phone: "", about: "", agree: false },
+    defaultValues: { role: "retailer", companyName: "", contactName: "", email: "", country: "", city: "", phone: "", whatsapp: "", about: "", agree: false },
   });
   const { errors, isSubmitting } = form.formState;
   const role = useWatch({ control: form.control, name: "role" });
@@ -168,6 +169,9 @@ export default function RegisterPage() {
                   <Input id="phone" type="tel" autoComplete="tel" dir="ltr" aria-invalid={!!errors.phone} {...form.register("phone")} />
                 </Field>
               </div>
+              <Field id="whatsapp" label={t("whatsapp.number")} optionalLabel={t("common.optional")} error={err("whatsapp")} hint={t("whatsapp.numberHint")}>
+                <Input id="whatsapp" type="tel" autoComplete="tel" dir="ltr" placeholder="+966 55 123 4567" aria-invalid={!!errors.whatsapp} {...form.register("whatsapp")} />
+              </Field>
               <Field id="about" label={t("auth.about")} error={err("about")}>
                 <Textarea id="about" rows={4} placeholder={t("auth.aboutPlaceholder")} aria-invalid={!!errors.about} {...form.register("about")} />
               </Field>

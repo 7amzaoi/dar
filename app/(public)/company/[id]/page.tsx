@@ -2,25 +2,24 @@
 
 import { use } from "react";
 import Link from "next/link";
-import { BadgeCheck, MapPin, MessageSquare, Phone } from "lucide-react";
+import { BadgeCheck, MapPin, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { FurnitureImage } from "@/components/shared/furniture-image";
 import { CompanyMark } from "@/components/shared/logo";
 import { FadeIn, Reveal } from "@/components/shared/motion";
 import { ProductCard } from "@/components/shared/product-card";
+import { WhatsAppButton, WhatsAppIcon } from "@/components/shared/whatsapp-button";
 import { EmptyState, ErrorState, SkeletonGrid } from "@/components/shared/states";
 import { useAuth } from "@/lib/auth";
 import { db } from "@/lib/data";
 import { useQuery } from "@/lib/hooks/use-query";
-import { useStartChat } from "@/lib/hooks/use-start-chat";
 import { useT } from "@/lib/i18n";
 
 export default function CompanyPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const { t, tx, country, city } = useT();
-  const { currentUser, isApproved } = useAuth();
-  const startChat = useStartChat();
+  const { currentUser, company: myCompany, isApproved } = useAuth();
 
   const q = useQuery(async () => {
     const company = await db.companies.getById(id);
@@ -54,7 +53,8 @@ export default function CompanyPage({ params }: { params: Promise<{ id: string }
 
   const { company, products, collections } = q.data;
   const cover = collections[0]?.coverUrl ?? products[0]?.images[1];
-  const canMessage = currentUser?.role === "retailer" && isApproved && company.type === "manufacturer";
+  // Contact is for approved members only, and never with yourself.
+  const canContact = isApproved && currentUser?.companyId !== company.id;
 
   return (
     <>
@@ -90,11 +90,20 @@ export default function CompanyPage({ params }: { params: Promise<{ id: string }
               {company.type === "manufacturer" && (
                 <div className="border-t border-hairline pt-4 text-muted-foreground">{t("company.piecesCount", { count: products.length })}</div>
               )}
-              {canMessage && (
-                <Button className="w-full" variant="outline" onClick={() => startChat(company.id)}>
-                  <MessageSquare className="size-4" strokeWidth={1.6} />
-                  {t("product.messageMaker")}
-                </Button>
+              {isApproved && (
+                <div className="flex items-center gap-3">
+                  <WhatsAppIcon />
+                  <dt className="sr-only">{t("whatsapp.number")}</dt>
+                  <dd dir="ltr">{company.whatsapp || company.phone}</dd>
+                </div>
+              )}
+              {canContact && (
+                <WhatsAppButton
+                  className="w-full"
+                  company={company}
+                  label={company.type === "manufacturer" ? t("whatsapp.chatMaker") : t("whatsapp.chatShowroom")}
+                  text={t("whatsapp.companyText", { maker: company.name, name: currentUser?.name ?? "", company: myCompany?.name ?? "" })}
+                />
               )}
             </dl>
           </FadeIn>

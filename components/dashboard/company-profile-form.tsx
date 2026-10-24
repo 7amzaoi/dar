@@ -23,6 +23,7 @@ export function CompanyProfileForm({ company }: { company: Company }) {
   const schema = z.object({
     name: z.string().trim().min(2, t("auth.errMin", { n: 2 })),
     phone: z.string().trim().min(6, t("auth.errMin", { n: 6 })),
+    whatsapp: z.string().trim().refine((v) => v === "" || /^\+?[\d\s()-]{8,}$/.test(v), t("whatsapp.errNumber")),
     country: z.string().min(1, t("auth.errRequired")),
     city: z.string().trim().min(2, t("auth.errMin", { n: 2 })),
     about: z.string().trim().min(20, t("auth.errMin", { n: 20 })),
@@ -32,15 +33,15 @@ export function CompanyProfileForm({ company }: { company: Company }) {
 
   const form = useForm<Values>({
     resolver: zodResolver(schema),
-    defaultValues: { name: company.name, phone: company.phone, country: company.country, city: company.city, about: company.about, aboutEn: company.aboutEn ?? "" },
+    defaultValues: { name: company.name, phone: company.phone, whatsapp: company.whatsapp ?? "", country: company.country, city: company.city, about: company.about, aboutEn: company.aboutEn ?? "" },
   });
   const { errors, isSubmitting, isDirty } = form.formState;
   const live = useWatch({ control: form.control });
 
   const onSubmit = form.handleSubmit(async (v) => {
     // TODO(backend): logo upload + server-side validation of company edits.
-    const saved = await db.companies.update(company.id, { ...v, aboutEn: v.aboutEn || undefined });
-    form.reset({ ...v, aboutEn: saved.aboutEn ?? "" });
+    const saved = await db.companies.update(company.id, { ...v, aboutEn: v.aboutEn || undefined, whatsapp: v.whatsapp || undefined });
+    form.reset({ ...v, aboutEn: saved.aboutEn ?? "", whatsapp: saved.whatsapp ?? "" });
     toast.success(t("mfr.profileSaved"));
   });
 
@@ -57,6 +58,9 @@ export function CompanyProfileForm({ company }: { company: Company }) {
                 <Input id="phone" type="tel" dir="ltr" aria-invalid={!!errors.phone} {...form.register("phone")} />
               </Field>
             </div>
+            <Field id="whatsapp" label={t("whatsapp.number")} optionalLabel={t("common.optional")} error={errors.whatsapp?.message} hint={t("whatsapp.numberHint")}>
+              <Input id="whatsapp" type="tel" dir="ltr" placeholder="+966 55 123 4567" aria-invalid={!!errors.whatsapp} {...form.register("whatsapp")} />
+            </Field>
             <div className="grid gap-5 sm:grid-cols-2">
               <Field id="country" label={t("auth.country")} error={errors.country?.message}>
                 <Controller
