@@ -50,7 +50,7 @@ function MakerGroup({
     if (!currentUser) return;
     setBusy(true);
     try {
-      // TODO(backend): submit as one server transaction (order + notification + email to maker).
+      // One server transaction (order + maker notification). TODO(backend): email to maker.
       await db.orders.create({
         retailerId: currentUser.companyId,
         manufacturerId: maker.id,

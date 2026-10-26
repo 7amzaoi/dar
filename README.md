@@ -1,24 +1,54 @@
-# Dār — B2B furniture marketplace (Phase 1: frontend only)
+# Dār — B2B furniture marketplace
+
+<div dir="rtl">
+
+## دار — سوق أثاث بين الشركات
+
+**دار** منصة تجارة جملة مغلقة بتربط **مصانع الأثاث** مع **صالات العرض وتجّار التجزئة**، ومعها لوحة تحكم للإدارة.
+
+- **للمصانع:** إضافة المنتجات بصورها وأسعار الجملة حسب الكمية، وتنظيمها بمجموعات، واستقبال طلبات التسعير والطلبات المباشرة ومتابعتها.
+- **لصالات العرض:** تصفّح الكتالوج وفلترته، وحفظ القطع المفضّلة، وطلب عروض أسعار من أكتر من مصنع، ومتابعة الطلبات خطوة بخطوة.
+- **للإدارة:** مراجعة طلبات العضوية والموافقة عليها، وتوثيق الشركات، وإدارة التصنيفات ومراجعة المنتجات، وتقارير المنصة.
+- **الثقة:** أسعار الجملة بتظهر بس للأعضاء الموافَق عليهم، والتواصل بين الطرفين بيصير مباشرة على واتساب.
+- **اللغة:** عربي من اليمين لليسار بشكل افتراضي، ومعه إنجليزي.
+
+**التقنيات:** Next.js 16 وTypeScript وTailwind، وعلى Neon: قاعدة بيانات Postgres، وتسجيل دخول Neon Auth، وتخزين صور المنتجات، وتحديثات مباشرة للإشعارات والطلبات.
+
+</div>
 
 A closed trade marketplace connecting furniture **manufacturers** with **showroom retailers**, plus an **admin** console.
-Phase 1 is frontend only: everything runs on a typed mock data layer and a mock auth context.
-There is **no database, no auth provider, no payments, no uploads and no email**.
+It runs on **Neon**:
+- Lakebase Postgres for data
+- Neon Auth (Managed Better Auth) for sign-in
+- Object Storage for product images
+- Realtime for live notifications and order updates
+
+There are **no payments and no transactional email** yet. Neon Auth sends its own verification and reset emails.
 
 ## Run
 
 ```bash
 npm install        # .npmrc sets legacy-peer-deps (needed by @hookform/resolvers' optional peers)
+neon env pull      # writes the branch's env vars into .env.local (the project is linked in .neon)
+npm run db:migrate # apply drizzle/ migrations (direct connection)
+npm run db:seed    # load the demo catalogue (idempotent)
 npm run dev        # http://localhost:3000
+npm run smoke      # with dev running: Object Storage + Realtime end-to-end check (cleans up after itself)
 npm run build      # production build
 npm run lint
 ```
 
-- **Demo accounts.** Use `/login` → "Explore with a demo account", or the floating **Preview as** switcher (development only).
-  - Showroom: Bayt Showroom, `abdullah@bayt.sa`
-  - Manufacturer: Damietta Atelier, `omar@damietta-atelier.com`
-  - Admin: `admin@dar.trade`
-  - Any password works. Every seeded email can sign in.
-- **Mock persistence.** Mock data changes persist in `localStorage` (`dar.mockdb.v1`), so they survive a reload. Restore the seed with **Preview as → Reset demo data**.
+- **Environment (`.env.local`, git-ignored).** `neon deploy` and `neon env pull` write these:
+  - `DATABASE_URL`, `DATABASE_URL_UNPOOLED`
+  - `NEON_AUTH_BASE_URL`, `NEON_AUTH_JWKS_URL`
+  - `NEON_REALTIME_URL`, `NEON_REALTIME_SECRET`
+  - the `AWS_*` storage credentials
+
+  Add two app values yourself: `NEON_AUTH_COOKIE_SECRET` (`openssl rand -base64 32`) and `NEXT_PUBLIC_NEON_REALTIME_URL` (same value as `NEON_REALTIME_URL`).
+- **Infrastructure as code.** `neon.ts` declares Auth, the private `assets` bucket and Realtime, including `allowedOrigins`. Add every deployed origin to that list before deploying there. Apply the file with `neon deploy`.
+- **Seeded accounts.** The seed creates app accounts but no sign-in identities.
+  - To use one, sign up through Neon Auth with its email, e.g. `abdullah@bayt.sa` (showroom), `omar@damietta-atelier.com` (manufacturer) or `admin@dar.trade` (admin). On first sign-in the identity is linked to that account.
+  - Outside development, this link requires a verified email, so nobody can claim a seeded account just by typing its address.
 - **Languages.** Arabic (RTL) is the default; switch with the language toggle. The choice is kept in the `dar-locale` cookie.
 - **Placeholder images.** All images are generated SVG placeholders in `public/images`. To regenerate them, run `node scripts/generate-placeholders.mjs`.
 
@@ -64,12 +94,18 @@ lib/
   data/        THE swappable data layer
     types.ts     entities + repository interfaces + DataSource
     helpers.ts   pure domain helpers (tier pricing, totals, pipelines)
-    mock/        in-memory implementation + seed data
+    http.ts      browser DataSource: every call is a POST to /api/data
+    seed.ts      demo catalogue (used by scripts/seed-db.ts)
     index.ts     `export const db` — the only import the UI uses
-  auth/        mock auth context (currentUser, login(role), logout, register)
+  auth/        Neon Auth client + AuthProvider (currentUser, loginWithEmail, register, logout)
+  realtime/    Realtime bridge: live queries -> `db.subscribe` listeners
+  server/      server-only: db (Drizzle + pg), repositories, policy (authorization), auth, storage, realtime
   i18n/        ar.ts / en.ts dictionaries, provider, useT()
   hooks/       useQuery, quote-list (RFQ) + favorites providers, useStartChat
-scripts/       placeholder art generator
+app/api/       auth/[...path] (Neon Auth proxy), data (RPC), me, register, uploads, files/[...key], realtime
+drizzle/       SQL migrations (generated from lib/server/db/schema.ts)
+scripts/       placeholder art generator, seed-db.ts, smoke-services.mts
+proxy.ts       redirects signed-out visitors away from the dashboards
 ```
 
 Route groups don't add URL segments, so each dashboard group holds a real segment (`/manufacturer`, `/retailer`, `/admin`).
@@ -82,52 +118,58 @@ There is no in-app messaging. Makers and showrooms talk directly on WhatsApp, wh
 - `whatsappLink()` in `lib/data/helpers.ts` builds a `https://wa.me/<digits>` link. `components/shared/whatsapp-button.tsx` renders it with a prefilled message that names the piece (product page), the order (order page) or the company.
 - **Who sees it:** approved members only, like other contact details. Admins also get it on applications, to verify a business before approving.
 
-## Data-layer swap plan (Phase 2)
+## Backend (Neon)
 
-1. Every repository in `lib/data/types.ts` is async and typed: `ProductRepository`, `UserRepository`, `CompanyRepository`, `CategoryRepository`, `CollectionRepository`, `FavoriteRepository`, `OrderRepository`, `NotificationRepository` and `AnalyticsRepository`. They are grouped into one `DataSource`, which also has a `subscribe()` change feed.
-2. Implement a `DataSource` against the chosen backend, for example `lib/data/supabase/index.ts`.
-3. In `lib/data/index.ts`, change the single line `export const db: DataSource = mockDataSource;`.
-4. Delete `lib/data/mock/` and the dev-only exports next to it (`resetDemoData`, `demoUserIdByRole`).
-5. Map `subscribe()` to realtime channels or to query-cache invalidation. `useQuery` refetches on every event.
+**Data.** The UI still only talks to `db` (`lib/data`). In the browser, `db` is `lib/data/http.ts`: each repository call becomes `POST /api/data { repo, method, args }`. The route:
+1. resolves the Neon Auth session to an app account,
+2. runs that method's rule in `lib/server/policy.ts`,
+3. calls the Postgres repository in `lib/server/repositories.ts` (Drizzle on `node-postgres`, pooled `DATABASE_URL`).
 
-The UI never imports from `lib/data/mock`.
-Side effects the mock does inline (notifications on new RFQs, quotes and status changes) belong in server-side triggers or actions.
+The rules:
+- **Catalogue reads are public**, but limited to published products (owners and admins also see drafts). Guests see only verified companies.
+- **Prices:** price tiers are stripped on the server for guests and pending accounts.
+- **Own data only:** favorites, orders and notifications are always the caller's own. `retailerId`, `userId` and `manufacturerId` come from the session, never from the arguments.
+- **Makers** can edit only their own products and collections.
+- **Admin** methods require an approved admin.
+- **Orders:** direct orders are priced on the server from the maker's tiers.
+- **Notifications** for RFQs, quotes, status changes and approvals are written in the same transaction as the change.
 
-**Where auth plugs in:** `lib/auth/index.tsx`.
-- Replace the localStorage session with the provider's session.
-- Wire `loginWithEmail`, `register` and `logout`.
-- Add server-side protection (`proxy.ts` and/or server layouts) in addition to the client `RoleGuard`.
+**Auth.**
+- `lib/server/auth.ts` (`createNeonAuth`) and `app/api/auth/[...path]` proxy Managed Better Auth. The browser uses `createAuthClient()` from `lib/auth`.
+- Sign-up creates the identity first; then `/api/register` creates the company and a pending account.
+- `/api/me` returns the signed-in account.
+- Sign-out does a full page load.
 
-**Rendering:** all data views are client components today, because the mock lives in the browser. With a real backend, public pages (catalog, product, company) can move to server components for SEO.
+**Storage.**
+- `POST /api/uploads` accepts JPG, PNG, WebP or AVIF images up to 5 MB, from approved manufacturers only.
+- Files go to the private `assets` bucket under `products/<company>/<uuid>.<ext>`, and the route returns `/api/files/<key>`.
+- `/api/files/<key>` redirects to a presigned GET that is valid for 1 hour.
+
+**Realtime.**
+- `POST /api/realtime` seals three live queries for the caller: their account status, their notifications and their company's orders.
+- `lib/realtime` subscribes to them and renews each capability 10 s before it expires. Every committed change fires `db.subscribe`.
+- So a new RFQ, a quote, a status change or an approval shows up for the other party, and in other tabs, without a reload.
+
+**Migrations.** Edit `lib/server/db/schema.ts`, then run `npm run db:generate` and `npm run db:migrate`. drizzle-kit only touches the `public` schema; `neon_auth` belongs to Neon Auth.
 
 ## `// TODO(backend):` seams
 
 | File | Seam |
 |---|---|
-| `lib/data/index.ts` | swap `mockDataSource`; remove `resetDemoData`, `demoUserIdByRole`; move `categoryCovers` to a `cover_url` column |
-| `lib/data/mock/store.ts` | whole in-memory/localStorage store goes away |
-| `lib/data/mock/catalog.ts` | SQL / full-text search + pagination for `products.list`; ownership check on product create; FK policy for deleting categories in use |
-| `lib/data/mock/accounts.ts` | user creation via the auth provider's sign-up; admin-only approval action + email |
-| `lib/data/mock/commerce.ts` | server-validated order state machine; real analytics pipeline / SQL views |
-| `lib/auth/index.tsx` | real session; credential check; sign-up transaction + verification email; server-side logout; remove demo `login(role)` |
-| `components/dashboard/role-guard.tsx` | enforce roles on the server too |
-| `components/shared/dev-role-switcher.tsx` | delete with mock auth |
-| `app/(public)/login/page.tsx` | remove demo sign-in buttons |
-| `app/(admin)/admin/approvals/page.tsx` | approve/reject as admin-only server action + email |
+| `lib/data/index.ts` | move `categoryCovers` to a `cover_url` column |
+| `lib/server/repositories.ts` | paginate `products.list`; real analytics pipeline (views are synthetic) |
+| `app/(admin)/admin/approvals/page.tsx` | approval email |
 | `app/(admin)/admin/users/page.tsx` | revoke sessions on suspend |
 | `app/(admin)/admin/products/page.tsx` | audit log for moderation |
-| `app/(retailer)/retailer/rfq/page.tsx` | submit RFQ as one server transaction (+ email to maker) |
-| `components/dashboard/image-manager.tsx` | upload to storage instead of `URL.createObjectURL` |
-| `components/dashboard/company-profile-form.tsx` | logo upload + server-side validation |
-| `components/shared/furniture-image.tsx` | drop `unoptimized` once images come from a CDN |
+| `components/dashboard/company-profile-form.tsx` | logo upload |
+| `components/shared/furniture-image.tsx` | CDN in front of the bucket, then drop `unoptimized` |
 | `lib/placeholders.ts` | placeholder library replaced by real uploads |
 | `lib/hooks/commerce-providers.tsx` | persist the quote list server-side |
-| `lib/hooks/use-query.ts` | consider TanStack Query for real network calls |
+| `lib/hooks/use-query.ts` | consider TanStack Query |
 
-## Known Phase-1 limitations
+## Known limitations
 
-- Uploaded images are object URLs, so they stop resolving after a reload. Placeholder-library images persist.
 - Prices are USD only.
 - Analytics "views" are synthetic.
-- Mock data lives per browser. Two tabs share it on reload, not live.
-- `cacheComponents` is disabled in `next.config.ts`, because every view is client-rendered in this phase.
+- Data views are still client components that fetch through `/api/data`. Public pages (catalog, product, company) could move to server components for SEO. Until then, `cacheComponents` stays disabled in `next.config.ts`.
+- Neon Auth sends mail through Neon's shared SMTP sender. Production needs custom SMTP (see Neon's Auth production checklist).

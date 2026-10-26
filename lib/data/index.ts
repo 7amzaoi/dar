@@ -1,21 +1,14 @@
 /**
  * THE single entry point the UI imports data from.
  *
- * To move to a real database, implement `DataSource` (see ./types.ts) in e.g.
- * `./supabase/index.ts` and change the one import below. Nothing in /app or
- * /components needs to change.
+ * The browser talks to Lakebase Postgres through /api/data (see ./http.ts and
+ * lib/server/policy.ts). Nothing in /app or /components depends on that detail.
  */
-import { mockDataSource, resetMockData, DEMO_USER_BY_ROLE, CATEGORY_COVERS } from "./mock";
+import { httpDataSource } from "./http";
+import { CATEGORY_COVERS } from "./covers";
 import type { DataSource } from "./types";
 
-// TODO(backend): swap `mockDataSource` for the real implementation.
-export const db: DataSource = mockDataSource;
-
-/** Dev-only: restore seed data (used by the role switcher). TODO(backend): remove. */
-export const resetDemoData = resetMockData;
-
-/** Dev-only demo accounts used by the role switcher and "try a demo account" login. TODO(backend): remove. */
-export const demoUserIdByRole = DEMO_USER_BY_ROLE;
+export const db: DataSource = httpDataSource;
 
 /** Presentational cover art for top-level categories. TODO(backend): move to a `cover_url` column. */
 export const categoryCovers: Record<string, string> = CATEGORY_COVERS;

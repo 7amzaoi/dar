@@ -64,8 +64,8 @@ export default function PendingApprovalPage() {
             </Button>
           )}
           {currentUser ? (
-            <Button size="lg" variant="outline" onClick={logout} asChild>
-              <Link href="/">{t("common.signOut")}</Link>
+            <Button size="lg" variant="outline" onClick={() => void logout()}>
+              {t("common.signOut")}
             </Button>
           ) : (
             <Button size="lg" variant="outline" asChild>

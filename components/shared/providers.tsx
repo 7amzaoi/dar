@@ -6,7 +6,6 @@ import { MotionConfig } from "motion/react";
 import { Direction } from "radix-ui";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { DevRoleSwitcher } from "@/components/shared/dev-role-switcher";
 import { AuthProvider } from "@/lib/auth";
 import { FavoritesProvider, RfqProvider } from "@/lib/hooks/commerce-providers";
 import { I18nProvider, useT, type Locale } from "@/lib/i18n";
@@ -34,7 +33,6 @@ export function Providers({ locale, children }: { locale: Locale; children: Reac
                   <TooltipProvider delayDuration={250}>
                     {children}
                     <LocalizedToaster />
-                    {process.env.NODE_ENV === "development" && <DevRoleSwitcher />}
                   </TooltipProvider>
                 </RfqProvider>
               </FavoritesProvider>

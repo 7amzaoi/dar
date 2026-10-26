@@ -2,9 +2,9 @@ import Image from "next/image";
 import { cn } from "@/lib/utils";
 
 /**
- * Image wrapper for product/scene art. Placeholders are SVG and uploads are blob: URLs,
- * so we skip the optimizer.
- * TODO(backend): drop `unoptimized` once images come from a CDN/storage bucket.
+ * Image wrapper for product/scene art. Placeholders are SVG and uploads are /api/files/* redirects
+ * to presigned storage URLs, so we skip the optimizer.
+ * TODO(backend): put a CDN in front of the bucket and drop `unoptimized`.
  */
 export function FurnitureImage({
   src,

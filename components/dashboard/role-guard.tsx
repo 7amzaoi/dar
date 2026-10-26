@@ -7,9 +7,8 @@ import { homeFor, useAuth } from "@/lib/auth";
 import type { Role } from "@/lib/data";
 
 /**
- * Client-side route guard for the mock role.
- * TODO(backend): enforce on the server too (proxy.ts / layout-level session check);
- * a client guard alone is not a security boundary.
+ * Client-side route guard (UX only). The boundary is on the server: proxy.ts redirects
+ * signed-out visitors and lib/server/policy.ts authorizes every data call by role and status.
  */
 export function RoleGuard({ role, children }: { role: Role; children: ReactNode }) {
   const { ready, currentUser } = useAuth();

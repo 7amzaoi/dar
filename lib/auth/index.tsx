@@ -1,22 +1,23 @@
 "use client";
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
-import { db, demoUserIdByRole, type Company, type Role, type User } from "@/lib/data";
+import { createAuthClient } from "@neondatabase/auth/next";
+import { db, type Company, type Role, type User } from "@/lib/data";
+import { startRealtime } from "@/lib/realtime";
 
 /**
- * MOCK auth. Holds the "signed-in" user id in localStorage.
- *
- * TODO(backend): replace with the real auth provider's session (cookie/JWT),
- * server-side role checks (proxy.ts + server components), and real sign-up/sign-in.
+ * Neon Auth (Managed Better Auth). The browser talks to the same-origin proxy at /api/auth;
+ * the session cookie is what /api/data, /api/uploads and /api/realtime authorize against.
+ * The marketplace account (role, status, company) comes from /api/me.
  */
-
-const SESSION_KEY = "dar.session";
+export const authClient = createAuthClient();
 
 export interface RegisterInput {
   role: Exclude<Role, "admin">;
   companyName: string;
   contactName: string;
   email: string;
+  password: string;
   country: string;
   city: string;
   phone: string;
@@ -25,38 +26,41 @@ export interface RegisterInput {
   about: string;
 }
 
+interface Me {
+  signedIn: boolean;
+  user: User | null;
+  company: Company | null;
+}
+
 interface AuthValue {
-  /** false until the session has been read on the client */
+  /** false until the session has been read */
   ready: boolean;
   currentUser: User | null;
   company: Company | null;
   isApproved: boolean;
-  /** wholesale prices & ordering are gated to approved members */
+  /** wholesale prices & ordering are gated to approved members (the server enforces it too) */
   canSeePrices: boolean;
-  /** demo sign-in by role (used by the dev role switcher + demo buttons) */
-  login: (role: Role) => Promise<User>;
   loginWithEmail: (email: string, password: string) => Promise<User>;
   register: (input: RegisterInput) => Promise<User>;
-  logout: () => void;
+  logout: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthValue | null>(null);
 
-function readSession(): string | null {
-  try {
-    return window.localStorage.getItem(SESSION_KEY);
-  } catch {
-    return null;
-  }
+async function fetchMe(): Promise<Me> {
+  const res = await fetch("/api/me", { cache: "no-store" });
+  if (!res.ok) throw new Error(`HTTP_${res.status}`);
+  return res.json();
 }
 
-function writeSession(id: string | null) {
-  try {
-    if (id) window.localStorage.setItem(SESSION_KEY, id);
-    else window.localStorage.removeItem(SESSION_KEY);
-  } catch {
-    // storage unavailable — session lasts for this tab only
-  }
+/** Better Auth error codes -> the codes the auth forms translate. */
+function authError(error: { code?: string; status?: number } | null | undefined, fallback: string) {
+  const code = error?.code ?? "";
+  if (code.includes("ALREADY_EXISTS")) return new Error("EMAIL_TAKEN");
+  if (code.includes("INVALID") || error?.status === 401) return new Error("INVALID_CREDENTIALS");
+  if (code.includes("EMAIL_NOT_VERIFIED")) return new Error("VERIFY_EMAIL");
+  if (code.includes("PASSWORD")) return new Error("WEAK_PASSWORD");
+  return new Error(code || fallback);
 }
 
 export function homeFor(user: Pick<User, "role" | "status"> | null) {
@@ -67,111 +71,77 @@ export function homeFor(user: Pick<User, "role" | "status"> | null) {
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [ready, setReady] = useState(false);
-  /** undefined = session not read yet; null = signed out */
-  const [userId, setUserId] = useState<string | null | undefined>(undefined);
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
-  const [company, setCompany] = useState<Company | null>(null);
+  const [me, setMe] = useState<Me>({ signedIn: false, user: null, company: null });
   const [version, setVersion] = useState(0);
-
-  // Read the persisted session once on mount (async so it never blocks hydration).
-  useEffect(() => {
-    let cancelled = false;
-    Promise.resolve(readSession()).then((id) => {
-      if (!cancelled) setUserId(id);
-    });
-    return () => {
-      cancelled = true;
-    };
-  }, []);
 
   useEffect(() => db.subscribe(() => setVersion((v) => v + 1)), []);
 
-  // Resolve the user + company whenever the id or underlying data changes.
+  // Re-read the account whenever data changes (approval, profile edits, Realtime events).
   useEffect(() => {
-    if (userId === undefined) return;
     let cancelled = false;
-    (async () => {
-      const user = userId ? await db.users.getById(userId) : null;
-      const comp = user?.companyId ? await db.companies.getById(user.companyId) : null;
-      if (cancelled) return;
-      setCurrentUser(user);
-      setCompany(comp);
-      setReady(true);
-    })();
+    fetchMe()
+      .then((next) => !cancelled && setMe(next))
+      .catch(() => {
+        // keep the last known account; the next change retries
+      })
+      .finally(() => !cancelled && setReady(true));
     return () => {
       cancelled = true;
     };
-  }, [userId, version]);
+  }, [version]);
 
-  const signIn = useCallback((user: User) => {
-    writeSession(user.id);
-    setUserId(user.id);
-    setCurrentUser(user);
+  const userId = me.user?.id;
+  useEffect(() => (userId ? startRealtime(userId) : undefined), [userId]);
+
+  const loginWithEmail = useCallback(async (email: string, password: string) => {
+    const { error } = await authClient.signIn.email({ email, password });
+    if (error) throw authError(error, "INVALID_CREDENTIALS");
+    const next = await fetchMe();
+    if (!next.user) {
+      // a valid identity with no marketplace account (e.g. sign-up interrupted before /api/register)
+      await authClient.signOut();
+      throw new Error("NO_USER");
+    }
+    setMe(next);
+    return next.user;
   }, []);
 
-  const login = useCallback(
-    async (role: Role) => {
-      // TODO(backend): demo-only shortcut; remove when real auth lands.
-      const user = await db.users.getById(demoUserIdByRole[role]);
-      if (!user) throw new Error("Demo user missing");
-      signIn(user);
-      return user;
-    },
-    [signIn],
-  );
-
-  const loginWithEmail = useCallback(
-    async (email: string, password: string) => {
-      // TODO(backend): verify credentials with the auth provider. The mock accepts any password.
-      void password;
-      const user = await db.users.getByEmail(email);
-      if (!user) throw new Error("NO_USER");
-      signIn(user);
-      return user;
-    },
-    [signIn],
-  );
-
-  const register = useCallback(
-    async (input: RegisterInput) => {
-      // TODO(backend): create the auth identity + company in one server transaction, send verification email.
-      if (await db.users.getByEmail(input.email)) throw new Error("EMAIL_TAKEN");
-      const comp = await db.companies.create({
-        type: input.role,
-        name: input.companyName,
+  const register = useCallback(async (input: RegisterInput) => {
+    const { data, error } = await authClient.signUp.email({ email: input.email, password: input.password, name: input.contactName });
+    if (error) throw authError(error, "SIGN_UP_FAILED");
+    // Email verification on: no session until the address is confirmed.
+    if (!data || !("token" in data) || !data.token) throw new Error("VERIFY_EMAIL");
+    const res = await fetch("/api/register", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        role: input.role,
+        contactName: input.contactName,
+        companyName: input.companyName,
         country: input.country,
         city: input.city,
         phone: input.phone,
         whatsapp: input.whatsapp || undefined,
         about: input.about,
-        verified: false,
-      });
-      const user = await db.users.create({
-        role: input.role,
-        email: input.email,
-        name: input.contactName,
-        companyId: comp.id,
-        status: "pending",
-      });
-      signIn(user);
-      setCompany(comp);
-      return user;
-    },
-    [signIn],
-  );
+      }),
+    });
+    const body = (await res.json().catch(() => ({}))) as { user?: User; company?: Company | null; error?: string };
+    if (!res.ok || !body.user) throw new Error(body.error ?? "SIGN_UP_FAILED");
+    setMe({ signedIn: true, user: body.user, company: body.company ?? null });
+    return body.user;
+  }, []);
 
-  const logout = useCallback(() => {
-    // TODO(backend): revoke the session server-side.
-    writeSession(null);
-    setUserId(null);
-    setCurrentUser(null);
-    setCompany(null);
+  const logout = useCallback(async () => {
+    await authClient.signOut();
+    // A full load drops every cached query, the Realtime client and the previous account's rows.
+    // eslint-disable-next-line @next/next/no-location-assign-relative-destination -- a full load is the point here
+    window.location.assign("/");
   }, []);
 
   const value = useMemo<AuthValue>(() => {
-    const isApproved = currentUser?.status === "approved";
-    return { ready, currentUser, company, isApproved, canSeePrices: isApproved, login, loginWithEmail, register, logout };
-  }, [ready, currentUser, company, login, loginWithEmail, register, logout]);
+    const isApproved = me.user?.status === "approved";
+    return { ready, currentUser: me.user, company: me.company, isApproved, canSeePrices: isApproved, loginWithEmail, register, logout };
+  }, [ready, me, loginWithEmail, register, logout]);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

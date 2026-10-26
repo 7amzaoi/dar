@@ -6,15 +6,13 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Building2, Factory, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { AuthShell } from "@/components/shared/auth-shell";
 import { Field } from "@/components/shared/field";
-import { ArrowForward } from "@/components/shared/icons";
 import { FadeIn } from "@/components/shared/motion";
 import { homeFor, useAuth } from "@/lib/auth";
-import type { Role, User } from "@/lib/data";
+import type { User } from "@/lib/data";
 import { useT } from "@/lib/i18n";
 
 function safeNext(next: string | null, user: User) {
@@ -29,12 +27,12 @@ function LoginForm() {
   const { t } = useT();
   const router = useRouter();
   const next = useSearchParams().get("next");
-  const { login, loginWithEmail } = useAuth();
+  const { loginWithEmail } = useAuth();
   const [formError, setFormError] = useState<string | null>(null);
 
   const schema = z.object({
     email: z.email(t("auth.errEmail")),
-    password: z.string().min(6, t("auth.errPassword")),
+    password: z.string().min(8, t("auth.errPassword")),
   });
   type Values = z.infer<typeof schema>;
 
@@ -52,16 +50,12 @@ function LoginForm() {
     setFormError(null);
     try {
       finish(await loginWithEmail(values.email, values.password));
-    } catch {
-      setFormError(t("auth.errNoUser"));
+    } catch (e) {
+      const code = e instanceof Error ? e.message : "";
+      setFormError(code === "NO_USER" ? t("auth.errNoUser") : code === "VERIFY_EMAIL" ? t("auth.errVerifyEmail") : t("auth.errCredentials"));
     }
   });
 
-  const demos: { role: Role; icon: typeof Factory; title: string; body: string }[] = [
-    { role: "retailer", icon: Building2, title: t("auth.demoRetailer"), body: t("auth.demoRetailerBody") },
-    { role: "manufacturer", icon: Factory, title: t("auth.demoManufacturer"), body: t("auth.demoManufacturerBody") },
-    { role: "admin", icon: ShieldCheck, title: t("auth.demoAdmin"), body: t("auth.demoAdminBody") },
-  ];
 
   const { errors, isSubmitting } = form.formState;
 
@@ -75,7 +69,7 @@ function LoginForm() {
         <Field id="email" label={t("auth.email")} error={errors.email?.message}>
           <Input id="email" type="email" autoComplete="email" spellCheck={false} dir="ltr" aria-invalid={!!errors.email} aria-describedby={errors.email ? "email-error" : undefined} {...form.register("email")} />
         </Field>
-        <Field id="password" label={t("auth.password")} error={errors.password?.message} hint={t("auth.passwordHint")}>
+        <Field id="password" label={t("auth.password")} error={errors.password?.message}>
           <Input id="password" type="password" autoComplete="current-password" dir="ltr" aria-invalid={!!errors.password} {...form.register("password")} />
         </Field>
         {formError && (
@@ -95,28 +89,6 @@ function LoginForm() {
         </Link>
       </p>
 
-      {/* TODO(backend): remove demo sign-in once real auth is wired. */}
-      <div className="mt-12 border-t border-hairline pt-8">
-        <h2 className="font-display text-xl">{t("auth.demoTitle")}</h2>
-        <p className="mt-1 text-sm text-muted-foreground">{t("auth.demoBody")}</p>
-        <div className="mt-5 grid gap-2.5">
-          {demos.map((d) => (
-            <button
-              key={d.role}
-              type="button"
-              onClick={async () => finish(await login(d.role))}
-              className="group flex items-center gap-4 rounded-[1.25rem] border border-border bg-card px-4 py-3.5 text-start transition-[border-color,box-shadow] hover:border-brand/60 hover:shadow-soft"
-            >
-              <d.icon className="size-5 shrink-0 text-brand-strong" strokeWidth={1.4} />
-              <span className="min-w-0 flex-1">
-                <span className="block text-sm font-medium">{d.title}</span>
-                <span className="block truncate text-xs text-muted-foreground">{d.body}</span>
-              </span>
-              <ArrowForward className="size-4 text-muted-foreground transition-transform group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5" />
-            </button>
-          ))}
-        </div>
-      </div>
     </FadeIn>
   );
 }

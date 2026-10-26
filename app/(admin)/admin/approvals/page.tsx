@@ -19,7 +19,7 @@ function ApplicationCard({ user, company }: { user: User; company?: Company }) {
   const [busy, setBusy] = useState(false);
   const name = company?.name ?? user.name;
 
-  // TODO(backend): approve/reject must be an admin-only server action (+ notification email).
+  // Admin-only on the server (lib/server/policy.ts). TODO(backend): approval email.
   const approve = async () => {
     setBusy(true);
     try {

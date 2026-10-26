@@ -67,10 +67,7 @@ export function UserMenu({ align = "end" }: { align?: "start" | "end" }) {
           {t("common.dashboard")}
         </DropdownMenuItem>
         <DropdownMenuItem
-          onSelect={() => {
-            logout();
-            router.push("/");
-          }}
+          onSelect={() => void logout()}
         >
           <LogOut className="size-4" strokeWidth={1.6} />
           {t("common.signOut")}

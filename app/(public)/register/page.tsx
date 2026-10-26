@@ -16,7 +16,7 @@ import { AuthShell } from "@/components/shared/auth-shell";
 import { Field } from "@/components/shared/field";
 import { ArrowBack, ArrowForward } from "@/components/shared/icons";
 import { FadeIn } from "@/components/shared/motion";
-import { useAuth } from "@/lib/auth";
+import { homeFor, useAuth } from "@/lib/auth";
 import en from "@/lib/i18n/en";
 import { useT } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
@@ -35,6 +35,7 @@ export default function RegisterPage() {
     companyName: z.string().trim().min(2, t("auth.errMin", { n: 2 })),
     contactName: z.string().trim().min(2, t("auth.errMin", { n: 2 })),
     email: z.email(t("auth.errEmail")),
+    password: z.string().min(8, t("auth.errPassword")),
     country: z.string().min(1, t("auth.errRequired")),
     city: z.string().trim().min(2, t("auth.errMin", { n: 2 })),
     phone: z.string().trim().min(6, t("auth.errMin", { n: 6 })),
@@ -46,7 +47,7 @@ export default function RegisterPage() {
 
   const form = useForm<Values>({
     resolver: zodResolver(schema),
-    defaultValues: { role: "retailer", companyName: "", contactName: "", email: "", country: "", city: "", phone: "", whatsapp: "", about: "", agree: false },
+    defaultValues: { role: "retailer", companyName: "", contactName: "", email: "", password: "", country: "", city: "", phone: "", whatsapp: "", about: "", agree: false },
   });
   const { errors, isSubmitting } = form.formState;
   const role = useWatch({ control: form.control, name: "role" });
@@ -55,10 +56,13 @@ export default function RegisterPage() {
     void agree;
     setFormError(null);
     try {
-      await registerAccount(values);
-      router.push("/pending-approval");
+      // a seeded email links to its existing (possibly approved) account, so route by status
+      router.push(homeFor(await registerAccount(values)));
     } catch (e) {
-      setFormError(e instanceof Error && e.message === "EMAIL_TAKEN" ? t("auth.errEmailTaken") : t("common.errorBody"));
+      const code = e instanceof Error ? e.message : "";
+      setFormError(
+        code === "EMAIL_TAKEN" ? t("auth.errEmailTaken") : code === "VERIFY_EMAIL" ? t("auth.errVerifyEmail") : code === "WEAK_PASSWORD" ? t("auth.errPassword") : t("common.errorBody"),
+      );
     }
   });
 
@@ -142,6 +146,9 @@ export default function RegisterPage() {
               </div>
               <Field id="email" label={t("auth.email")} error={err("email")}>
                 <Input id="email" type="email" autoComplete="email" spellCheck={false} dir="ltr" aria-invalid={!!errors.email} {...form.register("email")} />
+              </Field>
+              <Field id="password" label={t("auth.password")} error={err("password")} hint={t("auth.passwordHint")}>
+                <Input id="password" type="password" autoComplete="new-password" dir="ltr" aria-invalid={!!errors.password} {...form.register("password")} />
               </Field>
               <div className="grid gap-5 sm:grid-cols-3">
                 <Field id="country" label={t("auth.country")} error={err("country")}>

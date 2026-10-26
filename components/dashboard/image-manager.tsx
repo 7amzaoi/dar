@@ -1,7 +1,8 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { ImagePlus, Library, Star, Trash2 } from "lucide-react";
+import { ImagePlus, Library, Loader2, Star, Trash2 } from "lucide-react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -9,10 +10,17 @@ import { FurnitureImage } from "@/components/shared/furniture-image";
 import { useT } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
-/**
- * Manage an ordered list of image URLs. Uploads become local object URLs.
- * TODO(backend): upload files to storage and store the returned public URLs instead.
- */
+/** Upload one image to Neon Object Storage through /api/uploads; resolves to its app URL. */
+async function uploadImage(file: File): Promise<string> {
+  const body = new FormData();
+  body.append("file", file);
+  const res = await fetch("/api/uploads", { method: "POST", body });
+  const json = (await res.json().catch(() => ({}))) as { url?: string; error?: string };
+  if (!res.ok || !json.url) throw new Error(json.error ?? `HTTP_${res.status}`);
+  return json.url;
+}
+
+/** Manage an ordered list of image URLs. New files are uploaded to the `assets` bucket. */
 export function ImageManager({
   value,
   onChange,
@@ -32,11 +40,17 @@ export function ImageManager({
   const { t } = useT();
   const fileRef = useRef<HTMLInputElement>(null);
   const [libraryOpen, setLibraryOpen] = useState(false);
+  const [uploading, setUploading] = useState(0);
 
-  const addFiles = (files: FileList | null) => {
-    if (!files) return;
-    const urls = [...files].filter((f) => f.type.startsWith("image/")).map((f) => URL.createObjectURL(f));
-    onChange([...value, ...urls].slice(0, max));
+  const addFiles = async (files: FileList | null) => {
+    const picked = [...(files ?? [])].filter((f) => f.type.startsWith("image/")).slice(0, max - value.length);
+    if (!picked.length) return;
+    setUploading(picked.length);
+    const results = await Promise.allSettled(picked.map(uploadImage));
+    setUploading(0);
+    const urls = results.flatMap((r) => (r.status === "fulfilled" ? [r.value] : []));
+    if (urls.length < picked.length) toast.error(t("mfr.uploadFailed"));
+    if (urls.length) onChange([...value, ...urls].slice(0, max));
   };
 
   return (
@@ -46,7 +60,7 @@ export function ImageManager({
         onDragOver={(e) => e.preventDefault()}
         onDrop={(e) => {
           e.preventDefault();
-          addFiles(e.dataTransfer.files);
+          void addFiles(e.dataTransfer.files);
         }}
       >
         {value.map((src, i) => (
@@ -79,15 +93,20 @@ export function ImageManager({
         {value.length < max && (
           <button
             type="button"
+            disabled={uploading > 0}
+            aria-busy={uploading > 0}
             onClick={() => fileRef.current?.click()}
             className="flex aspect-[4/5] flex-col items-center justify-center gap-2 rounded-[1.25rem] border border-dashed border-border text-xs text-muted-foreground transition-colors hover:border-brand hover:text-foreground"
           >
-            <ImagePlus className="size-5" strokeWidth={1.4} />
-            {t("mfr.uploadImages")}
+            {uploading > 0 ? <Loader2 className="size-5 animate-spin" strokeWidth={1.4} /> : <ImagePlus className="size-5" strokeWidth={1.4} />}
+            {uploading > 0 ? t("mfr.uploading") : t("mfr.uploadImages")}
           </button>
         )}
       </div>
-      <input ref={fileRef} type="file" accept="image/*" multiple className="sr-only" onChange={(e) => addFiles(e.target.files)} tabIndex={-1} />
+      <input ref={fileRef} type="file" accept="image/jpeg,image/png,image/webp,image/avif" multiple className="sr-only" onChange={(e) => {
+          void addFiles(e.target.files);
+          e.target.value = "";
+        }} tabIndex={-1} />
       <div className="flex flex-wrap items-center gap-3">
         <Button type="button" variant="outline" size="sm" onClick={() => setLibraryOpen(true)}>
           <Library className="size-3.5" /> {t("mfr.fromLibrary")}

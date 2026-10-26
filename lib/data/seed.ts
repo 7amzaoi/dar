@@ -10,7 +10,7 @@ import type {
   Product,
   StockStatus,
   User,
-} from "../types";
+} from "./types";
 
 /** Seed timestamps are relative to this anchor so the demo always looks recent. */
 const NOW = Date.now();
@@ -213,9 +213,6 @@ export const users: User[] = [
   { id: "u-r6", role: "retailer", email: "tariq@maisonkhaleej.ae", name: "Tariq Nasser", status: "suspended", companyId: "r2", createdAt: daysAgo(90) },
 ];
 
-/** The accounts the dev role switcher / demo login use. */
-export const DEMO_USER_BY_ROLE = { manufacturer: "u-m1", retailer: "u-r1", admin: "u-admin" } as const;
-
 /* ------------------------------------------------------------------ */
 /* Categories                                                          */
 /* ------------------------------------------------------------------ */
@@ -242,14 +239,6 @@ export const categories: Category[] = [
   { id: "c-decor-objects", nameAr: "مزهريات وتحف", nameEn: "Vases & Objects", parentId: "c-decor" },
 ];
 
-/** Cover image used for each top-level category tile. */
-export const CATEGORY_COVERS: Record<string, string> = {
-  "c-sofas": "/images/products/sofa-ivory-a.svg",
-  "c-bedroom": "/images/products/bed-stone-a.svg",
-  "c-dining": "/images/products/dining-table-espresso-a.svg",
-  "c-office": "/images/products/desk-sage-a.svg",
-  "c-decor": "/images/products/lamp-terracotta-a.svg",
-};
 
 /* ------------------------------------------------------------------ */
 /* Collections                                                         */

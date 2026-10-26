@@ -60,6 +60,13 @@ export interface PriceTier {
 
 export type StockStatus = "in_stock" | "made_to_order" | "out_of_stock";
 
+export interface Dimensions {
+  width: number;
+  height: number;
+  depth: number;
+  unit: "cm";
+}
+
 export interface Product {
   id: string;
   /** -> Company.id */
@@ -72,7 +79,7 @@ export interface Product {
   images: string[];
   materials: string[];
   colors: string[];
-  dimensions: { width: number; height: number; depth: number; unit: "cm" };
+  dimensions: Dimensions;
   /** wholesale tiered pricing, ascending by minQty */
   priceTiers: PriceTier[];
   minOrderQty: number;
