@@ -72,6 +72,11 @@ function LoginForm() {
         <Field id="password" label={t("auth.password")} error={errors.password?.message}>
           <Input id="password" type="password" autoComplete="current-password" dir="ltr" aria-invalid={!!errors.password} {...form.register("password")} />
         </Field>
+        <div className="-mt-2 text-end">
+          <Link href="/forgot-password" className="text-sm text-muted-foreground underline-offset-4 hover:text-foreground hover:underline">
+            {t("auth.forgotLink")}
+          </Link>
+        </div>
         {formError && (
           <p role="alert" className="rounded-2xl border border-destructive/30 bg-destructive/5 px-4 py-3 text-sm text-destructive">
             {formError}

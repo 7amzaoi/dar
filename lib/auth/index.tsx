@@ -63,6 +63,16 @@ function authError(error: { code?: string; status?: number } | null | undefined,
   return new Error(code || fallback);
 }
 
+/** The Neon client either returns `{ data, error }` or throws an AuthApiError; normalize both to a result. */
+async function settle<T>(call: () => Promise<{ data: T; error: { code?: string; status?: number } | null }>) {
+  try {
+    return await call();
+  } catch (e) {
+    const err = e as { code?: string; status?: number; message?: string };
+    return { data: null, error: { code: err.code ?? err.message, status: err.status } };
+  }
+}
+
 export function homeFor(user: Pick<User, "role" | "status"> | null) {
   if (!user) return "/";
   if (user.status === "pending") return "/pending-approval";
@@ -94,7 +104,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => (userId ? startRealtime(userId) : undefined), [userId]);
 
   const loginWithEmail = useCallback(async (email: string, password: string) => {
-    const { error } = await authClient.signIn.email({ email, password });
+    const { error } = await settle(() => authClient.signIn.email({ email, password }));
     if (error) throw authError(error, "INVALID_CREDENTIALS");
     const next = await fetchMe();
     if (!next.user) {
@@ -107,7 +117,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const register = useCallback(async (input: RegisterInput) => {
-    const { data, error } = await authClient.signUp.email({ email: input.email, password: input.password, name: input.contactName });
+    const { data, error } = await settle(() => authClient.signUp.email({ email: input.email, password: input.password, name: input.contactName }));
     if (error) throw authError(error, "SIGN_UP_FAILED");
     // Email verification on: no session until the address is confirmed.
     if (!data || !("token" in data) || !data.token) throw new Error("VERIFY_EMAIL");
