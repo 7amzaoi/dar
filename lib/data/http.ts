@@ -31,7 +31,8 @@ async function call(repo: string, method: string, args: unknown[]) {
   const res = await fetch("/api/data", {
     method: "POST",
     headers: { "content-type": "application/json" },
-    body: JSON.stringify({ repo, method, args }),
+    // undefined fields become null so a cleared optional field (e.g. collectionId) reaches the server
+    body: JSON.stringify({ repo, method, args }, (_key, value: unknown) => (value === undefined ? null : value)),
   });
   const body = (await res.json().catch(() => ({ error: "BAD_RESPONSE" }))) as { data?: unknown; error?: string };
   if (!res.ok || body.error) throw new Error(body.error ?? `HTTP_${res.status}`);

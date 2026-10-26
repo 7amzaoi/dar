@@ -22,7 +22,7 @@ import type {
   User,
   UserRepository,
 } from "@/lib/data/types";
-import { orderTotal } from "@/lib/data/helpers";
+import { ORDER_TRANSITIONS, orderTotal } from "@/lib/data/helpers";
 import { sqlDb as db, schema } from "./db";
 
 /**
@@ -457,9 +457,6 @@ const favoritesRepo: FavoriteRepository = {
   },
 };
 
-/** Statuses the manufacturer drives notify the retailer, and vice versa. */
-const RETAILER_FACING: OrderStatus[] = ["quoted", "in_production", "shipped", "completed"];
-
 const ordersRepo: OrderRepository = {
   async list() {
     return (await db.select().from(ordersT).orderBy(desc(ordersT.created_at))).map(toOrder);
@@ -505,7 +502,10 @@ const ordersRepo: OrderRepository = {
     return db.transaction(async (tx) => {
       const [o] = await tx.select().from(ordersT).where(eq(ordersT.id, id)).for("update");
       if (!o) throw new NotFoundError("Order", id);
-      const items = o.items.map((item) => ({ ...item, unitPrice: prices[item.productId] ?? item.unitPrice }));
+      // checked under the row lock, so two quotes (or a quote racing a cancel) can't both land
+      if (o.status !== "quote_requested") throw new Error("INVALID_STATE");
+      if (o.items.some((item) => !(prices[item.productId] > 0))) throw new Error("QUOTE_INCOMPLETE");
+      const items = o.items.map((item) => ({ ...item, unitPrice: prices[item.productId] }));
       const [r] = await tx
         .update(ordersT)
         .set({ items, status: "quoted", history: [...o.history, { status: "quoted", at: new Date().toISOString() }] })
@@ -517,25 +517,39 @@ const ordersRepo: OrderRepository = {
     });
   },
   async updateStatus(id, status) {
-    return db.transaction(async (tx) => {
-      const [o] = await tx.select().from(ordersT).where(eq(ordersT.id, id)).for("update");
-      if (!o) throw new NotFoundError("Order", id);
-      const [r] = await tx
-        .update(ordersT)
-        .set({ status, history: [...o.history, { status, at: new Date().toISOString() }] })
-        .where(eq(ordersT.id, id))
-        .returning();
-      const toRetailer = RETAILER_FACING.includes(status);
-      await notifyCompany(tx, toRetailer ? o.retailer_id : o.manufacturer_id, {
-        type: "order.status",
-        body: `Order ${id} is now ${status.replace(/_/g, " ")}`,
-        href: `/${toRetailer ? "retailer" : "manufacturer"}/orders/${id}`,
-        params: { order: id, status },
-      });
-      return toOrder(r);
-    });
+    return transitionOrder(id, status, "admin");
   },
 };
+
+/**
+ * Moves an order along ORDER_TRANSITIONS on behalf of one side, under a row lock, and tells
+ * the other side. Throws INVALID_TRANSITION when that side may not make this move from the current status.
+ */
+export async function transitionOrder(id: string, status: OrderStatus, actor: "retailer" | "manufacturer" | "admin") {
+  return db.transaction(async (tx) => {
+    const [o] = await tx.select().from(ordersT).where(eq(ordersT.id, id)).for("update");
+    if (!o) throw new NotFoundError("Order", id);
+    const moves = ORDER_TRANSITIONS[o.status];
+    const allowed = actor === "admin" ? [...moves.retailer, ...moves.manufacturer] : moves[actor];
+    if (!allowed.includes(status)) throw new Error("INVALID_TRANSITION");
+    const [r] = await tx
+      .update(ordersT)
+      .set({ status, history: [...o.history, { status, at: new Date().toISOString() }] })
+      .where(eq(ordersT.id, id))
+      .returning();
+    // the side that didn't act hears about it (both, when an admin acted)
+    const notify: ("retailer" | "manufacturer")[] = actor === "admin" ? ["retailer", "manufacturer"] : actor === "retailer" ? ["manufacturer"] : ["retailer"];
+    for (const side of notify) {
+      await notifyCompany(tx, side === "retailer" ? o.retailer_id : o.manufacturer_id, {
+        type: "order.status",
+        body: `Order ${id} is now ${status.replace(/_/g, " ")}`,
+        href: `/${side}/orders/${id}`,
+        params: { order: id, status },
+      });
+    }
+    return toOrder(r);
+  });
+}
 
 const notificationsRepo: NotificationRepository = {
   async listByUser(userId) {

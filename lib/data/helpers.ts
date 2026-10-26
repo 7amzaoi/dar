@@ -39,6 +39,20 @@ export const DIRECT_PIPELINE: OrderStatus[] = ["confirmed", "in_production", "sh
 export const OPEN_STATUSES: OrderStatus[] = ["quote_requested", "quoted", "confirmed", "in_production", "shipped"];
 
 /** Next status a manufacturer can move an order to (after confirmation). */
+/**
+ * Who may move an order from one status to the next. `quoted` is only reached through
+ * submitQuote. The server enforces this table (admins may do either side's moves).
+ */
+export const ORDER_TRANSITIONS: Record<OrderStatus, { retailer: OrderStatus[]; manufacturer: OrderStatus[] }> = {
+  quote_requested: { retailer: ["cancelled"], manufacturer: ["cancelled"] },
+  quoted: { retailer: ["confirmed", "cancelled"], manufacturer: ["cancelled"] },
+  confirmed: { retailer: ["cancelled"], manufacturer: ["in_production", "cancelled"] },
+  in_production: { retailer: [], manufacturer: ["shipped", "cancelled"] },
+  shipped: { retailer: [], manufacturer: ["completed"] },
+  completed: { retailer: [], manufacturer: [] },
+  cancelled: { retailer: [], manufacturer: [] },
+};
+
 export function nextManufacturerStatus(status: OrderStatus): OrderStatus | null {
   switch (status) {
     case "confirmed":

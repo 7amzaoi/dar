@@ -1,23 +1,11 @@
 import "server-only";
 import { and, eq } from "drizzle-orm";
 import { tierFor } from "@/lib/data/helpers";
-import type {
-  AccountStatus,
-  Category,
-  Collection,
-  Company,
-  CompanyFilter,
-  NewCollection,
-  NewOrder,
-  NewProduct,
-  OrderStatus,
-  Product,
-  ProductFilter,
-  User,
-  UserFilter,
-} from "@/lib/data/types";
+import type { AccountStatus, Company, Product, User } from "@/lib/data/types";
 import { sqlDb, schema } from "./db";
-import { pg } from "./repositories";
+import { pg, transitionOrder } from "./repositories";
+import * as input from "./validation";
+import { parse } from "./validation";
 import { HttpError, type Viewer } from "./viewer";
 
 /**
@@ -53,7 +41,6 @@ const str = (x: unknown): string => {
   if (typeof x !== "string" || !x || x.length > 200) throw new HttpError(400, "INVALID_INPUT");
   return x;
 };
-const obj = <T>(x: unknown): T => (x && typeof x === "object" && !Array.isArray(x) ? (x as T) : ({} as T));
 
 function visible(v: Viewer, p: Product) {
   return p.published || isAdmin(v) || p.manufacturerId === v.user?.companyId;
@@ -92,29 +79,19 @@ async function orderParty(v: Viewer, id: string) {
 /** Companies are public once verified; members also see the unverified ones they trade with. */
 const companyVisible = (v: Viewer, c: Company) => c.verified || isApproved(v) || c.id === v.user?.companyId;
 
-/** Fields a member may edit on their own company profile (verification is the admin's call). */
-function companyPatch(patch: Partial<Company>, asAdmin: boolean): Partial<Company> {
-  const { name, country, city, about, aboutEn, phone, whatsapp, logoUrl, verified } = patch;
-  const safe: Partial<Company> = { name, country, city, about, aboutEn, phone, whatsapp, logoUrl };
-  if (asAdmin && verified !== undefined) safe.verified = verified;
-  for (const k of Object.keys(safe) as (keyof Company)[]) if (!(k in patch)) delete safe[k];
-  return safe;
+/** A product's category must exist and its collection must belong to the same maker. */
+async function checkProductRefs(manufacturerId: string, p: Partial<Pick<Product, "categoryId" | "collectionId">>) {
+  if (p.categoryId && !(await pg.categories.getById(p.categoryId))) throw new HttpError(400, "INVALID_CATEGORY");
+  if (p.collectionId) {
+    const c = await pg.collections.getById(p.collectionId);
+    if (!c || c.manufacturerId !== manufacturerId) throw new HttpError(400, "INVALID_COLLECTION");
+  }
 }
-
-function productPatch(patch: Partial<Product>): Partial<Product> {
-  const { id: _id, manufacturerId: _m, createdAt: _c, ...rest } = patch;
-  void _id;
-  void _m;
-  void _c;
-  return rest;
-}
-
-const RETAILER_MAY_SET: OrderStatus[] = ["confirmed", "cancelled"];
 
 export const policies: Record<string, Handler> = {
   /* products */
   "products.list": async (v, [f]) => {
-    const filter = { ...obj<ProductFilter>(f) };
+    const filter = parse(input.productFilter, f);
     if (!canSeePrices(v)) {
       delete filter.priceMin;
       delete filter.priceMax;
@@ -130,13 +107,20 @@ export const policies: Record<string, Handler> = {
     return presentAll(v, await pg.products.getMany(ids.map(str)));
   },
   "products.listByManufacturer": async (v, [id]) => presentAll(v, await pg.products.listByManufacturer(str(id))),
-  "products.create": async (v, [input]) => {
+  "products.create": async (v, [data]) => {
     const user = approved(v, "manufacturer");
-    return pg.products.create({ ...obj<NewProduct>(input), manufacturerId: user.companyId });
+    const product = parse(input.productInput(user.companyId), data);
+    await checkProductRefs(user.companyId, product);
+    return pg.products.create({ ...product, manufacturerId: user.companyId });
   },
   "products.update": async (v, [id, patch]) => {
-    await ownedProduct(v, str(id));
-    return pg.products.update(str(id), productPatch(obj<Partial<Product>>(patch)));
+    const current = await ownedProduct(v, str(id));
+    const changes = parse(input.productPatch(current.manufacturerId), patch);
+    await checkProductRefs(current.manufacturerId, changes);
+    // tiers and MOQ may arrive separately; the stored pair must still agree
+    const tiers = changes.priceTiers ?? current.priceTiers;
+    if (tiers[0].minQty < (changes.minOrderQty ?? current.minOrderQty)) throw new HttpError(400, "INVALID_INPUT");
+    return pg.products.update(current.id, changes);
   },
   "products.remove": async (v, [id]) => {
     await ownedProduct(v, str(id));
@@ -145,7 +129,7 @@ export const policies: Record<string, Handler> = {
   "products.facets": async () => pg.products.facets(),
 
   /* users */
-  "users.list": async (v, [f]) => (admin(v), pg.users.list(obj<UserFilter>(f))),
+  "users.list": async (v, [f]) => (admin(v), pg.users.list(parse(input.userFilter, f))),
   "users.getById": async (v, [id]) => {
     const user = signedIn(v);
     if (str(id) !== user.id) admin(v);
@@ -156,12 +140,13 @@ export const policies: Record<string, Handler> = {
     if (str(companyId) !== approved(v).companyId) admin(v);
     return pg.users.listByCompany(str(companyId));
   },
-  "users.create": async (v, [input]) => (admin(v), pg.users.create(obj(input))),
+  "users.create": async (v, [data]) => (admin(v), pg.users.create(parse(input.userInput, data))),
   "users.update": async (v, [id, patch]) => {
     const user = signedIn(v);
-    const p = obj<Partial<User>>(patch);
-    if (isAdmin(v)) return pg.users.update(str(id), { name: p.name, email: p.email, role: p.role, status: p.status });
+    const p = parse(input.userPatch, patch);
+    if (isAdmin(v)) return pg.users.update(str(id), p);
     if (str(id) !== user.id) throw new HttpError(403, "FORBIDDEN");
+    if (!p.name) throw new HttpError(400, "INVALID_INPUT");
     return pg.users.update(user.id, { name: p.name });
   },
   "users.setStatus": async (v, [id, status]) => {
@@ -172,7 +157,7 @@ export const policies: Record<string, Handler> = {
 
   /* companies */
   "companies.list": async (v, [f]) => {
-    const filter = { ...obj<CompanyFilter>(f) };
+    const filter = parse(input.companyFilter, f);
     if (!isApproved(v)) filter.verified = true;
     return pg.companies.list(filter);
   },
@@ -180,32 +165,47 @@ export const policies: Record<string, Handler> = {
     const c = await pg.companies.getById(str(id));
     return c && companyVisible(v, c) ? c : null;
   },
-  "companies.create": async (v, [input]) => (admin(v), pg.companies.create(obj(input))),
+  "companies.create": async (v, [data]) => {
+    admin(v);
+    return pg.companies.create(parse(input.companyInput, data));
+  },
   "companies.update": async (v, [id, patch]) => {
     const asAdmin = isAdmin(v);
     if (!asAdmin && str(id) !== approved(v).companyId) throw new HttpError(403, "FORBIDDEN");
-    return pg.companies.update(str(id), companyPatch(obj<Partial<Company>>(patch), asAdmin));
+    const changes: Partial<Company> = parse(input.companyPatch(str(id)), patch);
+    // verification is the admin's call
+    if (!asAdmin) delete changes.verified;
+    return pg.companies.update(str(id), changes);
   },
 
   /* categories */
   "categories.list": async () => pg.categories.list(),
   "categories.getById": async (_v, [id]) => pg.categories.getById(str(id)),
-  "categories.create": async (v, [input]) => (admin(v), pg.categories.create(obj<Omit<Category, "id">>(input))),
-  "categories.update": async (v, [id, patch]) => (admin(v), pg.categories.update(str(id), obj(patch))),
+  "categories.create": async (v, [data]) => {
+    admin(v);
+    const c = parse(input.categoryInput, data);
+    if (c.parentId && !(await pg.categories.getById(c.parentId))) throw new HttpError(400, "INVALID_CATEGORY");
+    return pg.categories.create(c);
+  },
+  "categories.update": async (v, [id, patch]) => {
+    admin(v);
+    const c = parse(input.categoryPatch, patch);
+    if (c.parentId && (c.parentId === str(id) || !(await pg.categories.getById(c.parentId)))) throw new HttpError(400, "INVALID_CATEGORY");
+    return pg.categories.update(str(id), c);
+  },
   "categories.remove": async (v, [id]) => (admin(v), pg.categories.remove(str(id))),
 
   /* collections */
   "collections.list": async () => pg.collections.list(),
   "collections.listByManufacturer": async (_v, [id]) => pg.collections.listByManufacturer(str(id)),
   "collections.getById": async (_v, [id]) => pg.collections.getById(str(id)),
-  "collections.create": async (v, [input]) => {
+  "collections.create": async (v, [data]) => {
     const user = approved(v, "manufacturer");
-    return pg.collections.create({ ...obj<NewCollection>(input), manufacturerId: user.companyId });
+    return pg.collections.create({ ...parse(input.collectionInput(user.companyId), data), manufacturerId: user.companyId });
   },
   "collections.update": async (v, [id, patch]) => {
-    await ownedCollection(v, str(id));
-    const { nameAr, nameEn, coverUrl } = obj<Partial<Collection>>(patch);
-    return pg.collections.update(str(id), { nameAr, nameEn, coverUrl });
+    const current = await ownedCollection(v, str(id));
+    return pg.collections.update(current.id, parse(input.collectionPatch(current.manufacturerId), patch));
   },
   "collections.remove": async (v, [id]) => {
     await ownedCollection(v, str(id));
@@ -235,48 +235,29 @@ export const policies: Record<string, Handler> = {
     if (isAdmin(v)) return pg.orders.listByManufacturer(str(id));
     return pg.orders.listByManufacturer(approved(v, "manufacturer").companyId);
   },
-  "orders.create": async (v, [input]) => {
+  "orders.create": async (v, [data]) => {
     const user = approved(v, "retailer");
-    const o = obj<NewOrder>(input);
-    if (!Array.isArray(o.items) || !o.items.length || o.items.length > 100) throw new HttpError(400, "INVALID_INPUT");
-    const products = await pg.products.getMany(o.items.map((i) => str(i.productId)));
+    const o = parse(input.orderInput, data);
+    const products = await pg.products.getMany(o.items.map((i) => i.productId));
     const byId = new Map(products.map((p) => [p.id, p]));
-    const items = o.items.map((i) => {
-      const p = byId.get(i.productId);
-      const qty = Math.floor(Number(i.qty));
-      if (!p || !p.published || p.manufacturerId !== o.manufacturerId || !(qty >= p.minOrderQty)) throw new HttpError(400, "INVALID_ITEM");
+    const items = o.items.map(({ productId, qty }) => {
+      const p = byId.get(productId);
+      if (!p || !p.published || p.manufacturerId !== o.manufacturerId || qty < p.minOrderQty) throw new HttpError(400, "INVALID_ITEM");
       // Direct orders are priced from the maker's tiers here, never from the browser.
       return o.isRFQ ? { productId: p.id, qty } : { productId: p.id, qty, unitPrice: tierFor(p.priceTiers, qty)?.unitPrice ?? 0 };
     });
-    return pg.orders.create({
-      retailerId: user.companyId,
-      manufacturerId: str(o.manufacturerId),
-      items,
-      isRFQ: !!o.isRFQ,
-      note: typeof o.note === "string" ? o.note.slice(0, 2000) : undefined,
-    });
+    return pg.orders.create({ retailerId: user.companyId, manufacturerId: o.manufacturerId, items, isRFQ: o.isRFQ, note: o.note });
   },
   "orders.submitQuote": async (v, [id, prices]) => {
     const { order, side } = await orderParty(v, str(id));
     if (side !== "manufacturer") throw new HttpError(403, "FORBIDDEN");
-    if (order.status !== "quote_requested") throw new HttpError(409, "INVALID_STATE");
-    const clean: Record<string, number> = {};
-    for (const [k, n] of Object.entries(obj<Record<string, unknown>>(prices))) {
-      if (typeof n === "number" && Number.isFinite(n) && n > 0) clean[k] = n;
-    }
-    return pg.orders.submitQuote(order.id, clean);
+    // the repository re-checks the status, and that every line is priced, under a row lock
+    return pg.orders.submitQuote(order.id, parse(input.quotePrices, prices));
   },
   "orders.updateStatus": async (v, [id, status]) => {
     const { order, side } = await orderParty(v, str(id));
-    const s = status as OrderStatus;
-    const allowed: OrderStatus[] =
-      side === "admin"
-        ? ["quote_requested", "quoted", "confirmed", "in_production", "shipped", "completed", "cancelled"]
-        : side === "retailer"
-          ? RETAILER_MAY_SET
-          : ["confirmed", "in_production", "shipped", "completed", "cancelled"];
-    if (!allowed.includes(s)) throw new HttpError(403, "FORBIDDEN");
-    return pg.orders.updateStatus(order.id, s);
+    // ORDER_TRANSITIONS decides which side may make which move from the current status
+    return transitionOrder(order.id, parse(input.orderStatus, status), side);
   },
 
   /* notifications: always the caller's own */
@@ -290,7 +271,7 @@ export const policies: Record<string, Handler> = {
       .where(and(eq(schema.notifications.id, str(id)), eq(schema.notifications.user_id, user.id)));
   },
   "notifications.markAllRead": async (v) => pg.notifications.markAllRead(signedIn(v).id),
-  "notifications.create": async (v, [input]) => (admin(v), pg.notifications.create(obj(input))),
+  "notifications.create": async (v, [data]) => (admin(v), pg.notifications.create(parse(input.notificationInput, data))),
 
   /* analytics */
   "analytics.manufacturerStats": async (v, [id]) => {
