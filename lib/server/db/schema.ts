@@ -114,6 +114,13 @@ export const orders = pgTable(
   (t) => [index("orders_retailer_idx").on(t.retailer_id), index("orders_manufacturer_idx").on(t.manufacturer_id)],
 );
 
+/** Fixed-window request counters (lib/server/rate-limit.ts). Shared by every server instance. */
+export const rateLimits = pgTable("rate_limits", {
+  key: text("key").primaryKey(),
+  window_start: timestamp("window_start", { withTimezone: true }).notNull().defaultNow(),
+  count: integer("count").notNull().default(0),
+});
+
 export const notifications = pgTable(
   "notifications",
   {

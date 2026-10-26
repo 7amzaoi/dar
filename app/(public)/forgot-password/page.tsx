@@ -40,7 +40,7 @@ export default function ForgotPasswordPage() {
   const errorFor = (code: string) =>
     /INVALID_OTP|OTP_EXPIRED|invalid otp|expired/i.test(code)
       ? t("auth.errCodeInvalid")
-      : /TOO_MANY|too many/i.test(code)
+      : /TOO_MANY|too many|RATE_LIMITED|429/i.test(code)
         ? t("auth.errTooManyAttempts")
         : /PASSWORD/i.test(code)
           ? t("auth.errPassword")
@@ -79,7 +79,7 @@ export default function ForgotPasswordPage() {
       .then((r) => (r.ok ? (r.json() as Promise<{ exists: boolean }>) : null))
       .catch(() => null);
     if (!check) {
-      setFormError(t("common.errorBody"));
+      setFormError(t("auth.errTooManyAttempts"));
       return;
     }
     if (!check.exists) {

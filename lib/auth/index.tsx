@@ -41,7 +41,16 @@ interface AuthValue {
   /** wholesale prices & ordering are gated to approved members (the server enforces it too) */
   canSeePrices: boolean;
   loginWithEmail: (email: string, password: string) => Promise<User>;
-  register: (input: RegisterInput) => Promise<User>;
+  /**
+   * Sign-up, step 1: creates the sign-in identity (or resumes an unfinished one with the same
+   * password) and emails a 6-digit code. Resolves to the account when there is nothing to verify
+   * (the identity already has a marketplace account), else null: ask for the code next.
+   */
+  startRegistration: (input: RegisterInput) => Promise<User | null>;
+  /** Emails a fresh sign-up code. */
+  resendRegistrationCode: (email: string) => Promise<void>;
+  /** Sign-up, step 2: verifies the code, then creates the company + pending account. */
+  completeRegistration: (input: RegisterInput, code: string) => Promise<User>;
   logout: () => Promise<void>;
 }
 
@@ -56,6 +65,7 @@ async function fetchMe(): Promise<Me> {
 /** Better Auth error codes -> the codes the auth forms translate. */
 function authError(error: { code?: string; status?: number } | null | undefined, fallback: string) {
   const code = error?.code ?? "";
+  if (error?.status === 429 || /RATE_LIMITED|TOO_MANY/i.test(code)) return new Error("RATE_LIMITED");
   if (code.includes("ALREADY_EXISTS")) return new Error("EMAIL_TAKEN");
   if (code.includes("INVALID") || error?.status === 401) return new Error("INVALID_CREDENTIALS");
   if (code.includes("EMAIL_NOT_VERIFIED")) return new Error("VERIFY_EMAIL");
@@ -116,11 +126,40 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return next.user;
   }, []);
 
-  const register = useCallback(async (input: RegisterInput) => {
-    const { data, error } = await settle(() => authClient.signUp.email({ email: input.email, password: input.password, name: input.contactName }));
-    if (error) throw authError(error, "SIGN_UP_FAILED");
-    // Email verification on: no session until the address is confirmed.
-    if (!data || !("token" in data) || !data.token) throw new Error("VERIFY_EMAIL");
+  const resendRegistrationCode = useCallback(async (email: string) => {
+    const { error } = await settle(() => authClient.emailOtp.sendVerificationOtp({ email, type: "email-verification" }));
+    if (error) throw authError(error, "CODE_NOT_SENT");
+  }, []);
+
+  const startRegistration = useCallback(
+    async (input: RegisterInput) => {
+      const signUp = await settle(() => authClient.signUp.email({ email: input.email, password: input.password, name: input.contactName }));
+      if (signUp.error) {
+        const failure = authError(signUp.error, "SIGN_UP_FAILED");
+        if (failure.message !== "EMAIL_TAKEN") throw failure;
+        // The identity exists. With the right password this is the same person finishing an
+        // earlier sign-up (or an existing member): continue as them; otherwise the email is taken.
+        const signIn = await settle(() => authClient.signIn.email({ email: input.email, password: input.password }));
+        if (signIn.error) throw failure;
+      }
+      const next = await fetchMe();
+      if (!next.signedIn) throw new Error("VERIFY_EMAIL");
+      if (next.user) {
+        setMe(next);
+        return next.user;
+      }
+      await resendRegistrationCode(input.email);
+      return null;
+    },
+    [resendRegistrationCode],
+  );
+
+  const completeRegistration = useCallback(async (input: RegisterInput, code: string) => {
+    const verified = await settle(() => authClient.emailOtp.verifyEmail({ email: input.email, otp: code }));
+    if (verified.error) {
+      const failure = authError(verified.error, "INVALID_CODE");
+      throw failure.message === "RATE_LIMITED" ? failure : new Error("INVALID_CODE");
+    }
     const res = await fetch("/api/register", {
       method: "POST",
       headers: { "content-type": "application/json" },
@@ -150,8 +189,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const value = useMemo<AuthValue>(() => {
     const isApproved = me.user?.status === "approved";
-    return { ready, currentUser: me.user, company: me.company, isApproved, canSeePrices: isApproved, loginWithEmail, register, logout };
-  }, [ready, me, loginWithEmail, register, logout]);
+    return {
+      ready,
+      currentUser: me.user,
+      company: me.company,
+      isApproved,
+      canSeePrices: isApproved,
+      loginWithEmail,
+      startRegistration,
+      resendRegistrationCode,
+      completeRegistration,
+      logout,
+    };
+  }, [ready, me, loginWithEmail, startRegistration, resendRegistrationCode, completeRegistration, logout]);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

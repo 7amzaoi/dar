@@ -1,5 +1,8 @@
+import { sql } from "drizzle-orm";
 import { z } from "zod";
+import { sqlDb } from "@/lib/server/db";
 import { pg, registerAppUser } from "@/lib/server/repositories";
+import { clientIp, limit, RULES, tooManyRequests } from "@/lib/server/rate-limit";
 import { getViewer } from "@/lib/server/viewer";
 
 const body = z.object({
@@ -14,14 +17,21 @@ const body = z.object({
 });
 
 /**
- * Second half of sign-up: the browser has just created the Managed Better Auth identity
- * (signUp.email), so the session cookie is set. Create the company + pending account for it.
+ * Last step of sign-up: the browser created the Managed Better Auth identity (signUp.email) and
+ * confirmed the emailed code (emailOtp.verifyEmail). Create the company + pending account for it.
  */
 export async function POST(request: Request) {
+  const wait = await limit(`register:${clientIp(request)}`, RULES.register);
+  if (wait) return tooManyRequests(wait);
   const viewer = await getViewer();
   if (!viewer.authUserId || !viewer.authEmail) return Response.json({ error: "UNAUTHENTICATED" }, { status: 401 });
   // Already linked (or a seeded account with this email was just linked): nothing to create.
   if (viewer.user) return Response.json({ user: viewer.user, company: viewer.user.companyId ? await pg.companies.getById(viewer.user.companyId) : null });
+
+  // New accounts need a verified email. Read it from neon_auth itself: the session cookie is
+  // cached and can still say "unverified" right after the code was accepted.
+  const { rows } = await sqlDb.execute<{ verified: boolean }>(sql`select "emailVerified" as verified from neon_auth."user" where id = ${viewer.authUserId}`);
+  if (!rows[0]?.verified) return Response.json({ error: "VERIFY_EMAIL" }, { status: 403 });
 
   const parsed = body.safeParse(await request.json().catch(() => null));
   if (!parsed.success) return Response.json({ error: "INVALID_INPUT" }, { status: 400 });

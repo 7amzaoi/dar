@@ -45,6 +45,7 @@ npm run lint
   - the `AWS_*` storage credentials
 
   Add two app values yourself: `NEON_AUTH_COOKIE_SECRET` (`openssl rand -base64 32`) and `NEXT_PUBLIC_NEON_REALTIME_URL` (same value as `NEON_REALTIME_URL`).
+- **Branches.** Local development runs on the `dev` branch (`neon checkout dev`), never on `production`. `dev` was forked from production (data, sign-in accounts and files included) and does not expire. Switching branches rewrites `.env.local`; keep `NEXT_PUBLIC_NEON_REALTIME_URL` equal to that branch's `NEON_REALTIME_URL`. A local copy of the production values lives in `.env.neon-production` (git-ignored, not loaded by Next).
 - **Infrastructure as code.** `neon.ts` declares Auth, the private `assets` bucket and Realtime, including `allowedOrigins`. Add every deployed origin to that list before deploying there. Apply the file with `neon deploy`.
 - **Seeded accounts.** The seed creates app accounts but no sign-in identities.
   - To use one, sign up through Neon Auth with its email, e.g. `abdullah@bayt.sa` (showroom), `omar@damietta-atelier.com` (manufacturer) or `admin@dar.trade` (admin). On first sign-in the identity is linked to that account.
@@ -136,7 +137,10 @@ The rules:
 
 **Auth.**
 - `lib/server/auth.ts` (`createNeonAuth`) and `app/api/auth/[...path]` proxy Managed Better Auth. The browser uses `createAuthClient()` from `lib/auth`.
-- Sign-up creates the identity first; then `/api/register` creates the company and a pending account.
+- Sign-up has three steps:
+  1. The identity is created, or an unfinished one is resumed with the same password.
+  2. A 6-digit code is emailed (Neon Auth email OTP), and the member enters it.
+  3. Only then does `/api/register` create the company and a pending account. It checks `neon_auth.user.emailVerified` in the database itself.
 - `/api/me` returns the signed-in account.
 - Sign-out does a full page load.
 
@@ -149,6 +153,21 @@ The rules:
 - `POST /api/realtime` seals three live queries for the caller: their account status, their notifications and their company's orders.
 - `lib/realtime` subscribes to them and renews each capability 10 s before it expires. Every committed change fires `db.subscribe`.
 - So a new RFQ, a quote, a status change or an approval shows up for the other party, and in other tabs, without a reload.
+
+**Rate limits** (`lib/server/rate-limit.ts`) are fixed windows counted in Postgres (`rate_limits`), so they hold across server instances. Over the limit, the API answers 429 with `Retry-After`. Per address unless noted:
+
+| What | Limit |
+|---|---|
+| Sign-in | 10 / 10 min |
+| Sign-up | 5 / hour |
+| Email codes (reset, verification) | 5 / 15 min |
+| `/api/register` | 5 / hour |
+| `/api/account-exists` | 10 / 10 min |
+| Uploads | 60 / hour per user |
+| Writes through `/api/data` | 120 / min per user |
+| Reads through `/api/data` | 600 / min, counted in memory per instance |
+
+If the table is missing, the limiter logs and lets requests through, rather than blocking sign-in.
 
 **Migrations.** Edit `lib/server/db/schema.ts`, then run `npm run db:generate` and `npm run db:migrate`. drizzle-kit only touches the `public` schema; `neon_auth` belongs to Neon Auth.
 

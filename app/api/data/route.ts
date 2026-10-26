@@ -1,4 +1,6 @@
+import { READ_METHODS } from "@/lib/data/http";
 import { policies } from "@/lib/server/policy";
+import { clientIp, limit, limitLocal, RULES, tooManyRequests } from "@/lib/server/rate-limit";
 import { getViewer, HttpError } from "@/lib/server/viewer";
 
 export const dynamic = "force-dynamic";
@@ -13,8 +15,20 @@ export async function POST(request: Request) {
   const handler = Object.hasOwn(policies, key) ? policies[key] : undefined;
   if (!handler || !Array.isArray(body?.args)) return Response.json({ error: "UNKNOWN_METHOD" }, { status: 400 });
 
+  const ip = clientIp(request);
+  const isRead = READ_METHODS.has(String(body.method));
+  if (isRead) {
+    const wait = limitLocal(`read:${ip}`, RULES.read);
+    if (wait) return tooManyRequests(wait);
+  }
+
   try {
-    const data = await handler(await getViewer(), body.args);
+    const viewer = await getViewer();
+    if (!isRead) {
+      const wait = await limit(`write:${viewer.user?.id ?? ip}`, RULES.write);
+      if (wait) return tooManyRequests(wait);
+    }
+    const data = await handler(viewer, body.args);
     return Response.json({ data: data ?? null });
   } catch (error) {
     if (error instanceof HttpError) return Response.json({ error: error.message }, { status: error.status });

@@ -52,7 +52,9 @@ function LoginForm() {
       finish(await loginWithEmail(values.email, values.password));
     } catch (e) {
       const code = e instanceof Error ? e.message : "";
-      setFormError(code === "NO_USER" ? t("auth.errNoUser") : code === "VERIFY_EMAIL" ? t("auth.errVerifyEmail") : t("auth.errCredentials"));
+      setFormError(
+        code === "NO_USER" ? t("auth.errNoUser") : code === "VERIFY_EMAIL" ? t("auth.errVerifyEmail") : code === "RATE_LIMITED" ? t("auth.errTooManyAttempts") : t("auth.errCredentials"),
+      );
     }
   });
 

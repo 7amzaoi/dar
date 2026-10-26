@@ -1,4 +1,5 @@
 import { assets, fileUrl, MAX_UPLOAD_BYTES, sniffImage } from "@/lib/server/storage";
+import { limit, RULES, tooManyRequests } from "@/lib/server/rate-limit";
 import { getViewer } from "@/lib/server/viewer";
 
 /** room for the multipart boundary and headers around the file itself */
@@ -14,6 +15,8 @@ export async function POST(request: Request) {
   const { user } = await getViewer();
   if (!user) return Response.json({ error: "UNAUTHENTICATED" }, { status: 401 });
   if (user.role !== "manufacturer" || user.status !== "approved") return Response.json({ error: "FORBIDDEN" }, { status: 403 });
+  const wait = await limit(`upload:${user.id}`, RULES.upload);
+  if (wait) return tooManyRequests(wait);
 
   const form = await request.formData().catch(() => null);
   const file = form?.get("file");

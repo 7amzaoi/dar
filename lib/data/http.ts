@@ -12,7 +12,8 @@ export function emitChange() {
   for (const l of listeners) l();
 }
 
-const READS = new Set([
+/** methods that only read; everything else is a write (the server rate-limits writes more tightly) */
+export const READ_METHODS = new Set([
   "list",
   "getById",
   "getMany",
@@ -36,7 +37,7 @@ async function call(repo: string, method: string, args: unknown[]) {
   });
   const body = (await res.json().catch(() => ({ error: "BAD_RESPONSE" }))) as { data?: unknown; error?: string };
   if (!res.ok || body.error) throw new Error(body.error ?? `HTTP_${res.status}`);
-  if (!READS.has(method)) emitChange();
+  if (!READ_METHODS.has(method)) emitChange();
   return body.data;
 }
 

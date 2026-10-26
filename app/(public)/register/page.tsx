@@ -16,7 +16,7 @@ import { AuthShell } from "@/components/shared/auth-shell";
 import { Field } from "@/components/shared/field";
 import { ArrowBack, ArrowForward } from "@/components/shared/icons";
 import { FadeIn } from "@/components/shared/motion";
-import { homeFor, useAuth } from "@/lib/auth";
+import { homeFor, useAuth, type RegisterInput } from "@/lib/auth";
 import en from "@/lib/i18n/en";
 import { useT } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
@@ -26,9 +26,14 @@ const COUNTRY_CODES = Object.keys(en.countries);
 export default function RegisterPage() {
   const { t, country } = useT();
   const router = useRouter();
-  const { register: registerAccount } = useAuth();
-  const [step, setStep] = useState<1 | 2>(1);
+  const { startRegistration, resendRegistrationCode, completeRegistration } = useAuth();
+  const [step, setStep] = useState<1 | 2 | 3>(1);
   const [formError, setFormError] = useState<string | null>(null);
+  /** details kept while the emailed code is being entered (step 3) */
+  const [pending, setPending] = useState<RegisterInput | null>(null);
+  const [code, setCode] = useState("");
+  const [codeError, setCodeError] = useState<string | null>(null);
+  const [verifying, setVerifying] = useState(false);
 
   const schema = z.object({
     role: z.enum(["manufacturer", "retailer"]),
@@ -52,19 +57,52 @@ export default function RegisterPage() {
   const { errors, isSubmitting } = form.formState;
   const role = useWatch({ control: form.control, name: "role" });
 
+  const messageFor = (failure: unknown) => {
+    const reason = failure instanceof Error ? failure.message : "";
+    if (reason === "EMAIL_TAKEN") return t("auth.errEmailTaken");
+    if (reason === "VERIFY_EMAIL") return t("auth.errVerifyEmail");
+    if (reason === "WEAK_PASSWORD") return t("auth.errPassword");
+    if (reason === "INVALID_CODE") return t("auth.errCodeInvalid");
+    if (reason === "RATE_LIMITED") return t("auth.errTooManyAttempts");
+    return t("common.errorBody");
+  };
+
   const onSubmit = form.handleSubmit(async ({ agree, ...values }) => {
     void agree;
     setFormError(null);
     try {
-      // a seeded email links to its existing (possibly approved) account, so route by status
-      router.push(homeFor(await registerAccount(values)));
+      // an identity that already has an account (seeded, or a finished sign-up) needs no code
+      const existing = await startRegistration(values);
+      if (existing) {
+        router.push(homeFor(existing));
+        return;
+      }
+      setPending(values);
+      setCode("");
+      setCodeError(null);
+      setStep(3);
     } catch (e) {
-      const code = e instanceof Error ? e.message : "";
-      setFormError(
-        code === "EMAIL_TAKEN" ? t("auth.errEmailTaken") : code === "VERIFY_EMAIL" ? t("auth.errVerifyEmail") : code === "WEAK_PASSWORD" ? t("auth.errPassword") : t("common.errorBody"),
-      );
+      setFormError(messageFor(e));
     }
   });
+
+  const onVerify = async (event: React.FormEvent) => {
+    event.preventDefault();
+    if (!pending) return;
+    if (!/^d{6}$/.test(code.trim())) {
+      setCodeError(t("auth.errCodeFormat"));
+      return;
+    }
+    setCodeError(null);
+    setVerifying(true);
+    try {
+      router.push(homeFor(await completeRegistration(pending, code.trim())));
+    } catch (e) {
+      setCodeError(messageFor(e));
+    } finally {
+      setVerifying(false);
+    }
+  };
 
   const roles = [
     { value: "retailer" as const, icon: Building2, title: t("auth.roleRetailer"), body: t("auth.roleRetailerBody") },
@@ -84,8 +122,8 @@ export default function RegisterPage() {
         <p className="mt-3 text-muted-foreground">{t("auth.registerSubtitle")}</p>
 
         <ol className="mt-8 flex items-center gap-3 text-xs" aria-label="Steps">
-          {[t("auth.step1"), t("auth.step2")].map((label, i) => {
-            const n = (i + 1) as 1 | 2;
+          {[t("auth.step1"), t("auth.step2"), t("auth.step3")].map((label, i, all) => {
+            const n = (i + 1) as 1 | 2 | 3;
             const done = step > n;
             return (
               <li key={label} className="flex items-center gap-2" aria-current={step === n ? "step" : undefined}>
@@ -93,12 +131,47 @@ export default function RegisterPage() {
                   {done ? <Check className="size-3" /> : n}
                 </span>
                 <span className={step === n ? "text-foreground" : "text-muted-foreground"}>{label}</span>
-                {i === 0 && <span className="mx-1 h-px w-8 bg-border" aria-hidden />}
+                {i < all.length - 1 && <span className="mx-1 h-px w-8 bg-border" aria-hidden />}
               </li>
             );
           })}
         </ol>
 
+        {step === 3 && pending ? (
+          <form onSubmit={onVerify} className="mt-8 space-y-5" noValidate>
+            <p className="text-muted-foreground" aria-live="polite">
+              {t("auth.verifySent", { email: pending.email })}
+            </p>
+            <Field id="code" label={t("auth.forgotCode")} error={codeError ?? undefined}>
+              <Input
+                id="code"
+                inputMode="numeric"
+                autoComplete="one-time-code"
+                maxLength={6}
+                dir="ltr"
+                className="tracking-[0.4em] tabular-nums"
+                value={code}
+                onChange={(e) => setCode(e.target.value)}
+                aria-invalid={!!codeError}
+              />
+            </Field>
+            <Button type="submit" size="lg" className="w-full" disabled={verifying}>
+              {verifying ? t("common.saving") : t("auth.verifyCta")}
+            </Button>
+            <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm">
+              <button
+                type="button"
+                className="font-medium text-foreground underline-offset-4 hover:underline"
+                onClick={() => resendRegistrationCode(pending.email).then(() => setCodeError(null), (e) => setCodeError(messageFor(e)))}
+              >
+                {t("auth.forgotResend")}
+              </button>
+              <button type="button" className="text-muted-foreground underline-offset-4 hover:text-foreground hover:underline" onClick={() => setStep(2)}>
+                {t("auth.verifyChangeEmail")}
+              </button>
+            </div>
+          </form>
+        ) : (
         <form onSubmit={onSubmit} className="mt-8" noValidate>
           {step === 1 ? (
             <fieldset>
@@ -211,6 +284,7 @@ export default function RegisterPage() {
             </div>
           )}
         </form>
+        )}
 
         <p className="mt-8 text-sm text-muted-foreground">
           {t("auth.haveAccount")}{" "}
