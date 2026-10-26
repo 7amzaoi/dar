@@ -98,6 +98,17 @@ export const policies: Record<string, Handler> = {
     }
     return presentAll(v, await pg.products.list(filter));
   },
+  /** Catalogue pages count and slice in SQL, so drafts are excluded there (not filtered afterwards). */
+  "products.page": async (v, [q]) => {
+    const query = parse(input.productPageQuery, q);
+    if (!isAdmin(v)) query.publishedOnly = true;
+    if (!canSeePrices(v)) {
+      delete query.priceMin;
+      delete query.priceMax;
+    }
+    const result = await pg.products.page(query);
+    return { ...result, items: result.items.map((p) => present(v, p)) };
+  },
   "products.getById": async (v, [id]) => {
     const p = await pg.products.getById(str(id));
     return p && visible(v, p) ? present(v, p) : null;
@@ -279,4 +290,6 @@ export const policies: Record<string, Handler> = {
     return pg.analytics.manufacturerStats(approved(v, "manufacturer").companyId);
   },
   "analytics.platformStats": async (v) => (admin(v), pg.analytics.platformStats()),
+  /** public: only counts and cover images of published products */
+  "analytics.catalogSummary": async () => pg.analytics.catalogSummary(),
 };

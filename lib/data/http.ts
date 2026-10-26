@@ -15,6 +15,7 @@ export function emitChange() {
 /** methods that only read; everything else is a write (the server rate-limits writes more tightly) */
 export const READ_METHODS = new Set([
   "list",
+  "page",
   "getById",
   "getMany",
   "getByEmail",
@@ -26,6 +27,7 @@ export const READ_METHODS = new Set([
   "facets",
   "manufacturerStats",
   "platformStats",
+  "catalogSummary",
 ]);
 
 async function call(repo: string, method: string, args: unknown[]) {

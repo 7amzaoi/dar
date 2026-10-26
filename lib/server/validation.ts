@@ -145,6 +145,12 @@ export const productFilter = z.object({
   collectionId: clearable(id),
   publishedOnly: clearable(z.boolean()),
   sort: clearable(z.enum(["newest", "price_asc", "price_desc", "title"])),
+  limit: clearable(z.number().int().min(1).max(500)),
+});
+
+export const productPageQuery = productFilter.omit({ limit: true }).extend({
+  page: clearable(z.number().int().min(1).max(10_000)),
+  pageSize: clearable(z.number().int().min(1).max(60)),
 });
 
 export const companyFilter = z.object({

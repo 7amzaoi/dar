@@ -13,11 +13,15 @@ import { cn } from "@/lib/utils";
 export default function CollectionsPage() {
   const { t, tx } = useT();
   const q = useQuery(async () => {
-    const [collections, companies, products] = await Promise.all([db.collections.list(), db.companies.list({ type: "manufacturer", verified: true }), db.products.list()]);
+    const [collections, companies, summary] = await Promise.all([
+      db.collections.list(),
+      db.companies.list({ type: "manufacturer", verified: true }),
+      db.analytics.catalogSummary(),
+    ]);
     const names = new Map(companies.map((c) => [c.id, c.name]));
     return collections
       .filter((c) => names.has(c.manufacturerId))
-      .map((c) => ({ collection: c, maker: names.get(c.manufacturerId) ?? "", count: products.filter((p) => p.collectionId === c.id).length }));
+      .map((c) => ({ collection: c, maker: names.get(c.manufacturerId) ?? "", count: summary.productsByCollection[c.id] ?? 0 }));
   }, []);
 
   return (

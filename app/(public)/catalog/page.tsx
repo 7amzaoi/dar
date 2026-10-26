@@ -8,17 +8,19 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Filters } from "@/components/shared/filters";
+import { ArrowBack, ArrowForward } from "@/components/shared/icons";
 import { FadeIn } from "@/components/shared/motion";
 import { ProductCard } from "@/components/shared/product-card";
 import { EmptyState, ErrorState, SkeletonGrid } from "@/components/shared/states";
 import { useAuth } from "@/lib/auth";
-import { db, type ProductFilter, type ProductSort, type StockStatus } from "@/lib/data";
+import { db, type ProductPageQuery, type ProductSort, type StockStatus } from "@/lib/data";
 import { useQuery } from "@/lib/hooks/use-query";
 import { useT } from "@/lib/i18n";
 
 const SORTS: ProductSort[] = ["newest", "price_asc", "price_desc", "title"];
+const PAGE_SIZE = 24;
 
-function parseFilter(sp: URLSearchParams): ProductFilter {
+function parseFilter(sp: URLSearchParams): ProductPageQuery {
   const list = (k: string) => sp.get(k)?.split(",").filter(Boolean);
   const num = (k: string) => (sp.get(k) ? Number(sp.get(k)) : undefined);
   const sort = sp.get("sort") as ProductSort | null;
@@ -34,10 +36,11 @@ function parseFilter(sp: URLSearchParams): ProductFilter {
     priceMin: num("min"),
     priceMax: num("max"),
     sort: sort && SORTS.includes(sort) ? sort : "newest",
+    page: Math.max(1, Math.floor(Number(sp.get("page")) || 1)),
   };
 }
 
-function toParams(f: ProductFilter) {
+function toParams(f: ProductPageQuery) {
   const sp = new URLSearchParams();
   const set = (k: string, v?: string | number | string[]) => {
     if (v == null || v === "" || (Array.isArray(v) && v.length === 0)) return;
@@ -54,6 +57,7 @@ function toParams(f: ProductFilter) {
   set("min", f.priceMin);
   set("max", f.priceMax);
   if (f.sort && f.sort !== "newest") set("sort", f.sort);
+  if (f.page && f.page > 1) set("page", f.page);
   return sp.toString();
 }
 
@@ -66,16 +70,22 @@ function CatalogView() {
   const filter = useMemo(() => parseFilter(new URLSearchParams(searchParams.toString())), [searchParams]);
   const [search, setSearch] = useState(filter.search ?? "");
 
-  const update = (patch: Partial<ProductFilter>) => {
-    const qs = toParams({ ...filter, ...patch });
+  // any filter change starts again at page 1; only the pager moves between pages
+  const update = (patch: Partial<ProductPageQuery>) => {
+    const qs = toParams({ ...filter, page: 1, ...patch });
     router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
+  };
+  const goToPage = (page: number) => {
+    const qs = toParams({ ...filter, page });
+    router.push(qs ? `${pathname}?${qs}` : pathname);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   // debounce free-text search into the URL
   useEffect(() => {
     if ((filter.search ?? "") === search) return;
     const id = setTimeout(() => {
-      const qs = toParams({ ...filter, search: search || undefined });
+      const qs = toParams({ ...filter, search: search || undefined, page: 1 });
       router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
     }, 300);
     return () => clearTimeout(id);
@@ -91,7 +101,10 @@ function CatalogView() {
     return { facets, categories, companies, collections };
   }, []);
 
-  const products = useQuery(() => db.products.list(filter), [filter]);
+  const result = useQuery(() => db.products.page({ ...filter, pageSize: PAGE_SIZE }), [filter]);
+  const products = { ...result, data: result.data?.items };
+  const page = filter.page ?? 1;
+  const pages = result.data ? Math.max(1, Math.ceil(result.data.total / result.data.pageSize)) : 1;
 
   const companyById = new Map(meta.data?.companies.map((c) => [c.id, c]));
   const activeCategory = meta.data?.categories.find((c) => c.id === filter.categoryId);
@@ -169,7 +182,7 @@ function CatalogView() {
 
         <div className="ms-auto flex items-center gap-3">
           <span className="hidden text-sm text-muted-foreground sm:inline" aria-live="polite">
-            {products.data ? t("catalog.resultsCount", { count: products.data.length }) : " "}
+            {result.data ? t("catalog.resultsCount", { count: result.data.total }) : " "}
           </span>
           <Select value={filter.sort} onValueChange={(v) => update({ sort: v as ProductSort })}>
             <SelectTrigger className="w-44" aria-label={t("catalog.sortLabel")}>
@@ -213,11 +226,26 @@ function CatalogView() {
               }
             />
           ) : (
-            <div className="grid grid-cols-2 gap-x-5 gap-y-12 md:grid-cols-3">
-              {products.data.map((p, i) => (
-                <ProductCard key={p.id} product={p} makerName={companyById.get(p.manufacturerId)?.name} priority={i < 3} />
-              ))}
-            </div>
+            <>
+              <div className="grid grid-cols-2 gap-x-5 gap-y-12 md:grid-cols-3">
+                {products.data.map((p, i) => (
+                  <ProductCard key={p.id} product={p} makerName={companyById.get(p.manufacturerId)?.name} priority={i < 3} />
+                ))}
+              </div>
+              {pages > 1 && (
+                <nav aria-label={t("catalog.pagerLabel")} className="mt-16 flex items-center justify-between gap-4 border-t border-hairline pt-8">
+                  <Button variant="outline" disabled={page <= 1} onClick={() => goToPage(page - 1)}>
+                    <ArrowBack className="size-4" /> {t("catalog.pagePrev")}
+                  </Button>
+                  <span className="text-sm tabular-nums text-muted-foreground" aria-live="polite">
+                    {t("catalog.pageOf", { page, pages })}
+                  </span>
+                  <Button variant="outline" disabled={page >= pages} onClick={() => goToPage(page + 1)}>
+                    {t("catalog.pageNext")} <ArrowForward className="size-4" />
+                  </Button>
+                </nav>
+              )}
+            </>
           )}
         </section>
       </div>

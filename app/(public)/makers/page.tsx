@@ -14,11 +14,8 @@ import { useT } from "@/lib/i18n";
 export default function MakersPage() {
   const { t, tx, country, city } = useT();
   const q = useQuery(async () => {
-    const [companies, products] = await Promise.all([db.companies.list({ type: "manufacturer", verified: true }), db.products.list()]);
-    return companies.map((c) => {
-      const own = products.filter((p) => p.manufacturerId === c.id);
-      return { company: c, count: own.length, images: own.slice(0, 3).map((p) => p.images[0]) };
-    });
+    const [companies, summary] = await Promise.all([db.companies.list({ type: "manufacturer", verified: true }), db.analytics.catalogSummary()]);
+    return companies.map((c) => ({ company: c, count: summary.makers[c.id]?.products ?? 0, images: summary.makers[c.id]?.images ?? [] }));
   }, []);
 
   return (

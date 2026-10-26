@@ -17,12 +17,13 @@ import type {
   OrderStatus,
   Product,
   ProductFilter,
+  ProductPageQuery,
   ProductRepository,
   TimePoint,
   User,
   UserRepository,
 } from "@/lib/data/types";
-import { ORDER_TRANSITIONS, orderTotal } from "@/lib/data/helpers";
+import { ORDER_TRANSITIONS } from "@/lib/data/helpers";
 import { sqlDb as db, schema } from "./db";
 
 /**
@@ -175,54 +176,81 @@ async function companyName(ex: Executor, id: string) {
 
 /* ---------------- repositories ---------------- */
 
+/** WHERE clause shared by products.list and products.page. */
+function productWhere(filter: ProductFilter) {
+  const { publishedOnly = true } = filter;
+  const where: SQL[] = [];
+  if (publishedOnly) where.push(eq(productsT.published, true));
+  if (filter.categoryId) {
+    where.push(
+      or(
+        eq(productsT.category_id, filter.categoryId),
+        inArray(productsT.category_id, db.select({ id: categoriesT.id }).from(categoriesT).where(eq(categoriesT.parent_id, filter.categoryId))),
+      )!,
+    );
+  }
+  if (filter.manufacturerId) where.push(eq(productsT.manufacturer_id, filter.manufacturerId));
+  if (filter.collectionId) where.push(eq(productsT.collection_id, filter.collectionId));
+  if (filter.materials?.length) where.push(arrayOverlaps(productsT.materials, filter.materials));
+  if (filter.colors?.length) where.push(arrayOverlaps(productsT.colors, filter.colors));
+  if (filter.stockStatus?.length) where.push(inArray(productsT.stock_status, filter.stockStatus));
+  if (filter.priceMin != null) where.push(sql`${productsT.base_price} >= ${filter.priceMin}`);
+  if (filter.priceMax != null) where.push(sql`${productsT.base_price} <= ${filter.priceMax}`);
+  if (filter.countries?.length) {
+    where.push(inArray(productsT.manufacturer_id, db.select({ id: companies.id }).from(companies).where(inArray(companies.country, filter.countries))));
+  }
+  const q = filter.search?.trim();
+  if (q) {
+    const like = `%${q.replace(/[%_\\]/g, "\\$&")}%`;
+    where.push(
+      or(
+        ilike(productsT.title_ar, like),
+        ilike(productsT.title_en, like),
+        ilike(productsT.description_ar, like),
+        ilike(productsT.description_en, like),
+        sql`array_to_string(${productsT.materials}, ' ') ilike ${like}`,
+        inArray(productsT.manufacturer_id, db.select({ id: companies.id }).from(companies).where(ilike(companies.name, like))),
+      )!,
+    );
+  }
+  return and(...where);
+}
+
+/** Sort order; the id tie-break keeps pages stable when many rows share a value. */
+function productOrder(sort: ProductFilter["sort"]) {
+  const order =
+    sort === "price_asc"
+      ? [asc(productsT.base_price)]
+      : sort === "price_desc"
+        ? [desc(productsT.base_price)]
+        : sort === "title"
+          ? [asc(productsT.title_en)]
+          : [desc(productsT.created_at)];
+  return [...order, asc(productsT.id)];
+}
+
+/** `list` is for small, bounded lists (home, a maker's page); the catalogue uses `page`. */
+const LIST_CAP = 500;
+
 const products: ProductRepository = {
   async list(filter: ProductFilter = {}) {
-    const { publishedOnly = true } = filter;
-    const where: SQL[] = [];
-    if (publishedOnly) where.push(eq(productsT.published, true));
-    if (filter.categoryId) {
-      where.push(
-        or(
-          eq(productsT.category_id, filter.categoryId),
-          inArray(productsT.category_id, db.select({ id: categoriesT.id }).from(categoriesT).where(eq(categoriesT.parent_id, filter.categoryId))),
-        )!,
-      );
-    }
-    if (filter.manufacturerId) where.push(eq(productsT.manufacturer_id, filter.manufacturerId));
-    if (filter.collectionId) where.push(eq(productsT.collection_id, filter.collectionId));
-    if (filter.materials?.length) where.push(arrayOverlaps(productsT.materials, filter.materials));
-    if (filter.colors?.length) where.push(arrayOverlaps(productsT.colors, filter.colors));
-    if (filter.stockStatus?.length) where.push(inArray(productsT.stock_status, filter.stockStatus));
-    if (filter.priceMin != null) where.push(sql`${productsT.base_price} >= ${filter.priceMin}`);
-    if (filter.priceMax != null) where.push(sql`${productsT.base_price} <= ${filter.priceMax}`);
-    if (filter.countries?.length) {
-      where.push(inArray(productsT.manufacturer_id, db.select({ id: companies.id }).from(companies).where(inArray(companies.country, filter.countries))));
-    }
-    const q = filter.search?.trim();
-    if (q) {
-      const like = `%${q.replace(/[%_\\]/g, "\\$&")}%`;
-      where.push(
-        or(
-          ilike(productsT.title_ar, like),
-          ilike(productsT.title_en, like),
-          ilike(productsT.description_ar, like),
-          ilike(productsT.description_en, like),
-          sql`array_to_string(${productsT.materials}, ' ') ilike ${like}`,
-          inArray(productsT.manufacturer_id, db.select({ id: companies.id }).from(companies).where(ilike(companies.name, like))),
-        )!,
-      );
-    }
-    const order =
-      filter.sort === "price_asc"
-        ? [asc(productsT.base_price)]
-        : filter.sort === "price_desc"
-          ? [desc(productsT.base_price)]
-          : filter.sort === "title"
-            ? [asc(productsT.title_en)]
-            : [desc(productsT.created_at)];
-    // TODO(backend): paginate once the catalogue grows past a few hundred rows.
-    const rows = await db.select().from(productsT).where(and(...where)).orderBy(...order);
+    const rows = await db
+      .select()
+      .from(productsT)
+      .where(productWhere(filter))
+      .orderBy(...productOrder(filter.sort))
+      .limit(Math.min(filter.limit ?? LIST_CAP, LIST_CAP));
     return rows.map(toProduct);
+  },
+  async page(query: ProductPageQuery = {}) {
+    const page = Math.max(1, Math.floor(query.page ?? 1));
+    const pageSize = Math.min(60, Math.max(1, Math.floor(query.pageSize ?? 24)));
+    const where = productWhere(query);
+    const [rows, [{ total }]] = await Promise.all([
+      db.select().from(productsT).where(where).orderBy(...productOrder(query.sort)).limit(pageSize).offset((page - 1) * pageSize),
+      db.select({ total: sql<number>`count(*)::int` }).from(productsT).where(where),
+    ]);
+    return { items: rows.map(toProduct), total, page, pageSize };
   },
   async getById(id) {
     const [r] = await db.select().from(productsT).where(eq(productsT.id, id));
@@ -597,67 +625,138 @@ const OPEN: OrderStatus[] = ["quote_requested", "quoted", "confirmed", "in_produ
 const BOOKED: OrderStatus[] = ["confirmed", "in_production", "shipped", "completed"];
 const ALL_STATUSES: OrderStatus[] = ["quote_requested", "quoted", "confirmed", "in_production", "shipped", "completed", "cancelled"];
 
+const inList = (values: string[]) => sql`(${sql.join(
+  values.map((v) => sql`${v}`),
+  sql`, `,
+)})`;
+
+/**
+ * Every order line with its unit price, the SQL twin of orderTotal() in lib/data/helpers.ts:
+ * the price on the order (quoted or ordered), else the product's tier for that quantity
+ * (the highest minQty not above it, else the lowest tier), else 0.
+ */
+const orderLines = sql`
+  select o.id as order_id, o.manufacturer_id, o.status,
+    (item->>'qty')::numeric as qty,
+    coalesce((item->>'unitPrice')::numeric, tier.unit_price, 0) as unit
+  from orders o
+  cross join lateral jsonb_array_elements(o.items) item
+  left join products p on p.id = item->>'productId'
+  left join lateral (
+    select (t->>'unitPrice')::numeric as unit_price
+    from jsonb_array_elements(p.price_tiers) t
+    order by ((t->>'minQty')::numeric <= (item->>'qty')::numeric) desc,
+      case when (t->>'minQty')::numeric <= (item->>'qty')::numeric then -(t->>'minQty')::numeric else (t->>'minQty')::numeric end
+    limit 1
+  ) tier on true`;
+
+const rowsOf = async <T extends Record<string, unknown>>(query: SQL) => (await db.execute<T>(query)).rows;
+
 // TODO(backend): catalogue views need a real event pipeline; the series below is synthetic.
 const analytics: AnalyticsRepository = {
   async manufacturerStats(manufacturerId) {
-    const [own, orders] = await Promise.all([products.listByManufacturer(manufacturerId), ordersRepo.listByManufacturer(manufacturerId)]);
-    const productMap = new Map(own.map((p) => [p.id, p]));
+    const [[counts], statusRows, [pipeline]] = await Promise.all([
+      rowsOf<{ published: number; drafts: number }>(sql`
+        select count(*) filter (where published)::int as published, count(*) filter (where not published)::int as drafts
+        from products where manufacturer_id = ${manufacturerId}`),
+      rowsOf<{ status: OrderStatus; n: number }>(sql`select status, count(*)::int as n from orders where manufacturer_id = ${manufacturerId} group by status`),
+      rowsOf<{ open: number; value: number }>(sql`
+        with lines as (${orderLines})
+        select (select count(*) from orders where manufacturer_id = ${manufacturerId} and status in ${inList(OPEN)})::int as open,
+          coalesce(sum(qty * unit), 0)::float8 as value
+        from lines where manufacturer_id = ${manufacturerId} and status in ${inList(OPEN)}`),
+    ]);
     const rand = seeded(manufacturerId);
-    const base = 30 + own.filter((p) => p.published).length * 9;
+    const base = 30 + counts.published * 9;
     const viewsSeries: TimePoint[] = Array.from({ length: 30 }, (_, i) => {
       const weekday = new Date(dayLabel(29 - i)).getDay();
       const weekend = weekday === 5 || weekday === 6 ? 0.72 : 1;
       return { label: dayLabel(29 - i), value: Math.round((base + i * 1.6 + rand() * base * 0.6) * weekend) };
     });
-    const open = orders.filter((o) => OPEN.includes(o.status));
+    const byStatus = new Map(statusRows.map((r) => [r.status, r.n]));
     return {
       views30d: viewsSeries.reduce((s, p) => s + p.value, 0),
       viewsSeries,
-      publishedProducts: own.filter((p) => p.published).length,
-      draftProducts: own.filter((p) => !p.published).length,
-      openOrders: open.length,
-      pipelineValue: open.reduce((s, o) => s + orderTotal(o, productMap), 0),
-      ordersByStatus: Object.fromEntries(ALL_STATUSES.map((s) => [s, orders.filter((o) => o.status === s).length])) as Record<OrderStatus, number>,
+      publishedProducts: counts.published,
+      draftProducts: counts.drafts,
+      openOrders: pipeline.open,
+      pipelineValue: pipeline.value,
+      ordersByStatus: Object.fromEntries(ALL_STATUSES.map((s) => [s, byStatus.get(s) ?? 0])) as Record<OrderStatus, number>,
     };
   },
   async platformStats() {
-    const [allCompanies, allUsers, allProducts, allOrders, allCategories] = await Promise.all([
-      companiesRepo.list(),
-      users.list(),
-      products.list({ publishedOnly: false }),
-      ordersRepo.list(),
-      categoriesRepo.list(),
-    ]);
-    const productMap = new Map(allProducts.map((p) => [p.id, p]));
-    const rand = seeded("platform");
     const months = Array.from({ length: 6 }, (_, i) => {
       const d = new Date();
       d.setDate(1);
       d.setMonth(d.getMonth() - (5 - i));
       return d.toISOString().slice(0, 7);
     });
-    const parentOf = new Map(allCategories.map((c) => [c.id, c.parentId]));
-    const value = (os: Order[]) => os.filter((o) => BOOKED.includes(o.status)).reduce((s, o) => s + orderTotal(o, productMap), 0);
+    const [[totals], monthRows, categoryRows, makerRows] = await Promise.all([
+      rowsOf<{ manufacturers: number; retailers: number; pending: number; products: number; published: number; orders: number; gmv: number }>(sql`
+        with lines as (${orderLines})
+        select
+          (select count(*) from companies where type = 'manufacturer')::int as manufacturers,
+          (select count(*) from companies where type = 'retailer')::int as retailers,
+          (select count(*) from app_users where status = 'pending')::int as pending,
+          (select count(*) from products)::int as products,
+          (select count(*) from products where published)::int as published,
+          (select count(*) from orders)::int as orders,
+          (select coalesce(sum(qty * unit), 0) from lines where status in ${inList(BOOKED)})::float8 as gmv`),
+      rowsOf<{ month: string; n: number }>(sql`
+        select to_char(created_at at time zone 'UTC', 'YYYY-MM') as month, count(*)::int as n
+        from orders where to_char(created_at at time zone 'UTC', 'YYYY-MM') in ${inList(months)} group by 1`),
+      // a top-level category counts its own products and its direct children's
+      rowsOf<{ label: string; value: number }>(sql`
+        select c.id as label,
+          (select count(*) from products p
+            where p.category_id = c.id or p.category_id in (select s.id from categories s where s.parent_id = c.id))::int as value
+        from categories c where c.parent_id is null order by c.id`),
+      rowsOf<{ company_id: string; name: string; orders: number; value: number }>(sql`
+        with lines as (${orderLines}),
+          booked as (select manufacturer_id, sum(qty * unit) as value from lines where status in ${inList(BOOKED)} group by 1),
+          counted as (select manufacturer_id, count(*) as n from orders group by 1)
+        select c.id as company_id, c.name, coalesce(counted.n, 0)::int as orders, coalesce(booked.value, 0)::float8 as value
+        from companies c
+        left join counted on counted.manufacturer_id = c.id
+        left join booked on booked.manufacturer_id = c.id
+        where c.type = 'manufacturer' and c.verified
+        order by value desc, c.created_at, c.id
+        limit 5`),
+    ]);
+    const rand = seeded("platform");
+    const perMonth = new Map(monthRows.map((r) => [r.month, r.n]));
     return {
-      manufacturers: allCompanies.filter((c) => c.type === "manufacturer").length,
-      retailers: allCompanies.filter((c) => c.type === "retailer").length,
-      pendingApprovals: allUsers.filter((u) => u.status === "pending").length,
-      products: allProducts.length,
-      publishedProducts: allProducts.filter((p) => p.published).length,
-      orders: allOrders.length,
-      gmv: value(allOrders),
-      ordersSeries: months.map((m, i) => ({ label: m, value: Math.round(18 + i * 6 + rand() * 8) + allOrders.filter((o) => o.createdAt.startsWith(m)).length })),
-      productsByCategory: allCategories
-        .filter((c) => !c.parentId)
-        .map((c) => ({ label: c.id, value: allProducts.filter((p) => p.categoryId === c.id || parentOf.get(p.categoryId) === c.id).length })),
-      topManufacturers: allCompanies
-        .filter((c) => c.type === "manufacturer" && c.verified)
-        .map((c) => {
-          const os = allOrders.filter((o) => o.manufacturerId === c.id);
-          return { companyId: c.id, name: c.name, orders: os.length, value: value(os) };
-        })
-        .sort((a, b) => b.value - a.value)
-        .slice(0, 5),
+      manufacturers: totals.manufacturers,
+      retailers: totals.retailers,
+      pendingApprovals: totals.pending,
+      products: totals.products,
+      publishedProducts: totals.published,
+      orders: totals.orders,
+      gmv: totals.gmv,
+      ordersSeries: months.map((m, i) => ({ label: m, value: Math.round(18 + i * 6 + rand() * 8) + (perMonth.get(m) ?? 0) })),
+      productsByCategory: categoryRows,
+      topManufacturers: makerRows.map((r) => ({ companyId: r.company_id, name: r.name, orders: r.orders, value: r.value })),
+    };
+  },
+  async catalogSummary() {
+    const [[totals], collectionRows, makerRows] = await Promise.all([
+      rowsOf<{ published: number; avg_lead: number }>(sql`
+        select count(*)::int as published,
+          round(coalesce(sum(coalesce(lead_time_days, 0)), 0)::numeric / greatest(count(*), 1))::int as avg_lead
+        from products where published`),
+      rowsOf<{ collection_id: string; n: number }>(sql`
+        select collection_id, count(*)::int as n from products where published and collection_id is not null group by 1`),
+      // cover images newest first, the catalogue's default order
+      rowsOf<{ manufacturer_id: string; n: number; images: string[] }>(sql`
+        select manufacturer_id, count(*)::int as n,
+          (array_agg(images->>0 order by created_at desc, id asc))[1:3] as images
+        from products where published group by 1`),
+    ]);
+    return {
+      publishedProducts: totals.published,
+      avgLeadTimeDays: totals.avg_lead,
+      productsByCollection: Object.fromEntries(collectionRows.map((r) => [r.collection_id, r.n])),
+      makers: Object.fromEntries(makerRows.map((r) => [r.manufacturer_id, { products: r.n, images: r.images.filter(Boolean) }])),
     };
   },
 };

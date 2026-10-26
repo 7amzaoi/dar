@@ -20,13 +20,15 @@ import { cn } from "@/lib/utils";
 
 function useLandingData() {
   return useQuery(async () => {
-    const [products, collections, companies, categories] = await Promise.all([
-      db.products.list({ sort: "newest" }),
+    // only the 8 newest pieces are shown; every count comes from one SQL summary
+    const [products, summary, collections, companies, categories] = await Promise.all([
+      db.products.list({ sort: "newest", limit: 8 }),
+      db.analytics.catalogSummary(),
       db.collections.list(),
       db.companies.list({ type: "manufacturer", verified: true }),
       db.categories.list(),
     ]);
-    return { products, collections, companies, categories };
+    return { products, summary, collections, companies, categories };
   }, []);
 }
 
@@ -57,19 +59,18 @@ export default function LandingPage() {
   const q = useLandingData();
   const d = q.data;
   const companyById = new Map(d?.companies.map((c) => [c.id, c]));
-  const avgLead = d ? Math.round(d.products.reduce((s, p) => s + (p.leadTimeDays ?? 0), 0) / Math.max(1, d.products.length)) : 0;
 
   const stats: { label: string; value: string | null; unit?: string }[] = [
     { label: t("landing.statMakers"), value: d ? formatNumber(d.companies.length) : null },
-    { label: t("landing.statPieces"), value: d ? formatNumber(d.products.length) : null },
+    { label: t("landing.statPieces"), value: d ? formatNumber(d.summary.publishedProducts) : null },
     { label: t("landing.statCountries"), value: d ? formatNumber(new Set(d.companies.map((c) => c.country)).size) : null },
-    { label: t("landing.statLead"), value: d ? formatNumber(avgLead) : null, unit: t("common.days") },
+    { label: t("landing.statLead"), value: d ? formatNumber(d.summary.avgLeadTimeDays) : null, unit: t("common.days") },
   ];
   const featured = d?.collections.slice(0, 3) ?? [];
 
   return (
     <>
-      <Hero pieceCount={d?.products.length} />
+      <Hero pieceCount={d?.summary.publishedProducts} />
 
       {/* Stats: one machined tray of four figures */}
       <section className="container-page mt-6">
@@ -109,7 +110,7 @@ export default function LandingPage() {
           <div className="grid gap-4 lg:grid-cols-[1.4fr_1fr]">
             {featured.map((c, i) => {
               const maker = companyById.get(c.manufacturerId);
-              const count = d.products.filter((p) => p.collectionId === c.id).length;
+              const count = d.summary.productsByCollection[c.id] ?? 0;
               return (
                 <Reveal key={c.id} delay={i * 0.08} className={i === 0 ? "lg:row-span-2" : ""}>
                   <Link href={`/catalog?collection=${c.id}`} className="group relative block h-full overflow-hidden rounded-[2rem]">
@@ -243,7 +244,7 @@ export default function LandingPage() {
                 number: String(i + 1).padStart(2, "0"),
                 title: c.name,
                 subtitle: `${city(c.city)}, ${country(c.country)}`,
-                image: d.products.find((p) => p.manufacturerId === c.id)?.images[0] ?? "/images/scenes/hero-living.svg",
+                image: d.summary.makers[c.id]?.images[0] ?? "/images/scenes/hero-living.svg",
                 href: `/company/${c.id}`,
               }))}
             />

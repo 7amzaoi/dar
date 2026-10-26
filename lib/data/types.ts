@@ -176,6 +176,22 @@ export interface ProductFilter {
   /** defaults to true for public listings */
   publishedOnly?: boolean;
   sort?: ProductSort;
+  /** at most this many rows (the server never returns more than 500 from `list`) */
+  limit?: number;
+}
+
+export interface ProductPageQuery extends Omit<ProductFilter, "limit"> {
+  /** 1-based */
+  page?: number;
+  pageSize?: number;
+}
+
+export interface ProductPage {
+  items: Product[];
+  /** matching products across all pages */
+  total: number;
+  page: number;
+  pageSize: number;
 }
 
 export type NewProduct = Omit<Product, "id" | "createdAt">;
@@ -226,6 +242,17 @@ export interface ManufacturerStats {
   ordersByStatus: Record<OrderStatus, number>;
 }
 
+/** Public catalogue figures for the landing, makers and collections pages (published products only). */
+export interface CatalogSummary {
+  publishedProducts: number;
+  /** average lead time, rounded; products without one count as 0 days */
+  avgLeadTimeDays: number;
+  /** collectionId -> published products in it */
+  productsByCollection: Record<string, number>;
+  /** manufacturerId -> published products and up to 3 cover images, newest first */
+  makers: Record<string, { products: number; images: string[] }>;
+}
+
 export interface PlatformStats {
   manufacturers: number;
   retailers: number;
@@ -245,6 +272,8 @@ export interface PlatformStats {
 
 export interface ProductRepository {
   list(filter?: ProductFilter): Promise<Product[]>;
+  /** one page of the catalogue, with the total count for the pager */
+  page(query?: ProductPageQuery): Promise<ProductPage>;
   getById(id: string): Promise<Product | null>;
   getMany(ids: string[]): Promise<Product[]>;
   listByManufacturer(manufacturerId: string): Promise<Product[]>;
@@ -317,6 +346,7 @@ export interface NotificationRepository {
 export interface AnalyticsRepository {
   manufacturerStats(manufacturerId: string): Promise<ManufacturerStats>;
   platformStats(): Promise<PlatformStats>;
+  catalogSummary(): Promise<CatalogSummary>;
 }
 
 /** The single object the UI consumes. */
