@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { AlertCircle, ClipboardList, Trash2 } from "lucide-react";
+import { AlertCircle, ClipboardList, FileText, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -13,7 +13,7 @@ import { QuantityInput } from "@/components/shared/quantity-input";
 import { EmptyState, ErrorState, SkeletonRows } from "@/components/shared/states";
 import { useAuth } from "@/lib/auth";
 import { db, tierFor, type Company, type Product } from "@/lib/data";
-import { useRfq, type RfqLine } from "@/lib/hooks/commerce-providers";
+import { lineKey, useRfq, type RfqLine } from "@/lib/hooks/commerce-providers";
 import { useQuery } from "@/lib/hooks/use-query";
 import { useT } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
@@ -31,11 +31,12 @@ function MakerGroup({
   products: Map<string, Product>;
   onSubmitted: () => void;
 }) {
-  const { t, tx, formatPrice } = useT();
+  const { t, tx, formatPrice, color: colorName } = useT();
   const { currentUser } = useAuth();
   const rfq = useRfq();
   const [note, setNote] = useState("");
-  const [mode, setMode] = useState<Mode>("quote");
+  // the showroom's selection becomes an order by default; a quote request stays one click away
+  const [mode, setMode] = useState<Mode>("order");
   const [busy, setBusy] = useState(false);
 
   const rows = lines.map((l) => {
@@ -51,15 +52,18 @@ function MakerGroup({
     setBusy(true);
     try {
       // One server transaction (order + maker notification). TODO(backend): email to maker.
-      await db.orders.create({
+      const order = await db.orders.create({
         retailerId: currentUser.companyId,
         manufacturerId: maker.id,
         isRFQ: mode === "quote",
         note: note.trim() || undefined,
-        items: rows.map((r) => ({ productId: r.line.productId, qty: r.line.qty, unitPrice: mode === "order" ? r.unit : undefined })),
+        items: rows.map(({ line }) => ({ productId: line.productId, qty: line.qty, color: line.color, note: line.note })),
       });
-      rfq.removeMany(lines.map((l) => l.productId));
-      toast.success(t("ret.submitted", { name: maker.name }));
+      rfq.removeMany(lines.map(lineKey));
+      toast.success(t("ret.submitted", { name: maker.name }), {
+        duration: 10_000,
+        action: { label: t("order.downloadPdf"), onClick: () => window.open(`/orders/${order.id}/pdf`, "_blank", "noopener") },
+      });
       onSubmitted();
     } catch {
       toast.error(t("common.errorBody"));
@@ -76,7 +80,7 @@ function MakerGroup({
     >
       <ul className="divide-y divide-hairline">
         {rows.map(({ line, product: p, unit, below, unavailable }) => (
-          <li key={line.productId} className="flex flex-wrap items-center gap-4 px-6 py-4 sm:flex-nowrap">
+          <li key={lineKey(line)} className="flex flex-wrap items-center gap-4 px-6 py-4 sm:flex-nowrap">
             <div className="relative size-20 shrink-0 overflow-hidden rounded bg-secondary">
               <FurnitureImage src={p?.images[0]} alt="" sizes="80px" />
             </div>
@@ -88,6 +92,12 @@ function MakerGroup({
               ) : (
                 <span className="text-muted-foreground">{line.productId}</span>
               )}
+              {line.color && (
+                <div className="mt-0.5 text-xs text-foreground/80">
+                  {t("product.colorLabel")}: {colorName(line.color)}
+                </div>
+              )}
+              {line.note && <div className="mt-0.5 line-clamp-2 text-xs text-muted-foreground" dir="auto">{line.note}</div>}
               <div className="text-xs text-muted-foreground">
                 {formatPrice(unit)} {t("common.perUnit")}
               </div>
@@ -98,15 +108,15 @@ function MakerGroup({
                 </div>
               )}
             </div>
-            <QuantityInput value={line.qty} onChange={(v) => rfq.set(line.productId, v)} min={1} size="sm" />
+            <QuantityInput value={line.qty} onChange={(v) => rfq.update(lineKey(line), { qty: v })} min={1} size="sm" />
             <div className="w-28 text-end font-display text-lg tabular-nums">{formatPrice(unit * line.qty)}</div>
             <Button
               variant="ghost"
               size="icon-sm"
               onClick={() => {
                 const removed = line;
-                rfq.remove(line.productId);
-                toast(t("ret.lineRemoved"), { action: { label: t("common.undo"), onClick: () => rfq.set(removed.productId, removed.qty) } });
+                rfq.remove(lineKey(line));
+                toast(t("ret.lineRemoved"), { action: { label: t("common.undo"), onClick: () => rfq.put(removed) } });
               }}
               aria-label={t("ret.removeLine")}
             >
@@ -144,7 +154,8 @@ function MakerGroup({
             <div className="font-display text-3xl tabular-nums">{formatPrice(subtotal)}</div>
           </div>
           <Button size="lg" disabled={busy || blocked} onClick={submit}>
-            {busy ? t("common.saving") : t("ret.submitOne", { name: maker.name })}
+            {mode === "order" && !busy && <FileText className="size-4" strokeWidth={1.6} />}
+            {busy ? t("common.saving") : mode === "order" ? t("order.convert") : t("ret.submitOne", { name: maker.name })}
           </Button>
         </div>
       </div>
@@ -181,7 +192,7 @@ export default function RfqPage() {
               onClick={() => {
                 const snapshot = rfq.lines;
                 rfq.clear();
-                toast(t("ret.listCleared"), { action: { label: t("common.undo"), onClick: () => snapshot.forEach((l) => rfq.set(l.productId, l.qty)) } });
+                toast(t("ret.listCleared"), { action: { label: t("common.undo"), onClick: () => snapshot.forEach((l) => rfq.put(l)) } });
               }}
             >
               {t("ret.clearList")}

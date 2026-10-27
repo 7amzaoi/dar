@@ -7,6 +7,7 @@ import { BadgeCheck, Check, ClipboardList, Pencil } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Textarea } from "@/components/ui/textarea";
 import { FurnitureImage } from "@/components/shared/furniture-image";
 import { ArrowForward, ChevronForward } from "@/components/shared/icons";
 import { CompanyMark } from "@/components/shared/logo";
@@ -23,30 +24,68 @@ import { db, tierFor, topLevelOf, type Company, type Product } from "@/lib/data"
 import { useRfq } from "@/lib/hooks/commerce-providers";
 import { useQuery } from "@/lib/hooks/use-query";
 import { useT } from "@/lib/i18n";
+import { cn } from "@/lib/utils";
+
+/** Pill radio group for the product's colours. The first one is preselected. */
+function OptionPicker({ label, options, value, onChange, format }: { label: string; options: string[]; value?: string; onChange: (v: string) => void; format: (v: string) => string }) {
+  return (
+    <fieldset>
+      <legend className="mb-2 text-xs font-medium text-muted-foreground">{label}</legend>
+      <div className="flex flex-wrap gap-2" role="radiogroup">
+        {options.map((o) => (
+          <button
+            key={o}
+            type="button"
+            role="radio"
+            aria-checked={value === o}
+            onClick={() => onChange(o)}
+            className={cn(
+              "rounded-full border px-3.5 py-1.5 text-sm transition-colors",
+              value === o ? "border-foreground bg-foreground text-background" : "border-border hover:border-foreground/50",
+            )}
+          >
+            {format(o)}
+          </button>
+        ))}
+      </div>
+    </fieldset>
+  );
+}
 
 function RfqBox({ product, maker }: { product: Product; maker: Company | null }) {
-  const { t, tx, formatPrice } = useT();
+  const { t, tx, formatPrice, color: colorName } = useT();
   const { currentUser, company } = useAuth();
   const rfq = useRfq();
   const router = useRouter();
   const makerName = maker?.name ?? "";
-  const existing = rfq.qtyOf(product.id);
-  const [qty, setQty] = useState(existing ?? product.minOrderQty);
+  // a single colour needs no choice; several start on the first one
+  const [color, setColor] = useState<string | undefined>(product.colors[0]);
+  const existing = rfq.find(product.id, color);
+  const [qty, setQty] = useState(existing?.qty ?? product.minOrderQty);
+  const [note, setNote] = useState(existing?.note ?? "");
   const tier = tierFor(product.priceTiers, qty);
   const below = qty < product.minOrderQty;
+  const needsChoice = product.colors.length > 0 && !color;
 
   return (
     <div className="space-y-5">
       <PriceTierTable tiers={product.priceTiers} activeQty={qty} />
-      <div className="rounded-[1.25rem] border border-border bg-card p-5">
+      <div className="space-y-5 rounded-[1.25rem] border border-border bg-card p-5">
+        {product.colors.length > 1 && <OptionPicker label={t("product.colorLabel")} options={product.colors} value={color} onChange={setColor} format={colorName} />}
+        <div>
+          <label htmlFor="piece-note" className="mb-2 block text-xs font-medium text-muted-foreground">
+            {t("product.pieceNote")}
+          </label>
+          <Textarea id="piece-note" rows={2} maxLength={300} dir="auto" value={note} onChange={(e) => setNote(e.target.value)} placeholder={t("product.pieceNotePlaceholder")} />
+        </div>
         <div className="flex flex-wrap items-center gap-3">
           <QuantityInput value={qty} onChange={setQty} min={1} />
           <Button
             size="lg"
             className="flex-1"
-            disabled={below || product.stockStatus === "out_of_stock"}
+            disabled={below || needsChoice || product.stockStatus === "out_of_stock"}
             onClick={() => {
-              rfq.set(product.id, qty);
+              rfq.put({ productId: product.id, qty, color, note: note.trim() || undefined });
               toast.success(t("product.addedToRfq"), {
                 description: makerName,
                 action: { label: t("nav.rfq"), onClick: () => router.push("/retailer/rfq") },
@@ -57,8 +96,10 @@ function RfqBox({ product, maker }: { product: Product; maker: Company | null })
             {existing ? t("product.updateRfq") : t("product.addToRfq")}
           </Button>
         </div>
-        <p className={`mt-3 text-xs ${below ? "text-destructive" : "text-muted-foreground"}`} aria-live="polite">
-          {below
+        <p className={`text-xs ${below || needsChoice ? "text-destructive" : "text-muted-foreground"}`} aria-live="polite">
+          {needsChoice
+            ? t("product.chooseOptions")
+            : below
             ? t("product.belowMoq", { qty: product.minOrderQty })
             : tier && t("product.estimate", { total: formatPrice(tier.unitPrice * qty, tier.currency), price: formatPrice(tier.unitPrice, tier.currency) })}
         </p>

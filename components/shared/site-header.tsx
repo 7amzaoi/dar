@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useMotionValueEvent, useScroll } from "motion/react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { ArrowUpRight, Bell, ClipboardList, Heart, LayoutDashboard, LogOut, Menu, Search } from "lucide-react";
+import { ArrowUpRight, Bell, Building2, ClipboardList, Heart, LayoutDashboard, LogOut, Menu, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -66,6 +66,12 @@ export function UserMenu({ align = "end" }: { align?: "start" | "end" }) {
           <LayoutDashboard className="size-4" strokeWidth={1.6} />
           {t("common.dashboard")}
         </DropdownMenuItem>
+        {currentUser.role === "manufacturer" && currentUser.status === "approved" && (
+          <DropdownMenuItem onSelect={() => router.push("/manufacturer/profile")}>
+            <Building2 className="size-4" strokeWidth={1.6} />
+            {t("dash.profile")}
+          </DropdownMenuItem>
+        )}
         <DropdownMenuItem
           onSelect={() => void logout()}
         >

@@ -5,6 +5,7 @@ import { ExternalLink, Pencil, Plus, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
+import { CollectionsSection } from "@/components/dashboard/collections-section";
 import { ConfirmDialog } from "@/components/dashboard/confirm-dialog";
 import { DataTable, type Column } from "@/components/dashboard/data-table";
 import { PageHeader } from "@/components/dashboard/widgets";
@@ -121,6 +122,7 @@ export default function ManufacturerProducts() {
         rowHref={(p) => `/manufacturer/products/${p.id}/edit`}
         empty={{ title: t("mfr.emptyProducts"), body: t("mfr.emptyProductsBody"), action: newButton }}
       />
+      <CollectionsSection />
     </>
   );
 }

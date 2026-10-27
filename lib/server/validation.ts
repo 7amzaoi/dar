@@ -120,10 +120,19 @@ export const categoryPatch = categoryInput.partial();
 export const orderInput = z.object({
   manufacturerId: id,
   items: z
-    .array(z.object({ productId: id, qty: count }))
+    .array(
+      z.object({
+        productId: id,
+        qty: count,
+        // checked against the product's own colours in the policy
+        color: clearable(text(1, 40)),
+        note: clearable(text(1, 300)),
+      }),
+    )
     .min(1)
     .max(100)
-    .refine((items) => new Set(items.map((i) => i.productId)).size === items.length, "DUPLICATE_ITEM"),
+    // the same piece may appear twice in different colours, but not as the same selection
+    .refine((items) => new Set(items.map((i) => `${i.productId}|${i.color ?? ""}`)).size === items.length, "DUPLICATE_ITEM"),
   isRFQ: z.boolean(),
   note: clearable(text(1, 2000)),
 });

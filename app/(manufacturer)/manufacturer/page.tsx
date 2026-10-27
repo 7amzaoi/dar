@@ -1,22 +1,19 @@
 "use client";
 
 import Link from "next/link";
-import { Eye, Package, Plus, Receipt, Wallet } from "lucide-react";
+import { Package, Plus, Receipt, Wallet } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { AreaTrend, BreakdownList } from "@/components/dashboard/charts";
 import { KpiCard, PageHeader, Panel } from "@/components/dashboard/widgets";
 import { ArrowForward } from "@/components/shared/icons";
 import { EmptyState, ErrorState, SkeletonRows } from "@/components/shared/states";
 import { OrderStatusBadge } from "@/components/shared/status-badge";
 import { useAuth } from "@/lib/auth";
-import { db, orderTotal, type OrderStatus } from "@/lib/data";
+import { db, orderTotal } from "@/lib/data";
 import { useQuery } from "@/lib/hooks/use-query";
 import { useT } from "@/lib/i18n";
 
-const STATUSES: OrderStatus[] = ["quote_requested", "quoted", "confirmed", "in_production", "shipped", "completed", "cancelled"];
-
 export default function ManufacturerOverview() {
-  const { t, formatNumber, formatPrice, formatDate, relativeTime } = useT();
+  const { t, formatNumber, formatPrice, relativeTime } = useT();
   const { currentUser, company } = useAuth();
   const companyId = currentUser?.companyId ?? "";
 
@@ -51,28 +48,11 @@ export default function ManufacturerOverview() {
         <ErrorState onRetry={q.reload} />
       ) : (
         <>
-          <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-            <KpiCard label={t("mfr.kpiViews")} icon={Eye} loading={!s} value={s && formatNumber(s.views30d)} sub={t("dash.last30")} />
+          {/* Three numbers and the requests waiting on you: everything else is one click away. */}
+          <div className="grid gap-4 sm:grid-cols-3">
             <KpiCard label={t("mfr.kpiPublished")} icon={Package} loading={!s} value={s && formatNumber(s.publishedProducts)} sub={s && t("mfr.kpiDrafts", { count: s.draftProducts })} />
             <KpiCard label={t("mfr.kpiOpenOrders")} icon={Receipt} loading={!s} value={s && formatNumber(s.openOrders)} sub={s && t("ret.kpiOpenQuotes") + ": " + s.ordersByStatus.quote_requested} />
             <KpiCard label={t("mfr.kpiPipeline")} icon={Wallet} loading={!s} value={s && formatPrice(s.pipelineValue)} />
-          </div>
-
-          <div className="mt-6 grid gap-6 xl:grid-cols-[1.7fr_1fr]">
-            <Panel title={t("mfr.viewsChart")} description={t("dash.last30")}>
-              {s ? (
-                <AreaTrend data={s.viewsSeries} formatLabel={(l) => formatDate(l, { day: "numeric", month: "short" })} formatValue={(v) => formatNumber(v)} />
-              ) : (
-                <SkeletonRows rows={5} />
-              )}
-            </Panel>
-            <Panel title={t("mfr.statusChart")}>
-              {s ? (
-                <BreakdownList items={STATUSES.map((st) => ({ key: st, label: t(`status.order.${st}`), value: s.ordersByStatus[st] }))} />
-              ) : (
-                <SkeletonRows rows={5} />
-              )}
-            </Panel>
           </div>
 
           <Panel

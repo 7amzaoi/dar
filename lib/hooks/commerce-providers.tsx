@@ -11,16 +11,25 @@ import { db } from "@/lib/data";
 export interface RfqLine {
   productId: string;
   qty: number;
+  /** the showroom's choice among the product's colours */
+  color?: string;
+  /** free-text detail for this piece (fabric code, leg finish…) */
+  note?: string;
 }
+
+/** One line per product + colour, so the same piece can be ordered in two colours. */
+export const lineKey = (l: Pick<RfqLine, "productId" | "color">) => `${l.productId}|${l.color ?? ""}`;
 
 interface RfqValue {
   lines: RfqLine[];
   count: number;
-  has: (productId: string) => boolean;
-  qtyOf: (productId: string) => number | undefined;
-  set: (productId: string, qty: number) => void;
-  remove: (productId: string) => void;
-  removeMany: (productIds: string[]) => void;
+  /** the line for this exact selection, if it is already in the list */
+  find: (productId: string, color?: string) => RfqLine | undefined;
+  /** add a selection, or replace the line with the same product + colour */
+  put: (line: RfqLine) => void;
+  update: (key: string, patch: Partial<Pick<RfqLine, "qty" | "note">>) => void;
+  remove: (key: string) => void;
+  removeMany: (keys: string[]) => void;
   clear: () => void;
 }
 
@@ -72,12 +81,11 @@ export function RfqProvider({ children }: { children: ReactNode }) {
     return {
       lines,
       count: lines.length,
-      has: (id) => lines.some((l) => l.productId === id),
-      qtyOf: (id) => lines.find((l) => l.productId === id)?.qty,
-      set: (productId, qty) =>
-        update((ls) => (ls.some((l) => l.productId === productId) ? ls.map((l) => (l.productId === productId ? { ...l, qty } : l)) : [...ls, { productId, qty }])),
-      remove: (productId) => update((ls) => ls.filter((l) => l.productId !== productId)),
-      removeMany: (ids) => update((ls) => ls.filter((l) => !ids.includes(l.productId))),
+      find: (productId, color) => lines.find((l) => lineKey(l) === lineKey({ productId, color })),
+      put: (line) => update((ls) => (ls.some((l) => lineKey(l) === lineKey(line)) ? ls.map((l) => (lineKey(l) === lineKey(line) ? line : l)) : [...ls, line])),
+      update: (key, patch) => update((ls) => ls.map((l) => (lineKey(l) === key ? { ...l, ...patch } : l))),
+      remove: (key) => update((ls) => ls.filter((l) => lineKey(l) !== key)),
+      removeMany: (keys) => update((ls) => ls.filter((l) => !keys.includes(lineKey(l)))),
       clear: () => update(() => []),
     };
   }, [state, storageKey, update]);

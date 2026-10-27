@@ -251,11 +251,14 @@ export const policies: Record<string, Handler> = {
     const o = parse(input.orderInput, data);
     const products = await pg.products.getMany(o.items.map((i) => i.productId));
     const byId = new Map(products.map((p) => [p.id, p]));
-    const items = o.items.map(({ productId, qty }) => {
+    const items = o.items.map(({ productId, qty, color, note }) => {
       const p = byId.get(productId);
       if (!p || !p.published || p.manufacturerId !== o.manufacturerId || qty < p.minOrderQty) throw new HttpError(400, "INVALID_ITEM");
+      // a chosen colour must be one the maker offers for this piece
+      if (color && !p.colors.includes(color)) throw new HttpError(400, "INVALID_OPTION");
+      const line = { productId: p.id, qty, color, note };
       // Direct orders are priced from the maker's tiers here, never from the browser.
-      return o.isRFQ ? { productId: p.id, qty } : { productId: p.id, qty, unitPrice: tierFor(p.priceTiers, qty)?.unitPrice ?? 0 };
+      return o.isRFQ ? line : { ...line, unitPrice: tierFor(p.priceTiers, qty)?.unitPrice ?? 0 };
     });
     return pg.orders.create({ retailerId: user.companyId, manufacturerId: o.manufacturerId, items, isRFQ: o.isRFQ, note: o.note });
   },

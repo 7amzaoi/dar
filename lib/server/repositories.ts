@@ -502,7 +502,14 @@ const ordersRepo: OrderRepository = {
   async create(input) {
     return db.transaction(async (tx) => {
       const status: OrderStatus = input.isRFQ ? "quote_requested" : "confirmed";
-      const items = input.isRFQ ? input.items.map(({ productId, qty }) => ({ productId, qty })) : input.items;
+      // quote requests carry no price yet; the showroom's colour and note always stay with the line
+      const items = input.items.map(({ productId, qty, unitPrice, color, note }) => ({
+        productId,
+        qty,
+        ...(input.isRFQ ? {} : { unitPrice }),
+        ...(color ? { color } : {}),
+        ...(note ? { note } : {}),
+      }));
       const [r] = await tx
         .insert(ordersT)
         .values({

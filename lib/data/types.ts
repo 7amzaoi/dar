@@ -118,6 +118,10 @@ export interface OrderItem {
   productId: string;
   qty: number;
   unitPrice?: number;
+  /** the showroom's chosen colour, one of the product's colours */
+  color?: string;
+  /** per-piece detail from the showroom (fabric code, finish, size…) */
+  note?: string;
 }
 
 export interface OrderHistoryEntry {

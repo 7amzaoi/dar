@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Check, X } from "lucide-react";
+import { Check, FileText, X } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -12,6 +12,7 @@ import { DataTable, type Column } from "@/components/dashboard/data-table";
 import { PageHeader, Panel } from "@/components/dashboard/widgets";
 import { FurnitureImage } from "@/components/shared/furniture-image";
 import { ArrowBack, ArrowForward } from "@/components/shared/icons";
+import { ItemOptions } from "@/components/shared/item-options";
 import { EmptyState, ErrorState, SkeletonRows } from "@/components/shared/states";
 import { OrderStatusBadge } from "@/components/shared/status-badge";
 import { WhatsAppButton } from "@/components/shared/whatsapp-button";
@@ -179,17 +180,18 @@ function QuoteForm({ order, products }: { order: Order; products: Map<string, Pr
   return (
     <Panel title={t("mfr.respondTitle")} description={t("mfr.respondBody")}>
       <div className="space-y-3">
-        {order.items.map((item) => {
+        {order.items.map((item, index) => {
           const p = products.get(item.productId);
           const suggested = p ? tierFor(p.priceTiers, item.qty)?.unitPrice : undefined;
           return (
-            <div key={item.productId} className="grid grid-cols-[1fr_auto] items-center gap-4 sm:grid-cols-[1fr_auto_9rem]">
+            <div key={`${item.productId}-${index}`} className="grid grid-cols-[1fr_auto] items-center gap-4 sm:grid-cols-[1fr_auto_9rem]">
               <div className="min-w-0">
                 <div className="truncate text-sm font-medium">{p ? tx(p.titleAr, p.titleEn) : item.productId}</div>
                 <div className="text-xs text-muted-foreground">
                   × {item.qty}
                   {suggested != null && ` · ${t("mfr.suggested", { price: formatPrice(suggested) })}`}
                 </div>
+                <ItemOptions item={item} className="mt-1" />
               </div>
               <span className="hidden text-xs text-muted-foreground sm:block">{t("common.unitPrice")}</span>
               <Input
@@ -300,6 +302,11 @@ export function OrderDetail({ side, id }: { side: Side; id: string }) {
         actions={
           <>
             <OrderStatusBadge status={order.status} className="h-8 px-3 text-xs" />
+            <Button variant="outline" size="sm" asChild>
+              <a href={`/orders/${order.id}/pdf`} target="_blank" rel="noopener">
+                <FileText className="size-3.5" strokeWidth={1.6} /> {t("order.downloadPdf")}
+              </a>
+            </Button>
             {counterparty && (
               <WhatsAppButton
                 company={counterparty}
@@ -361,11 +368,11 @@ export function OrderDetail({ side, id }: { side: Side; id: string }) {
 
           <Panel title={t("mfr.colItems")} bodyClassName="p-0">
             <ul className="divide-y divide-hairline">
-              {order.items.map((item) => {
+              {order.items.map((item, index) => {
                 const p = products.get(item.productId);
                 const unit = item.unitPrice ?? (p ? tierFor(p.priceTiers, item.qty)?.unitPrice : undefined);
                 return (
-                  <li key={item.productId} className="flex items-center gap-4 px-6 py-4">
+                  <li key={`${item.productId}-${index}`} className="flex items-center gap-4 px-6 py-4">
                     <div className="relative size-16 shrink-0 overflow-hidden rounded bg-secondary">
                       <FurnitureImage src={p?.images[0]} alt="" sizes="64px" />
                     </div>
@@ -381,6 +388,7 @@ export function OrderDetail({ side, id }: { side: Side; id: string }) {
                         {item.qty} × {unit != null ? formatPrice(unit) : "—"}
                         {item.unitPrice == null && unit != null && ` (${t("product.tierTitle")})`}
                       </div>
+                      <ItemOptions item={item} className="mt-1" />
                     </div>
                     <div className="text-end font-display text-xl tabular-nums">{unit != null ? formatPrice(unit * item.qty) : "—"}</div>
                   </li>

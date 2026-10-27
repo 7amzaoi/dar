@@ -1,7 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { Bell, Building2, FolderOpen, LayoutGrid, Package, Receipt } from "lucide-react";
+import { LayoutGrid, Package, Receipt } from "lucide-react";
 import { DashboardShell, type NavItem } from "@/components/dashboard/dashboard-shell";
 import { RoleGuard } from "@/components/dashboard/role-guard";
 import { useAuth } from "@/lib/auth";
@@ -13,20 +13,15 @@ function ManufacturerShell({ children }: { children: ReactNode }) {
   const { t } = useT();
   const { currentUser } = useAuth();
   const companyId = currentUser?.companyId ?? "";
-  const userId = currentUser?.id ?? "";
 
-  const badges = useQuery(async () => {
-    const [orders, unread] = await Promise.all([db.orders.listByManufacturer(companyId), db.notifications.unreadCount(userId)]);
-    return { rfq: orders.filter((o) => o.status === "quote_requested").length, unread };
-  }, [companyId, userId]);
+  const rfqs = useQuery(async () => (await db.orders.listByManufacturer(companyId)).filter((o) => o.status === "quote_requested").length, [companyId]);
 
+  // Three places only. Collections live on the products page, notifications behind the bell,
+  // and the company profile in the account menu.
   const items: NavItem[] = [
     { href: "/manufacturer", label: t("dash.overview"), icon: LayoutGrid, exact: true },
     { href: "/manufacturer/products", label: t("dash.products"), icon: Package },
-    { href: "/manufacturer/collections", label: t("dash.collections"), icon: FolderOpen },
-    { href: "/manufacturer/orders", label: t("dash.orders"), icon: Receipt, badge: badges.data?.rfq },
-    { href: "/manufacturer/notifications", label: t("dash.notifications"), icon: Bell, badge: badges.data?.unread },
-    { href: "/manufacturer/profile", label: t("dash.profile"), icon: Building2 },
+    { href: "/manufacturer/orders", label: t("dash.orders"), icon: Receipt, badge: rfqs.data },
   ];
 
   return (
