@@ -113,7 +113,7 @@ export default function RegisterPage() {
 
   return (
     <AuthShell
-      image="/images/scenes/collection-atrium.svg"
+      image="/images/photos/scenes/collection-atrium.webp"
       caption={<p className="max-w-sm font-display text-3xl leading-snug">{t("landing.ctaBody")}</p>}
     >
       <FadeIn>

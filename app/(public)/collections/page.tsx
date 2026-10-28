@@ -36,7 +36,7 @@ export default function CollectionsPage() {
           <>
           <Reveal className="mb-16 h-[440px] overflow-hidden rounded-[2rem] bg-secondary/60 sm:h-[500px]">
             <PerspectiveCarousel
-              items={items.map(({ collection }) => ({ src: collection.coverUrl ?? "/images/scenes/hero-living.svg", title: tx(collection.nameAr, collection.nameEn) }))}
+              items={items.map(({ collection }) => ({ src: collection.coverUrl ?? "/images/photos/scenes/hero-living.webp", title: tx(collection.nameAr, collection.nameEn) }))}
               defaultActiveIndex={Math.min(2, items.length - 1)}
               loop
               slideWidth={260}

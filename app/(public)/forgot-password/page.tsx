@@ -114,7 +114,7 @@ export default function ForgotPasswordPage() {
   });
 
   return (
-    <AuthShell image="/images/scenes/hero-dining.svg" caption={<p className="max-w-sm font-display text-3xl leading-snug">{t("landing.title")}</p>}>
+    <AuthShell image="/images/photos/scenes/hero-dining.webp" caption={<p className="max-w-sm font-display text-3xl leading-snug">{t("landing.title")}</p>}>
       <FadeIn>
         <div className="eyebrow mb-4">{t("auth.forgotEyebrow")}</div>
         <h1 className="display-lg">{t("auth.forgotTitle")}</h1>
@@ -138,6 +138,8 @@ export default function ForgotPasswordPage() {
               {t("auth.forgotCodeSent", { email })}
             </p>
             <form onSubmit={onReset} className="mt-10 space-y-5" noValidate>
+              {/* tells the browser which account the new password belongs to, so it updates the saved one */}
+              <input type="email" name="username" autoComplete="username" value={email} readOnly hidden />
               <Field id="otp" label={t("auth.forgotCode")} error={resetForm.formState.errors.otp?.message}>
                 <Input
                   id="otp"

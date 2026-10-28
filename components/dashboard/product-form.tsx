@@ -18,7 +18,7 @@ import { Field } from "@/components/shared/field";
 import { childCategories, db, topLevelCategories, type Category, type Collection, type Product } from "@/lib/data";
 import { useT } from "@/lib/i18n";
 import en from "@/lib/i18n/en";
-import { placeholderSet, PRODUCT_PLACEHOLDERS } from "@/lib/placeholders";
+import { PRODUCT_LIBRARY } from "@/lib/placeholders";
 
 const MATERIAL_KEYS = Object.keys(en.materials);
 const COLOR_KEYS = Object.keys(en.colors);
@@ -194,7 +194,7 @@ export function ProductForm({
           name="images"
           render={({ field }) => (
             <div>
-              <ImageManager value={field.value} onChange={field.onChange} library={PRODUCT_PLACEHOLDERS} expandLibraryPick={placeholderSet} invalid={!!errors.images} />
+              <ImageManager value={field.value} onChange={field.onChange} library={PRODUCT_LIBRARY} invalid={!!errors.images} />
               {errors.images && <p role="alert" className="mt-2 text-xs text-destructive">{errors.images.message}</p>}
             </div>
           )}

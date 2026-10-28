@@ -13,7 +13,7 @@ import { useT } from "@/lib/i18n";
 const VIDEO_URL = "/videos/hero.mp4";
 
 /** Shown when the video can't play, and instead of it for reduced-motion users. */
-const STILL = "/images/scenes/hero-living.svg";
+const STILL = "/images/photos/scenes/hero-living.webp";
 
 /** Full-screen glass hero: looping video card, centered nav + headline, stats card and cutout panel. */
 export function Hero({ pieceCount }: { pieceCount?: number }) {

@@ -167,7 +167,7 @@ export default function LandingPage() {
         <SectionTitle title={t("landing.valueTitle")} />
         <div className="grid gap-4 md:grid-cols-6 md:grid-rows-2">
           <Reveal className="relative min-h-[420px] overflow-hidden rounded-[2rem] md:col-span-4 md:row-span-2">
-            <FurnitureImage src="/images/scenes/collection-atrium.svg" alt="" sizes="(min-width: 768px) 66vw, 100vw" />
+            <FurnitureImage src="/images/photos/scenes/collection-atrium.webp" alt="" sizes="(min-width: 768px) 66vw, 100vw" />
             <div className="glass absolute inset-x-4 bottom-4 max-w-md rounded-[1.5rem] p-6 sm:inset-x-6 sm:bottom-6">
               <BadgeCheck className="mb-4 size-5 text-hero-ink dark:text-brand" strokeWidth={1.5} />
               <h3 className="font-display text-2xl tracking-tight text-hero-ink dark:text-foreground">{t("landing.value1Title")}</h3>
@@ -244,7 +244,7 @@ export default function LandingPage() {
                 number: String(i + 1).padStart(2, "0"),
                 title: c.name,
                 subtitle: `${city(c.city)}, ${country(c.country)}`,
-                image: d.summary.makers[c.id]?.images[0] ?? "/images/scenes/hero-living.svg",
+                image: d.summary.makers[c.id]?.images[0] ?? "/images/photos/scenes/hero-living.webp",
                 href: `/company/${c.id}`,
               }))}
             />
@@ -258,7 +258,7 @@ export default function LandingPage() {
       <section className="container-page mt-28 md:mt-36">
         <Reveal className="relative overflow-hidden rounded-[2.5rem]">
           <div className="relative min-h-[520px]">
-            <FurnitureImage src="/images/scenes/collection-andalus.svg" alt="" sizes="100vw" />
+            <FurnitureImage src="/images/photos/scenes/collection-andalus.webp" alt="" sizes="100vw" />
           </div>
           <div className="absolute inset-0 flex items-end p-4 sm:items-center sm:p-10 lg:p-16">
             <div className="glass relative w-full max-w-xl rounded-[2rem] bg-white/80 p-8 sm:p-10 dark:bg-card/85">

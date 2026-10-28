@@ -23,7 +23,7 @@ export default function PendingApprovalPage() {
   ] as const;
 
   return (
-    <AuthShell image="/images/scenes/hero-bedroom.svg">
+    <AuthShell image="/images/photos/scenes/hero-bedroom.webp">
       <FadeIn>
         <div className="eyebrow mb-4">{t("auth.pendingEyebrow")}</div>
         <h1 className="display-lg">{suspended ? t("auth.suspendedTitle") : approved ? t("auth.welcome", { name: firstName ?? "" }) : t("auth.pendingTitle")}</h1>

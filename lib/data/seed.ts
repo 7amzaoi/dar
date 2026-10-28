@@ -245,14 +245,14 @@ export const categories: Category[] = [
 /* ------------------------------------------------------------------ */
 
 export const collections: Collection[] = [
-  { id: "col-sahel", manufacturerId: "m2", nameAr: "الساحل", nameEn: "Sahel", coverUrl: "/images/scenes/collection-sahel.svg" },
-  { id: "col-dune", manufacturerId: "m2", nameAr: "الكثبان", nameEn: "Dune", coverUrl: "/images/scenes/collection-dune.svg" },
-  { id: "col-nocturne", manufacturerId: "m3", nameAr: "نوكتورن", nameEn: "Nocturne", coverUrl: "/images/scenes/collection-nocturne.svg" },
-  { id: "col-atrium", manufacturerId: "m3", nameAr: "الأتريوم", nameEn: "Atrium", coverUrl: "/images/scenes/collection-atrium.svg" },
-  { id: "col-andalus", manufacturerId: "m6", nameAr: "الأندلس", nameEn: "Andalus", coverUrl: "/images/scenes/collection-andalus.svg" },
-  { id: "col-olive", manufacturerId: "m4", nameAr: "بستان الزيتون", nameEn: "Olive Grove", coverUrl: "/images/scenes/collection-olive.svg" },
-  { id: "col-studio", manufacturerId: "m5", nameAr: "ستوديو", nameEn: "Studio", coverUrl: "/images/scenes/collection-studio.svg" },
-  { id: "col-cedar", manufacturerId: "m1", nameAr: "الأرز", nameEn: "Cedar", coverUrl: "/images/scenes/collection-cedar.svg" },
+  { id: "col-sahel", manufacturerId: "m2", nameAr: "الساحل", nameEn: "Sahel", coverUrl: "/images/photos/scenes/collection-sahel.webp" },
+  { id: "col-dune", manufacturerId: "m2", nameAr: "الكثبان", nameEn: "Dune", coverUrl: "/images/photos/scenes/collection-dune.webp" },
+  { id: "col-nocturne", manufacturerId: "m3", nameAr: "نوكتورن", nameEn: "Nocturne", coverUrl: "/images/photos/scenes/collection-nocturne.webp" },
+  { id: "col-atrium", manufacturerId: "m3", nameAr: "الأتريوم", nameEn: "Atrium", coverUrl: "/images/photos/scenes/collection-atrium.webp" },
+  { id: "col-andalus", manufacturerId: "m6", nameAr: "الأندلس", nameEn: "Andalus", coverUrl: "/images/photos/scenes/collection-andalus.webp" },
+  { id: "col-olive", manufacturerId: "m4", nameAr: "بستان الزيتون", nameEn: "Olive Grove", coverUrl: "/images/photos/scenes/collection-olive.webp" },
+  { id: "col-studio", manufacturerId: "m5", nameAr: "ستوديو", nameEn: "Studio", coverUrl: "/images/photos/scenes/collection-studio.webp" },
+  { id: "col-cedar", manufacturerId: "m1", nameAr: "الأرز", nameEn: "Cedar", coverUrl: "/images/photos/scenes/collection-cedar.webp" },
 ];
 
 /* ------------------------------------------------------------------ */
@@ -402,7 +402,7 @@ function tiers(base: number, moq: number) {
 }
 
 export const products: Product[] = rows.map(
-  ([id, manufacturerId, categoryId, kind, tone, titleEn, titleAr, materials, colors, [w, h, d], base, moq, stock, lead, collectionId, created, published = true]) => {
+  ([id, manufacturerId, categoryId, , , titleEn, titleAr, materials, colors, [w, h, d], base, moq, stock, lead, collectionId, created, published = true]) => {
     const [descAr, descEn] = DESCRIPTIONS[CATEGORY_TOP[categoryId]];
     const [matAr, matEn] = MATERIAL_NAMES[materials[0]];
     return {
@@ -413,7 +413,8 @@ export const products: Product[] = rows.map(
       descriptionAr: descAr.replace("{title}", titleAr).replace("{material}", matAr),
       descriptionEn: descEn.replace("{title}", titleEn).replace("{material}", matEn),
       categoryId,
-      images: ["a", "b", "c"].map((v) => `/images/products/${kind}-${tone}-${v}.svg`),
+      // one Unsplash photo per piece (scripts/photos.json)
+      images: [`/images/photos/products/${id}.webp`],
       materials,
       colors,
       dimensions: { width: w, height: h, depth: d, unit: "cm" },

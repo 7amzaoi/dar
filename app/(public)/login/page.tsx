@@ -69,7 +69,7 @@ function LoginForm() {
 
       <form onSubmit={onSubmit} className="mt-10 space-y-5" noValidate>
         <Field id="email" label={t("auth.email")} error={errors.email?.message}>
-          <Input id="email" type="email" autoComplete="email" spellCheck={false} dir="ltr" aria-invalid={!!errors.email} aria-describedby={errors.email ? "email-error" : undefined} {...form.register("email")} />
+          <Input id="email" type="email" autoComplete="username" spellCheck={false} dir="ltr" aria-invalid={!!errors.email} aria-describedby={errors.email ? "email-error" : undefined} {...form.register("email")} />
         </Field>
         <Field id="password" label={t("auth.password")} error={errors.password?.message}>
           <Input id="password" type="password" autoComplete="current-password" dir="ltr" aria-invalid={!!errors.password} {...form.register("password")} />
@@ -104,7 +104,7 @@ export default function LoginPage() {
   const { t } = useT();
   return (
     <AuthShell
-      image="/images/scenes/hero-dining.svg"
+      image="/images/photos/scenes/hero-dining.webp"
       caption={<p className="max-w-sm font-display text-3xl leading-snug">{t("landing.title")}</p>}
     >
       <Suspense>

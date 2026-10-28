@@ -15,7 +15,7 @@ import { useAuth } from "@/lib/auth";
 import { db, type Collection } from "@/lib/data";
 import { useQuery } from "@/lib/hooks/use-query";
 import { useT } from "@/lib/i18n";
-import { SCENE_PLACEHOLDERS } from "@/lib/placeholders";
+import { SCENE_LIBRARY } from "@/lib/placeholders";
 import { cn } from "@/lib/utils";
 
 function CollectionDialog({
@@ -32,7 +32,7 @@ function CollectionDialog({
   const { t } = useT();
   const [nameAr, setNameAr] = useState(initial?.nameAr ?? "");
   const [nameEn, setNameEn] = useState(initial?.nameEn ?? "");
-  const [cover, setCover] = useState(initial?.coverUrl ?? SCENE_PLACEHOLDERS[0]);
+  const [cover, setCover] = useState(initial?.coverUrl ?? SCENE_LIBRARY[0]);
   const [busy, setBusy] = useState(false);
   const [touched, setTouched] = useState(false);
   const errAr = touched && nameAr.trim().length < 2 ? t("auth.errMin", { n: 2 }) : undefined;
@@ -70,7 +70,7 @@ function CollectionDialog({
           <fieldset>
             <legend className="mb-2 text-[0.8rem] font-medium">{t("mfr.collectionCover")}</legend>
             <div className="grid max-h-64 grid-cols-3 gap-2 overflow-y-auto sm:grid-cols-4" role="radiogroup">
-              {SCENE_PLACEHOLDERS.map((src) => (
+              {SCENE_LIBRARY.map((src) => (
                 <button
                   key={src}
                   type="button"

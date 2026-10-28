@@ -51,7 +51,7 @@ npm run lint
   - To use one, sign up through Neon Auth with its email, e.g. `abdullah@bayt.sa` (showroom), `omar@damietta-atelier.com` (manufacturer) or `admin@dar.trade` (admin). On first sign-in the identity is linked to that account.
   - Outside development, this link requires a verified email, so nobody can claim a seeded account just by typing its address.
 - **Languages.** Arabic (RTL) is the default; switch with the language toggle. The choice is kept in the `dar-locale` cookie.
-- **Placeholder images.** All images are generated SVG placeholders in `public/images`. To regenerate them, run `node scripts/generate-placeholders.mjs`.
+- **Photos.** Catalogue and scene photos are from [Unsplash](https://unsplash.com), free under the Unsplash License. They are saved as WebP in `public/images/photos` (one per seeded product, plus 12 scenes, about 9 MB). `scripts/photos.json` maps each product and scene to its Unsplash photo, and `node scripts/fetch-photos.mjs` downloads any that are missing. Makers' own uploads go to Neon Object Storage.
 
 ## Design language
 
@@ -105,7 +105,7 @@ lib/
   hooks/       useQuery, quote-list (RFQ) + favorites providers, useStartChat
 app/api/       auth/[...path] (Neon Auth proxy), data (RPC), me, register, uploads, files/[...key], realtime
 drizzle/       SQL migrations (generated from lib/server/db/schema.ts)
-scripts/       placeholder art generator, seed-db.ts, smoke-services.mts
+scripts/       photos.json + fetch-photos.mjs (stock photos), seed-db.ts, smoke-services.mts
 proxy.ts       redirects signed-out visitors away from the dashboards
 ```
 
@@ -182,7 +182,7 @@ If the table is missing, the limiter logs and lets requests through, rather than
 | `app/(admin)/admin/products/page.tsx` | audit log for moderation |
 | `components/dashboard/company-profile-form.tsx` | logo upload |
 | `components/shared/furniture-image.tsx` | CDN in front of the bucket, then drop `unoptimized` |
-| `lib/placeholders.ts` | placeholder library replaced by real uploads |
+| `lib/placeholders.ts` | stock photo library for makers without photos; replace with their uploads |
 | `lib/hooks/commerce-providers.tsx` | persist the quote list server-side |
 | `lib/hooks/use-query.ts` | consider TanStack Query |
 
