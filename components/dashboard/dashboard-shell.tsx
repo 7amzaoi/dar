@@ -113,7 +113,7 @@ export function DashboardShell({ area, items, children }: { area: string; items:
           </div>
           </div>
         </header>
-        <main id="main" className="mx-auto w-full max-w-[1280px] flex-1 px-5 pb-20 pt-8 sm:px-8 lg:px-12 lg:pt-12">
+        <main id="main" className="mx-auto w-full max-w-[1280px] flex-1 px-4 pb-14 pt-6 sm:px-8 sm:pb-20 sm:pt-8 lg:px-12 lg:pt-12">
           {children}
         </main>
       </div>

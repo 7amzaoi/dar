@@ -20,6 +20,7 @@ import { LanguageToggle, ThemeToggle } from "@/components/shared/toggles";
 import { homeFor, useAuth } from "@/lib/auth";
 import { db } from "@/lib/data";
 import { useFavorites, useRfq } from "@/lib/hooks/commerce-providers";
+import { MD_UP, useMediaQuery } from "@/lib/hooks/use-media-query";
 import { useQuery } from "@/lib/hooks/use-query";
 import { useT, type TKey } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
@@ -106,8 +107,10 @@ export function SiteHeader() {
   const rfq = useRfq();
   const isRetailer = currentUser?.role === "retailer" && isApproved;
 
-  // The landing hero carries its own navbar; this header slides in once the hero scrolls away.
+  // From md up the landing hero carries its own navbar, so this header slides in once the hero
+  // scrolls away. Phones get a plain hero and keep this header from the start.
   const isHome = pathname === "/";
+  const wide = useMediaQuery(MD_UP);
   const [pastHero, setPastHero] = useState(false);
   const { scrollY } = useScroll();
   useMotionValueEvent(scrollY, "change", (y) => {
@@ -120,9 +123,9 @@ export function SiteHeader() {
       className={cn(
         "top-0 z-40 px-3 pt-3 transition-[transform,opacity] duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] md:px-5",
         isHome ? "fixed inset-x-0" : "sticky",
-        hidden && "-translate-y-[120%] opacity-0",
+        hidden && "md:-translate-y-[120%] md:opacity-0",
       )}
-      inert={hidden || undefined}
+      inert={(hidden && wide) || undefined}
     >
       <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:start-4 focus:top-3 focus:z-50 focus:rounded focus:bg-primary focus:px-3 focus:py-2 focus:text-primary-foreground">
         {t("common.skipToContent")}

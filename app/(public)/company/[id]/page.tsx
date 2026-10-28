@@ -31,10 +31,10 @@ export default function CompanyPage({ params }: { params: Promise<{ id: string }
     return { company, products, collections };
   }, [id]);
 
-  if (q.error) return <div className="container-page py-20"><ErrorState onRetry={q.reload} /></div>;
+  if (q.error) return <div className="container-page py-12 sm:py-20"><ErrorState onRetry={q.reload} /></div>;
   if (q.loading || q.data === undefined) {
     return (
-      <div className="container-page py-16">
+      <div className="container-page py-10 sm:py-16">
         <Skeleton className="mb-6 h-5 w-40" />
         <Skeleton className="mb-12 h-14 w-2/3" />
         <SkeletonGrid count={6} />
@@ -45,7 +45,7 @@ export default function CompanyPage({ params }: { params: Promise<{ id: string }
   const own = currentUser?.companyId === id;
   if (!q.data || (!q.data.company.verified && !own && currentUser?.role !== "admin")) {
     return (
-      <div className="container-page py-20">
+      <div className="container-page py-12 sm:py-20">
         <EmptyState title={t("common.notFound")} body={t("company.notFound")} action={<Button asChild variant="outline"><Link href="/makers">{t("nav.manufacturers")}</Link></Button>} />
       </div>
     );
@@ -111,7 +111,7 @@ export default function CompanyPage({ params }: { params: Promise<{ id: string }
       </section>
 
       {collections.length > 0 && (
-        <section className="container-page mt-24">
+        <section className="container-page mt-14 sm:mt-24">
           <Reveal>
             <h2 className="display-md mb-10">{t("company.collections")}</h2>
           </Reveal>
@@ -134,14 +134,14 @@ export default function CompanyPage({ params }: { params: Promise<{ id: string }
       )}
 
       {company.type === "manufacturer" && (
-        <section className="container-page mt-24">
+        <section className="container-page mt-14 sm:mt-24">
           <Reveal>
             <h2 className="display-md mb-10">{t("company.catalog")}</h2>
           </Reveal>
           {products.length === 0 ? (
             <EmptyState title={t("catalog.noResultsTitle")} />
           ) : (
-            <div className="grid grid-cols-2 gap-x-5 gap-y-12 md:grid-cols-3 lg:grid-cols-4">
+            <div className="grid grid-cols-2 gap-x-3 gap-y-8 sm:gap-x-5 sm:gap-y-12 md:grid-cols-3 lg:grid-cols-4">
               {products.map((p) => (
                 <ProductCard key={p.id} product={p} />
               ))}

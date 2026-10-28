@@ -119,10 +119,10 @@ export function CollectionsSection() {
   );
 
   return (
-    <section id="collections" aria-labelledby="collections-title" className="mt-16 scroll-mt-28 border-t border-hairline pt-10">
+    <section id="collections" aria-labelledby="collections-title" className="mt-10 scroll-mt-28 border-t border-hairline pt-8 sm:mt-16 sm:pt-10">
       <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h2 id="collections-title" className="font-display text-3xl">{t("mfr.collectionsTitle")}</h2>
+          <h2 id="collections-title" className="font-display text-2xl sm:text-3xl">{t("mfr.collectionsTitle")}</h2>
           <p className="mt-1 max-w-prose text-sm text-muted-foreground">{t("mfr.collectionsSubtitle")}</p>
         </div>
         {newButton}

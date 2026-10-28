@@ -48,7 +48,7 @@ export default function RetailerOverview() {
         <ErrorState onRetry={q.reload} />
       ) : (
         <>
-          <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+          <div className="grid grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-4">
             <KpiCard label={t("ret.kpiSaved")} icon={Heart} value={formatNumber(favorites.ids.size)} />
             <KpiCard label={t("ret.kpiRfq")} icon={ClipboardList} value={formatNumber(rfq.count)} />
             <KpiCard label={t("ret.kpiOpenQuotes")} icon={Hourglass} loading={awaiting == null} value={awaiting != null && formatNumber(awaiting)} />

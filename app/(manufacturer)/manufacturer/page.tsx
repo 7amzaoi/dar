@@ -49,10 +49,10 @@ export default function ManufacturerOverview() {
       ) : (
         <>
           {/* Three numbers and the requests waiting on you: everything else is one click away. */}
-          <div className="grid gap-4 sm:grid-cols-3">
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">
             <KpiCard label={t("mfr.kpiPublished")} icon={Package} loading={!s} value={s && formatNumber(s.publishedProducts)} sub={s && t("mfr.kpiDrafts", { count: s.draftProducts })} />
             <KpiCard label={t("mfr.kpiOpenOrders")} icon={Receipt} loading={!s} value={s && formatNumber(s.openOrders)} sub={s && t("ret.kpiOpenQuotes") + ": " + s.ordersByStatus.quote_requested} />
-            <KpiCard label={t("mfr.kpiPipeline")} icon={Wallet} loading={!s} value={s && formatPrice(s.pipelineValue)} />
+            <KpiCard className="col-span-2 sm:col-span-1" label={t("mfr.kpiPipeline")} icon={Wallet} loading={!s} value={s && formatPrice(s.pipelineValue)} />
           </div>
 
           <Panel

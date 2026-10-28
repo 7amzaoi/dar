@@ -141,7 +141,7 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
     return { product, maker, categories, collection, related: related.filter((p) => p.id !== product.id).slice(0, 4) };
   }, [id]);
 
-  if (q.error) return <div className="container-page py-20"><ErrorState onRetry={q.reload} /></div>;
+  if (q.error) return <div className="container-page py-12 sm:py-20"><ErrorState onRetry={q.reload} /></div>;
 
   if (q.loading || q.data === undefined) {
     return (
@@ -161,7 +161,7 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
   const visible = data && (data.product.published || data.product.manufacturerId === currentUser?.companyId || currentUser?.role === "admin");
   if (!data || !visible) {
     return (
-      <div className="container-page py-20">
+      <div className="container-page py-12 sm:py-20">
         <EmptyState
           title={t("common.notFound")}
           body={t("product.notFound")}
@@ -255,7 +255,7 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
         </FadeIn>
       </div>
 
-      <div className="mt-24 grid gap-16 lg:grid-cols-[1.2fr_1fr] lg:gap-16">
+      <div className="mt-14 grid gap-10 sm:mt-24 sm:gap-16 lg:grid-cols-[1.2fr_1fr]">
         <Reveal>
           <h2 className="display-md mb-8">{t("product.specifications")}</h2>
           <dl className="divide-y divide-hairline border-y border-hairline">
@@ -294,7 +294,7 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
       </div>
 
       {related.length > 0 && (
-        <section className="mt-28">
+        <section className="mt-16 sm:mt-28">
           <Reveal className="mb-10 flex items-end justify-between gap-6">
             <h2 className="display-md">{t("product.related")}</h2>
             {maker && (
@@ -303,7 +303,7 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
               </Button>
             )}
           </Reveal>
-          <div className="grid grid-cols-2 gap-x-5 gap-y-12 md:grid-cols-4">
+          <div className="grid grid-cols-2 gap-x-3 gap-y-8 sm:gap-x-5 sm:gap-y-12 md:grid-cols-4">
             {related.map((p) => (
               <ProductCard key={p.id} product={p} makerName={maker?.name} />
             ))}
@@ -312,7 +312,7 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
       )}
 
       {collection?.coverUrl && (
-        <Reveal className="mt-28">
+        <Reveal className="mt-16 sm:mt-28">
           <Link href={`/catalog?collection=${collection.id}`} className="group relative block overflow-hidden rounded-[1.5rem]">
             <div className="relative aspect-[21/9]">
               <FurnitureImage src={collection.coverUrl} alt="" sizes="100vw" className="transition-transform duration-[1.4s] group-hover:scale-[1.03]" />
@@ -320,7 +320,7 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
             </div>
             <div className="absolute bottom-0 p-8 text-paper sm:p-12">
               <div className="mb-2 text-xs text-paper/80">{t("product.collection")}</div>
-              <div className="font-display text-4xl sm:text-5xl">{tx(collection.nameAr, collection.nameEn)}</div>
+              <div className="font-display text-3xl sm:text-5xl">{tx(collection.nameAr, collection.nameEn)}</div>
             </div>
           </Link>
         </Reveal>

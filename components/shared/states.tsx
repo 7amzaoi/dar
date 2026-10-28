@@ -22,7 +22,7 @@ export function EmptyState({
   className?: string;
 }) {
   return (
-    <div className={cn("flex flex-col items-center justify-center rounded-[1.5rem] border border-dashed border-border px-6 py-16 text-center", className)}>
+    <div className={cn("flex flex-col items-center justify-center rounded-[1.5rem] border border-dashed border-border px-5 py-12 text-center sm:px-6 sm:py-16", className)}>
       <span className="mb-5 inline-flex size-14 items-center justify-center rounded-full bg-secondary text-brand-strong">
         <Icon className="size-6" strokeWidth={1.4} />
       </span>
@@ -36,7 +36,7 @@ export function EmptyState({
 export function ErrorState({ onRetry, className, message }: { onRetry?: () => void; className?: string; message?: string }) {
   const { t } = useT();
   return (
-    <div role="alert" className={cn("flex flex-col items-center justify-center rounded-[1.5rem] border border-destructive/30 bg-destructive/5 px-6 py-14 text-center", className)}>
+    <div role="alert" className={cn("flex flex-col items-center justify-center rounded-[1.5rem] border border-destructive/30 bg-destructive/5 px-5 py-10 text-center sm:px-6 sm:py-14", className)}>
       <AlertTriangle className="mb-4 size-7 text-destructive" strokeWidth={1.4} />
       <h3 className="font-display text-2xl">{t("common.errorTitle")}</h3>
       <p className="mt-2 max-w-sm text-sm text-muted-foreground">{message ?? t("common.errorBody")}</p>

@@ -91,10 +91,11 @@ export function OrdersList({ side }: { side: Side }) {
         title={side === "manufacturer" ? t("mfr.ordersTitle") : t("ret.ordersTitle")}
         description={side === "manufacturer" ? t("mfr.ordersSubtitle") : t("ret.ordersSubtitle")}
       />
-      <Tabs value={tab} onValueChange={(v) => setTab(v as Tab)} className="mb-5">
-        <TabsList>
+      <Tabs value={tab} onValueChange={(v) => setTab(v as Tab)} className="mb-5 max-w-full">
+        {/* on phones the four tabs scroll sideways instead of pushing the page wider */}
+        <TabsList className="max-w-full justify-start overflow-x-auto [scrollbar-width:none]">
           {tabs.map(([k, label]) => (
-            <TabsTrigger key={k} value={k} className="px-4">
+            <TabsTrigger key={k} value={k} className="shrink-0 px-3 sm:px-4">
               {label}
               {q.data && <span className="ms-1.5 text-[0.7rem] tabular-nums text-muted-foreground">{q.data.orders.filter(TAB_FILTER[k]).length}</span>}
             </TabsTrigger>

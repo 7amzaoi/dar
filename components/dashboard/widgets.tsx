@@ -21,10 +21,10 @@ export function PageHeader({
   className?: string;
 }) {
   return (
-    <FadeIn className={cn("mb-10 flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between", className)}>
+    <FadeIn className={cn("mb-6 flex flex-col gap-4 sm:mb-10 sm:flex-row sm:items-end sm:justify-between sm:gap-5", className)}>
       <div className="min-w-0">
         {eyebrow && <div className="eyebrow mb-3">{eyebrow}</div>}
-        <h1 className="font-display text-4xl leading-tight sm:text-[2.75rem]">{title}</h1>
+        <h1 className="font-display text-[1.75rem] leading-tight sm:text-[2.75rem]">{title}</h1>
         {description && <p className="mt-2 max-w-2xl text-muted-foreground">{description}</p>}
       </div>
       {actions && <div className="flex shrink-0 flex-wrap items-center gap-2">{actions}</div>}
@@ -48,13 +48,13 @@ export function KpiCard({
   className?: string;
 }) {
   return (
-    <div className={cn("rounded-[1.5rem] border border-border bg-card p-6 shadow-soft", className)}>
+    <div className={cn("rounded-[1.25rem] border border-border bg-card p-4 shadow-soft sm:rounded-[1.5rem] sm:p-6", className)}>
       <div className="flex items-center justify-between gap-3">
-        <span className="text-sm text-muted-foreground">{label}</span>
+        <span className="text-xs text-muted-foreground sm:text-sm">{label}</span>
         {Icon && <Icon className="size-4 text-brand-strong" strokeWidth={1.5} />}
       </div>
-      <div className="mt-4 font-display text-[2.4rem] leading-none tabular-nums">{loading ? <Skeleton className="h-10 w-24" /> : typeof value === "string" ? <AnimatedNumberInView value={value} /> : value}</div>
-      {sub && <div className="mt-3 text-xs text-muted-foreground">{loading ? <Skeleton className="h-3 w-20" /> : sub}</div>}
+      <div className="mt-3 font-display text-[1.75rem] leading-none tabular-nums sm:mt-4 sm:text-[2.4rem]">{loading ? <Skeleton className="h-10 w-24" /> : typeof value === "string" ? <AnimatedNumberInView value={value} /> : value}</div>
+      {sub && <div className="mt-2 text-xs text-muted-foreground sm:mt-3">{loading ? <Skeleton className="h-3 w-20" /> : sub}</div>}
     </div>
   );
 }

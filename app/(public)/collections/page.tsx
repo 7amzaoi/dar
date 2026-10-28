@@ -25,8 +25,8 @@ export default function CollectionsPage() {
   }, []);
 
   return (
-    <div className="container-page py-12 lg:py-16">
-      <FadeIn className="mb-14 max-w-3xl">
+    <div className="container-page py-8 sm:py-12 lg:py-16">
+      <FadeIn className="mb-8 max-w-3xl sm:mb-14">
         <div className="eyebrow mb-4">{t("landing.featuredEyebrow")}</div>
         <h1 className="display-lg">{t("landing.featuredTitle")}</h1>
         <p className="mt-4 text-muted-foreground">{t("landing.featuredBody")}</p>
@@ -34,7 +34,7 @@ export default function CollectionsPage() {
       <QueryView query={q} loading={<SkeletonGrid count={4} className="md:grid-cols-2" />} empty={<EmptyState title={t("common.noResults")} />}>
         {(items) => (
           <>
-          <Reveal className="mb-16 h-[440px] overflow-hidden rounded-[2rem] bg-secondary/60 sm:h-[500px]">
+          <Reveal className="mb-10 h-[340px] overflow-hidden rounded-[1.5rem] bg-secondary/60 sm:mb-16 sm:h-[500px] sm:rounded-[2rem]">
             <PerspectiveCarousel
               items={items.map(({ collection }) => ({ src: collection.coverUrl ?? "/images/photos/scenes/hero-living.webp", title: tx(collection.nameAr, collection.nameEn) }))}
               defaultActiveIndex={Math.min(2, items.length - 1)}
@@ -56,7 +56,7 @@ export default function CollectionsPage() {
                   <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-7 text-paper sm:p-9">
                     <div>
                       <div className="mb-2 text-xs text-paper/80">{maker}</div>
-                      <div className="font-display text-4xl sm:text-5xl">{tx(collection.nameAr, collection.nameEn)}</div>
+                      <div className="font-display text-3xl sm:text-5xl">{tx(collection.nameAr, collection.nameEn)}</div>
                     </div>
                     <span className="text-sm text-paper/80">{t("common.pieces", { count })}</span>
                   </div>

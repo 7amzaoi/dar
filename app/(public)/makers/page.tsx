@@ -19,15 +19,15 @@ export default function MakersPage() {
   }, []);
 
   return (
-    <div className="container-page py-12 lg:py-16">
-      <FadeIn className="mb-14 max-w-3xl">
+    <div className="container-page py-8 sm:py-12 lg:py-16">
+      <FadeIn className="mb-8 max-w-3xl sm:mb-14">
         <div className="eyebrow mb-4">{t("landing.makersEyebrow")}</div>
         <h1 className="display-lg">{t("company.makersTitle")}</h1>
         <p className="mt-4 text-muted-foreground">{t("company.makersSubtitle")}</p>
       </FadeIn>
       <QueryView query={q} loading={<SkeletonGrid count={6} />} empty={<EmptyState title={t("common.noResults")} />}>
         {(makers) => (
-          <div className="grid gap-x-6 gap-y-14 md:grid-cols-2">
+          <div className="grid gap-x-6 gap-y-10 md:grid-cols-2 md:gap-y-14">
             {makers.map(({ company, count, images }, i) => (
               <Reveal key={company.id} delay={(i % 2) * 0.08}>
                 <Link href={`/company/${company.id}`} className="group block">

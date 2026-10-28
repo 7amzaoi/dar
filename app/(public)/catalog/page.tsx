@@ -143,8 +143,8 @@ function CatalogView() {
   ) : null;
 
   return (
-    <div className="container-page pb-10 pt-12 lg:pt-16">
-      <FadeIn className="mb-12 max-w-3xl">
+    <div className="container-page pb-10 pt-8 sm:pt-12 lg:pt-16">
+      <FadeIn className="mb-6 max-w-3xl sm:mb-12">
         <div className="eyebrow mb-4">{activeCollection ? (companyById.get(activeCollection.manufacturerId)?.name ?? t("nav.collections")) : t("catalog.eyebrow")}</div>
         <h1 className="display-lg">{heading}</h1>
         <p className="mt-4 text-muted-foreground">{t("catalog.subtitle")}</p>
@@ -227,13 +227,13 @@ function CatalogView() {
             />
           ) : (
             <>
-              <div className="grid grid-cols-2 gap-x-5 gap-y-12 md:grid-cols-3">
+              <div className="grid grid-cols-2 gap-x-3 gap-y-8 sm:gap-x-5 sm:gap-y-12 md:grid-cols-3">
                 {products.data.map((p, i) => (
                   <ProductCard key={p.id} product={p} makerName={companyById.get(p.manufacturerId)?.name} priority={i < 3} />
                 ))}
               </div>
               {pages > 1 && (
-                <nav aria-label={t("catalog.pagerLabel")} className="mt-16 flex items-center justify-between gap-4 border-t border-hairline pt-8">
+                <nav aria-label={t("catalog.pagerLabel")} className="mt-10 flex items-center justify-between gap-4 border-t border-hairline pt-6 sm:mt-16 sm:pt-8">
                   <Button variant="outline" disabled={page <= 1} onClick={() => goToPage(page - 1)}>
                     <ArrowBack className="size-4" /> {t("catalog.pagePrev")}
                   </Button>
@@ -255,7 +255,7 @@ function CatalogView() {
 
 export default function CatalogPage() {
   return (
-    <Suspense fallback={<div className="container-page py-16"><SkeletonGrid count={9} /></div>}>
+    <Suspense fallback={<div className="container-page py-10 sm:py-16"><SkeletonGrid count={9} /></div>}>
       <CatalogView />
     </Suspense>
   );

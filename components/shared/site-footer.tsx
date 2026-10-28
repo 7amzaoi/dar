@@ -26,8 +26,8 @@ export function SiteFooter() {
   ];
 
   return (
-    <footer className="mt-32 border-t border-hairline bg-surface">
-      <div className="container-page grid gap-12 pt-16 pb-20 md:grid-cols-[1.6fr_1fr_1fr]">
+    <footer className="mt-20 border-t border-hairline bg-surface md:mt-32">
+      <div className="container-page grid gap-10 pt-12 pb-14 md:grid-cols-[1.6fr_1fr_1fr] md:gap-12 md:pt-16 md:pb-20">
         <div className="max-w-sm space-y-5">
           <Logo />
           <p className="text-sm leading-relaxed text-pretty text-muted-foreground">{t("footer.blurb")}</p>

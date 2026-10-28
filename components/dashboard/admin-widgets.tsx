@@ -11,7 +11,7 @@ export function PlatformKpis({ stats }: { stats?: PlatformStats }) {
   const { t, formatNumber, formatPrice } = useT();
   const s = stats;
   return (
-    <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+    <div className="grid grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-4">
       <KpiCard label={t("admin.kpiCompanies")} icon={Building2} loading={!s} value={s && formatNumber(s.manufacturers + s.retailers)} sub={s && t("admin.kpiCompaniesSub", { m: s.manufacturers, r: s.retailers })} />
       <KpiCard label={t("admin.kpiPending")} icon={ShieldCheck} loading={!s} value={s && formatNumber(s.pendingApprovals)} />
       <KpiCard label={t("admin.kpiProducts")} icon={Package} loading={!s} value={s && formatNumber(s.publishedProducts)} sub={s && t("admin.kpiProductsSub", { count: s.products })} />

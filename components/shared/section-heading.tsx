@@ -15,7 +15,7 @@ export function SectionHeading({
   className?: string;
 }) {
   return (
-    <div className={cn("mb-12 flex flex-col gap-6 md:flex-row md:items-end md:justify-between", className)}>
+    <div className={cn("mb-8 flex flex-col gap-4 md:mb-12 md:flex-row md:gap-6 md:items-end md:justify-between", className)}>
       <div className="max-w-2xl">
         {eyebrow && <div className="eyebrow mb-4">{eyebrow}</div>}
         <h2 className="display-md">{title}</h2>
